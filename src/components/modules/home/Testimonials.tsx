@@ -8,29 +8,29 @@ const Testimonials = () => {
   const testimonials = [
     {
       name: "Sarah Johnson",
-      role: "Home Buyer",
+      role: "Product Buyer",
       image:
         "https://res.cloudinary.com/dchqfpvjb/image/upload/v1735564183/cld-sample.jpg",
       content:
-        "Found my dream home within weeks! The platform's search features made it incredibly easy to filter and find exactly what I was looking for.",
+        "Found my perfect product within days! The platform's search features made it incredibly easy to filter and find exactly what I was looking for.",
       rating: 5,
     },
     {
       name: "Michael Chen",
-      role: "Property Owner",
+      role: "Product Seller",
       image:
         "https://res.cloudinary.com/dchqfpvjb/image/upload/v1735564182/samples/woman-on-a-football-field.jpg",
       content:
-        "As a landlord, I've had great success listing my properties here. The process is streamlined and the support team is excellent.",
+        "As a seller, I've had great success listing my products here. The process is streamlined and the support team is excellent.",
       rating: 5,
     },
     {
       name: "Emma Davis",
-      role: "First-time Renter",
+      role: "First-time Shopper",
       image:
         "https://res.cloudinary.com/dchqfpvjb/image/upload/v1735564179/samples/two-ladies.jpg",
       content:
-        "The virtual tours saved me so much time. I could view multiple properties from home before deciding which ones to visit in person.",
+        "The detailed product descriptions and images saved me so much time. I could explore multiple products from home before making a decision.",
       rating: 5,
     },
   ];
@@ -65,7 +65,7 @@ const Testimonials = () => {
             What Our Users Say
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Discover why thousands of people trust Lagbe Kichu for their housing
+            Discover why thousands of people trust Lagbe Kichu for their product
             needs
           </p>
         </motion.div>

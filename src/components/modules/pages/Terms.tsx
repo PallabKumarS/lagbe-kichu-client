@@ -17,23 +17,23 @@ const Terms = () => {
       ],
     },
     {
-      title: "Property Listings",
+      title: "Product Listings",
       icon: ScrollText,
       items: [
-        "All listings must be accurate and up-to-date",
-        "Images must be authentic and represent the actual property",
+        "All product listings must be accurate and up-to-date",
+        "Product images must be authentic and represent the actual item",
         "Pricing information must be current and transparent",
-        "Sellers must have legal rights to list properties",
+        "Sellers must have legal rights to list their products",
       ],
     },
     {
       title: "User Responsibilities",
       icon: AlertCircle,
       items: [
-        "Users must not engage in fraudulent activities",
+        "Users must not engage in fraudulent purchasing activities",
         "Respect other users' privacy and personal information",
-        "Report any suspicious or inappropriate content",
-        "Follow local real estate laws and regulations",
+        "Report any suspicious or inappropriate product content",
+        "Follow local consumer protection laws and regulations",
       ],
     },
     {
@@ -43,7 +43,7 @@ const Terms = () => {
         "The service is provided 'as is' without warranties",
         "We may modify or terminate services at any time",
         "Users agree to receive service-related communications",
-        "Usage data may be collected to improve services",
+        "Usage data may be collected to improve product recommendations",
       ],
     },
   ];
@@ -78,7 +78,7 @@ const Terms = () => {
           <h1 className="text-4xl font-bold text-primary">Terms of Service</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Please read these terms carefully before using Lagbe Kichu&apos;s
-            services.
+            product discovery and shopping services.
           </p>
         </motion.div>
 
@@ -125,9 +125,10 @@ const Terms = () => {
         >
           <h2 className="text-2xl font-semibold">Agreement to Terms</h2>
           <p className="text-muted-foreground">
-            By accessing or using Lagbe Kichu&apos;s services, you agree to be
-            bound by these terms and conditions. If you disagree with any part
-            of the terms, you may not access our services.
+            By accessing or using Lagbe Kichu&apos;s product discovery and
+            shopping services, you agree to be bound by these terms and
+            conditions. If you disagree with any part of the terms, you may not
+            access our services.
           </p>
         </motion.div>
 
@@ -137,7 +138,7 @@ const Terms = () => {
             Questions about our Terms of Service?
           </p>
           <p className="text-primary font-medium">
-            Contact us at legal@nesthunt.com
+            Contact us at legal@lagbekichu.com
           </p>
         </motion.div>
       </motion.div>

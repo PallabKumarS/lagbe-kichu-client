@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Home, ArrowRight } from "lucide-react";
+import { Package, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const HeroSection = () => {
@@ -18,7 +18,7 @@ const HeroSection = () => {
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
               Find Your Perfect
               <span className="text-gradient block mt-2 drop-shadow-lg">
-                Dream Home Today!
+                Product Today!
               </span>
             </h1>
           </motion.div>
@@ -29,8 +29,8 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl text-muted-foreground"
           >
-            Discover thousands of rental properties in your desired location.
-            Your perfect home is just a click away.
+            Discover thousands of products across multiple categories. Your
+            perfect item is just a click away.
           </motion.p>
 
           <motion.div
@@ -40,10 +40,10 @@ const HeroSection = () => {
             className="flex justify-center"
           >
             <Link
-              href="/dashboard/landlord/create-listing"
+              href="/dashboard/seller/create-listing"
               className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl"
             >
-              <Home className="mr-2 h-5 w-5 " /> Post Rental House Info
+              <Package className="mr-2 h-5 w-5" /> List Your Product
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </motion.div>
@@ -55,9 +55,9 @@ const HeroSection = () => {
             className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16"
           >
             {[
-              { number: "10K+", label: "Active Listings" },
-              { number: "50K+", label: "Happy Tenants" },
-              { number: "99%", label: "Client Satisfaction" },
+              { number: "10K+", label: "Active Products" },
+              { number: "50K+", label: "Happy Customers" },
+              { number: "99%", label: "Customer Satisfaction" },
             ].map((stat, index) => (
               <div
                 key={index}

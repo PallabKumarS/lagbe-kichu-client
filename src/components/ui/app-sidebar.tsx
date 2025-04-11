@@ -225,7 +225,7 @@ export function AppSidebar() {
                   ) : (
                     <AvatarImage src="https://github.com/shadcn.png" />
                   )}
-                  <AvatarFallback>NH</AvatarFallback>
+                  <AvatarFallback>LK</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 text-left">
                   <p className="text-sm font-medium">{user?.name}</p>

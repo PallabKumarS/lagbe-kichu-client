@@ -68,7 +68,7 @@ const Footer = () => {
               <li className="flex items-center space-x-2 text-muted-foreground group cursor-pointer justify-center">
                 <Mail className="w-4 h-4 group-hover:text-primary transition-colors" />
                 <span className="group-hover:text-primary group-hover:underline decoration-primary decoration-2 underline-offset-4 transition-all">
-                  contact@nesthunt.com
+                  contact@lagbekichu.com
                 </span>
               </li>
               <li className="flex items-center space-x-2 text-muted-foreground group cursor-pointer justify-center">

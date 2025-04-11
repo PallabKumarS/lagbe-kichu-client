@@ -12,7 +12,7 @@ export async function generateMetadata({
   const listing = await getSingleListing((await params).listingId);
 
   return {
-    title: `NH || ${listing?.data?.title}`,
+    title: `LK || ${listing?.data?.title}`,
     description: listing?.data?.description,
   };
 }
@@ -30,7 +30,7 @@ const ListingDetailsPage = async ({
   if (!listing) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <div className="text-4xl">🏠</div>
+        <div className="text-4xl">🥲</div>
         <h2 className="text-2xl font-semibold text-gray-800">
           No Listing Found
         </h2>

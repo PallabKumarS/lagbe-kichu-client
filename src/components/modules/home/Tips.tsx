@@ -2,51 +2,51 @@
 
 import { motion } from "framer-motion";
 import {
-  HomeIcon,
+  Package,
   ClipboardCheck,
-  PiggyBank,
+  CreditCard,
   Shield,
-  Map,
-  FileSearch,
+  Search,
+  FileCheck,
 } from "lucide-react";
 
 const Tips = () => {
   const tips = [
     {
-      icon: HomeIcon,
-      title: "Location Research",
+      icon: Package,
+      title: "Product Research",
       description:
-        "Research neighborhood safety, amenities, and commute times. Consider proximity to schools, shopping, and public transport.",
+        "Thoroughly research product specifications, reviews, and comparisons. Consider functionality, quality, and user experiences across different brands.",
     },
     {
       icon: ClipboardCheck,
-      title: "Property Inspection",
+      title: "Product Verification",
       description:
-        "Check for structural issues, proper ventilation, and adequate lighting. Document existing damage during walk-throughs.",
+        "Check product authenticity, warranty details, and return policies. Verify seller credentials and product condition before purchasing.",
     },
     {
-      icon: PiggyBank,
+      icon: CreditCard,
       title: "Budget Planning",
       description:
-        "Calculate all costs including rent, utilities, maintenance, and security deposits. Plan for unexpected expenses.",
+        "Compare prices across platforms, look for discounts, and consider total cost including shipping and potential additional expenses.",
     },
     {
       icon: Shield,
-      title: "Lease Understanding",
+      title: "Purchase Protection",
       description:
-        "Read the lease agreement carefully. Understand terms about maintenance, pets, modifications, and renewal options.",
+        "Understand buyer protection policies, payment security, and dispute resolution mechanisms before completing your purchase.",
     },
     {
-      icon: Map,
-      title: "Area Development",
+      icon: Search,
+      title: "Detailed Comparison",
       description:
-        "Research future development plans in the area. This can affect property value and living quality.",
+        "Use advanced search filters to compare products across multiple dimensions like price, features, ratings, and seller reputation.",
     },
     {
-      icon: FileSearch,
+      icon: FileCheck,
       title: "Documentation",
       description:
-        "Prepare necessary documents like ID, proof of income, and references. Keep copies of all signed agreements.",
+        "Keep all purchase receipts, warranty cards, and communication records. Prepare necessary documents for potential returns or exchanges.",
     },
   ];
 
@@ -77,11 +77,11 @@ const Tips = () => {
       >
         <motion.div className="text-center mb-12" variants={itemVariants}>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Essential House Hunting Tips
+            Essential Product Shopping Tips
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Make informed decisions with our comprehensive guide to finding your
-            perfect home
+            perfect product
           </p>
         </motion.div>
 
@@ -111,8 +111,8 @@ const Tips = () => {
           <div className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary/5 text-primary">
             <span className="font-medium">Pro Tip:</span>
             <span className="ml-2">
-              Always visit properties at different times of day to get a
-              complete picture.
+              Always read multiple reviews and compare products before making a
+              purchase.
             </span>
           </div>
         </motion.div>

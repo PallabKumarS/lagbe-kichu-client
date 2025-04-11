@@ -5,8 +5,9 @@ import Container from "@/components/shared/Container";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "NestHunt | Home",
-  description: "Welcome to NestHunt, your gateway to finding your dream home.",
+  title: "LagbeKichu | Home",
+  description:
+    "Welcome to LagbeKichu, your gateway to finding your dream home.",
 };
 
 const page = () => {
