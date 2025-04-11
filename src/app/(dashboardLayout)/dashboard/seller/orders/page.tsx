@@ -1,6 +1,6 @@
 import RequestManagement from "@/components/modules/management/RequestManagement";
 import DelayedNoData from "@/components/shared/DelayedNoData";
-import LoadingData from "@/components/shared/Loading";
+import LoadingData from "@/components/shared/LoadingData";
 import NoData from "@/components/shared/NoData";
 import { getPersonalRequests } from "@/services/RequestService";
 import { Metadata } from "next";

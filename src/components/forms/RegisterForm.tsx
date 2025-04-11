@@ -16,9 +16,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { PasswordInput } from "../ui/password-input";
-import { registerUser } from "@/services/AuthService";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { LoaderCircleIcon } from "lucide-react";
+import { useRegisterMutation } from "@/redux/api/auth/authApi";
 
 const formSchema = z.object({
   name: z.string(),
@@ -29,6 +29,8 @@ const formSchema = z.object({
 });
 
 export default function RegisterForm() {
+  const [registerUser] = useRegisterMutation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -42,7 +44,7 @@ export default function RegisterForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const toastId = toast.loading("Creating user...");
     try {
-      const res = await registerUser(values);
+      const res = await registerUser(values).unwrap();
       if (res?.success) {
         toast.success(res?.message, { id: toastId });
       } else {

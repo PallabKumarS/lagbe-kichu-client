@@ -19,21 +19,27 @@ interface IInitialState {
     userId: string;
     email: string;
   } | null;
+  token: string | null;
 }
 
 const initialState: IInitialState = {
   user: null,
+  token: null,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action) => {
+    setUser: (state, action) => {
       state.user = action.payload;
+    },
+    login: (state, action) => {
+      state.token = action.payload;
     },
     logout: (state) => {
       state.user = null;
+      state.token = null;
     },
   },
 });
@@ -42,5 +48,10 @@ export const userSelector = (state: RootState) => {
   return state.auth.user;
 };
 
-export const { login, logout } = authSlice.actions;
+export const tokenSelector = (state: RootState) => {
+  return state.auth.token;
+};
+
+export const { login, logout, setUser } = authSlice.actions;
+
 export default authSlice;

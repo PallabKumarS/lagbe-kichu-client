@@ -16,11 +16,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { PasswordInput } from "../ui/password-input";
 import { useRouter, useSearchParams } from "next/navigation";
-import { loginUser } from "@/services/AuthService";
 import { useAppDispatch } from "@/redux/hook";
-import { getMe } from "@/services/UserService";
 import { Loader2Icon } from "lucide-react";
 import { login } from "@/redux/features/authSlice";
+import { useLoginMutation } from "@/redux/api/auth/authApi";
 
 const formSchema = z.object({
   email: z.string(),
@@ -28,6 +27,8 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
+  const [loginUser] = useLoginMutation();
+
   const searchParams = useSearchParams();
   const redirectPath = searchParams.get("redirectPath");
   const router = useRouter();
@@ -44,14 +45,10 @@ export default function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const toastId = toast.loading("logging in...");
     try {
-      const res = await loginUser(values);
+      const res = await loginUser(values).unwrap();
+
       if (res?.success) {
-        const user = await getMe();
-        if (user?.success) {
-          dispatch(login(user?.data));
-        } else {
-          toast.error(user?.message, { id: toastId });
-        }
+        dispatch(login(res?.data?.accessToken));
         toast.success(res?.message, { id: toastId });
         if (redirectPath) {
           router.push(redirectPath);

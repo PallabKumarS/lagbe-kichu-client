@@ -12,6 +12,7 @@ import {
   HomeIcon,
   TrainTrack,
   Package,
+  FileSearch,
 } from "lucide-react";
 
 import {
@@ -34,7 +35,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { logout, userSelector } from "@/redux/features/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname, useRouter } from "next/navigation";
-import { deleteCookie } from "@/services/AuthService";
+// import { deleteCookie } from "@/services/AuthService";
 import { privateRoutes } from "@/constants";
 
 // common routes for all users
@@ -72,6 +73,11 @@ const adminRoutes = [
     title: "Listings",
     icon: PackageOpen,
     href: "/dashboard/admin/listing-management",
+  },
+  {
+    title: "Category",
+    icon: FileSearch,
+    href: "/dashboard/admin/category-management",
   },
 ];
 
@@ -111,7 +117,6 @@ export function AppSidebar() {
 
   const handleLogout = () => {
     dispatch(logout());
-    deleteCookie();
     if (privateRoutes.some((route) => pathname.match(route))) {
       router.push("/login");
     }

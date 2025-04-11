@@ -16,9 +16,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { LoaderCircleIcon } from "lucide-react";
 import { TUser } from "@/types";
-import { updateUser } from "@/services/UserService";
 import { useAppDispatch } from "@/redux/hook";
 import { login } from "@/redux/features/authSlice";
+import { useUpdateUserMutation } from "@/redux/api/user/userApi";
 
 const formSchema = z.object({
   name: z.string(),
@@ -33,6 +33,8 @@ export default function ProfileForm({
 }: {
   userData: Partial<TUser> | null;
 }) {
+  const [updateUser] = useUpdateUserMutation();
+
   const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,10 +53,12 @@ export default function ProfileForm({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const toastId = toast.loading("Updating user...");
-    console.log(values);
 
     try {
-      const res = await updateUser(userData?.userId as string, values);
+      const res = await updateUser({
+        userId: userData?.userId as string,
+        data: values,
+      }).unwrap();
 
       if (res?.success) {
         toast.success(res?.message, { id: toastId });

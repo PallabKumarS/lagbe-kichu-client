@@ -2,23 +2,28 @@
 "use client";
 
 import { DialogComponent } from "@/components/shared/Dialog";
+import LoadingData from "@/components/shared/LoadingData";
 import { TableComponent } from "@/components/shared/Table";
+import { useGetAllUsersQuery } from "@/redux/api/user/userApi";
 import {
   deleteUser,
   updateUserRole,
   updateUserStatus,
 } from "@/services/UserService";
-import { TMeta, TMongoose, TUser } from "@/types";
+import { TMongoose, TUser } from "@/types";
 import { Ban } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-type TProps = {
-  users: (TUser & TMongoose)[];
-  meta: TMeta;
-};
+const UserManagement = () => {
+  const { data: users, isLoading } = useGetAllUsersQuery(
+    { limit: 12 },
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    }
+  );
 
-const UserManagement = ({ users, meta }: TProps) => {
   const [selectedUser, setSelectedUser] = useState<(TUser & TMongoose) | null>(
     null
   );
@@ -123,13 +128,17 @@ const UserManagement = ({ users, meta }: TProps) => {
     </div>
   );
 
+  if (isLoading) {
+    return <LoadingData />;
+  }
+
   return (
     <div>
       <TableComponent
         cellProperties={cellProperties}
-        data={users}
+        data={users?.data}
         heads={heads}
-        meta={meta}
+        meta={users?.meta}
         caption="User Management"
         onDelete={handleDelete}
         onView={handleView}

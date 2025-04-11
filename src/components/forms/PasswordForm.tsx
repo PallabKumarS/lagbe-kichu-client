@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { PasswordInput } from "../ui/password-input";
 import { LoaderCircleIcon } from "lucide-react";
-import { passwordChange } from "@/services/AuthService";
+import { useChangePasswordMutation } from "@/redux/api/auth/authApi";
 
 const formSchema = z.object({
   oldPassword: z.string().min(1),
@@ -23,6 +23,8 @@ const formSchema = z.object({
 });
 
 export default function PasswordForm() {
+  const [passwordChange] = useChangePasswordMutation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -40,7 +42,8 @@ export default function PasswordForm() {
       const res = await passwordChange({
         oldPassword: values.oldPassword,
         newPassword: values.newPassword,
-      });
+      }).unwrap();
+
       if (res?.success) {
         toast.success(res?.message, { id: toastId });
       } else {

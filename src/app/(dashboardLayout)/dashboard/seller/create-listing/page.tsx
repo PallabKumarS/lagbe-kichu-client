@@ -1,6 +1,6 @@
 import CreateListing from "@/components/modules/listing/CreateListing";
 import DelayedNoData from "@/components/shared/DelayedNoData";
-import LoadingData from "@/components/shared/Loading";
+import LoadingData from "@/components/shared/LoadingData";
 import NoData from "@/components/shared/NoData";
 import { getPersonalListings } from "@/services/ListingService";
 import { Metadata } from "next";

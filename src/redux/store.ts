@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { configureStore } from "@reduxjs/toolkit";
 import {
   persistReducer,
@@ -10,6 +11,7 @@ import {
 } from "redux-persist";
 import storage from "./storage";
 import authSlice from "./features/authSlice";
+import baseApi from "./api/baseApi";
 
 const persistOptions = {
   key: "auth",
@@ -22,13 +24,14 @@ export const makeStore = () => {
   return configureStore({
     reducer: {
       auth: persistedAuth,
+      [baseApi.reducerPath]: baseApi.reducer,
     },
     middleware: (getDefaultMiddlewares: any) =>
       getDefaultMiddlewares({
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }),
+      }).concat(baseApi.middleware),
   });
 };
 

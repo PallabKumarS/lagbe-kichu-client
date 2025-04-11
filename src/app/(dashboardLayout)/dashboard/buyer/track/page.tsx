@@ -1,28 +1,16 @@
 import AllTrack from "@/components/modules/pages/AllTrack";
 import Container from "@/components/shared/Container";
-import DelayedNoData from "@/components/shared/DelayedNoData";
-import LoadingData from "@/components/shared/Loading";
-import NoData from "@/components/shared/NoData";
 import { getPersonalRequests } from "@/services/RequestService";
 import { Metadata } from "next";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Dashboard | Track Requests",
-  description:
-    "This is Track Requests Page of the dashboard used by tenant only",
+  title: "Dashboard | Track Orders",
+  description: "This is Track Orders Page of the dashboard used by buyer only",
 };
 
 const TrackingPage = async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const requests: any = await getPersonalRequests({ limit: 12 });
-
-  // if (requests?.data?.length === 0) {
-  //   return (
-  //     <Suspense fallback={<LoadingData />}>
-  //       <DelayedNoData />
-  //     </Suspense>
-  //   );
-  // }
 
   return (
     <Container>

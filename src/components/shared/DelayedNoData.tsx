@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import NoData from "./NoData";
-import LoadingData from "./Loading";
+import LoadingData from "./LoadingData";
 
 const DelayedNoData = () => {
   const [showNoData, setShowNoData] = useState(false);
