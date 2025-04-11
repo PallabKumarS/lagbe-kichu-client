@@ -1,8 +1,8 @@
-import { TMongoose, TRequest } from "@/types";
+import { TMongoose, TOrder } from "@/types";
 import Link from "next/link";
 import { MapPin, Clock, CheckCircle } from "lucide-react";
 
-const AllTrack = ({ requests }: { requests: (TRequest & TMongoose)[] }) => {
+const AllTrack = ({ requests }: { requests: (TOrder & TMongoose)[] }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
@@ -28,8 +28,8 @@ const AllTrack = ({ requests }: { requests: (TRequest & TMongoose)[] }) => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {requests?.map((request) => (
             <Link
-              key={request?.requestId}
-              href={`/dashboard/tenant/track/${request?.requestId}`}
+              key={request?.orderId}
+              href={`/dashboard/tenant/track/${request?.orderId}`}
               className="block"
             >
               <div className="bg-white shadow-md rounded-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer border hover:border-blue-500">
@@ -49,19 +49,10 @@ const AllTrack = ({ requests }: { requests: (TRequest & TMongoose)[] }) => {
                 <div className="space-y-2 text-gray-600">
                   <div className="flex items-center">
                     <MapPin className="mr-2 text-blue-500 w-5 h-5" />
-                    <span>{request?.listingId?.title || "N/A"}</span>
+                    <span>{request?.listingId.title}</span>
                   </div>
 
-                  <div className="flex items-center">
-                    <Clock className="mr-2 text-gray-500 w-5 h-5" />
-                    <span>
-                      {new Date(
-                        request?.moveInDate as Date
-                      ).toLocaleDateString()}
-                    </span>
-                  </div>
-
-                  {request?.status === "approved" && (
+                  {request?.status === "processing" && (
                     <div className="flex items-center text-green-600">
                       <CheckCircle className="mr-2 w-5 h-5" />
                       <span>Approved Request</span>

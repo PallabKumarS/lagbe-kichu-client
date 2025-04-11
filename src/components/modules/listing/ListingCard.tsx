@@ -8,7 +8,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Bed, MapPin, Check, X, Eye, Edit, Trash, Ban } from "lucide-react";
+import { MapPin, Check, X, Eye, Edit, Trash, Ban } from "lucide-react";
 import Link from "next/link";
 import { TListing, TMongoose } from "@/types";
 import ImageSlider from "@/components/shared/ImageSlider";
@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { deleteListing } from "@/services/ListingService";
 import { Modal } from "@/components/shared/Modal";
 import ListingForm from "@/components/forms/ListingForm";
+import { BiCategoryAlt } from "react-icons/bi";
 
 interface ListingCardProps {
   listing: TListing & TMongoose;
@@ -44,6 +45,7 @@ const ListingCard = ({
       }
     } catch (error) {
       toast.error("Error deleting listing", { id: toastId });
+      console.log(error);
     }
   };
 
@@ -88,8 +90,8 @@ const ListingCard = ({
         <CardFooter className="flex flex-col gap-4 border-t p-4 mt-auto">
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
-              <Bed className="h-4 w-4" />
-              <span className="text-sm">{listing.bedroomNumber} Bedrooms</span>
+              <BiCategoryAlt className="h-4 w-4" />
+              <span className="text-sm">{listing.category}</span>
             </div>
             <div className="flex items-center gap-1">
               {listing.isAvailable ? (

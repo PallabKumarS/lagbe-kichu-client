@@ -1,6 +1,15 @@
 "use client";
 
-import { Facebook, Instagram, X, Mail, Phone, MapPin } from "lucide-react";
+import {
+  Package,
+  ShoppingCart,
+  Mail,
+  Phone,
+  MapPin,
+  Facebook,
+  Instagram,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -33,14 +42,15 @@ const Footer = () => {
               onClick={() => {
                 router.push("/");
               }}
-              className="transition-transform hover:scale-105"
+              className="transition-transform hover:scale-105 flex items-center justify-center"
             >
+              <Package className="mr-2 text-primary" />
               <h1 className="text-2xl font-black">
                 <span className="text-gradient">Lagbe Kichu</span>
               </h1>
             </div>
             <p className="text-muted-foreground">
-              Your trusted partner in finding the perfect home.
+              Your trusted partner in finding the perfect products.
             </p>
           </div>
 
@@ -52,12 +62,20 @@ const Footer = () => {
                 <li key={link.href} className="">
                   <Link
                     href={link.href}
-                    className="text-muted-foreground hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all "
+                    className="text-muted-foreground hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all"
                   >
                     {link.label}
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/dashboard/seller/create-listing"
+                  className="text-muted-foreground hover:text-primary hover:underline decoration-primary decoration-2 underline-offset-4 transition-all"
+                >
+                  Sell Your Product
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -80,7 +98,7 @@ const Footer = () => {
               <li className="flex items-center space-x-2 text-muted-foreground group cursor-pointer justify-center">
                 <MapPin className="w-4 h-4 group-hover:text-primary transition-colors" />
                 <span className="group-hover:text-primary group-hover:underline decoration-primary decoration-2 underline-offset-4 transition-all">
-                  123 Property Lane, RE City
+                  123 Innovation Lane, Tech City
                 </span>
               </li>
             </ul>
@@ -100,6 +118,12 @@ const Footer = () => {
                   <Icon className="w-5 h-5" />
                 </Link>
               ))}
+            </div>
+            <div className="mt-4 flex justify-center items-center space-x-2">
+              <ShoppingCart className="w-5 h-5 text-primary" />
+              <span className="text-sm text-muted-foreground">
+                Secure Shopping
+              </span>
             </div>
           </div>
         </div>

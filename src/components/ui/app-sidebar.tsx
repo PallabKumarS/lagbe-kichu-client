@@ -6,7 +6,6 @@ import {
   User,
   Building,
   Users,
-  Key,
   FileText,
   ChevronUp,
   LogIn,
@@ -75,31 +74,31 @@ const adminRoutes = [
   },
 ];
 
-// landlord routes
+// seller routes
 const landlordRoutes = [
   {
     title: "My Properties",
     icon: Building,
-    href: "/dashboard/landlord/create-listing",
+    href: "/dashboard/seller/create-listing",
   },
   {
     title: "Requests",
     icon: FileText,
-    href: "/dashboard/landlord/requests",
+    href: "/dashboard/seller/requests",
   },
 ];
 
-// tenant routes
+// buyer routes
 const tenantRoutes = [
   {
     title: "Applications",
     icon: FileText,
-    href: "/dashboard/tenant/requests",
+    href: "/dashboard/buyer/requests",
   },
   {
     title: "Track Requests",
     icon: TrainTrack,
-    href: "/dashboard/tenant/track",
+    href: "/dashboard/buyer/track",
   },
 ];
 
@@ -172,10 +171,10 @@ export function AppSidebar() {
           </SidebarGroup>
         )}
 
-        {/* landlord panel  */}
-        {user?.role === "landlord" && (
+        {/* seller panel  */}
+        {user?.role === "seller" && (
           <SidebarGroup>
-            <SidebarGroupLabel>Landlord</SidebarGroupLabel>
+            <SidebarGroupLabel>Seller</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {landlordRoutes.map((item) => (
@@ -193,10 +192,10 @@ export function AppSidebar() {
           </SidebarGroup>
         )}
 
-        {/* tenant panel  */}
-        {user?.role === "tenant" && (
+        {/* buyer panel  */}
+        {user?.role === "buyer" && (
           <SidebarGroup>
-            <SidebarGroupLabel>Tenant</SidebarGroupLabel>
+            <SidebarGroupLabel>Buyer</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {tenantRoutes.map((item) => (

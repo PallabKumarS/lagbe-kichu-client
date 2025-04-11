@@ -7,8 +7,8 @@ const authRoutes = ["/login"];
 
 const roleBasedPrivateRoutes = {
   admin: [/^\/dashboard\/admin/],
-  landlord: [/^\/dashboard\/landlord/],
-  tenant: [/^\/dashboard\/tenant/, /^\/verify-payment/],
+  seller: [/^\/dashboard\/seller/],
+  buyer: [/^\/dashboard\/buyer/, /^\/verify-payment/],
 };
 
 const sharedRoutes = [/^\/dashboard\/settings/, /^\/dashboard\/profile/];
@@ -44,9 +44,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: [
-    "/dashboard",
-    "/dashboard/:path*",
-    "/verify-payment",
-  ],
+  matcher: ["/dashboard", "/dashboard/:path*", "/verify-payment"],
 };

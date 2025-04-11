@@ -6,43 +6,49 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Clock, CreditCard, XCircle } from "lucide-react";
-import { TMongoose, TRequest } from "@/types";
+import { CheckCircle, Clock, CreditCard, Truck, XCircle } from "lucide-react";
+import { TMongoose, TOrder } from "@/types";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const orderStatusMap = {
   pending: 0,
-  approved: 1,
+  processing: 1,
   paid: 2,
+  "out for delivery": 3,
+  completed: 4,
   cancelled: 0,
-  rejected: 0,
 };
 
 const statusConfig = {
-  approved: {
-    color: "green",
-    label: "Approved",
-    icon: CheckCircle,
-  },
   pending: {
     color: "yellow",
     label: "Pending",
     icon: Clock,
   },
-  cancelled: {
-    color: "red",
-    label: "Cancelled",
-    icon: XCircle,
+  processing: {
+    color: "blue",
+    label: "Processing",
+    icon: CheckCircle,
+  },
+  "out for delivery": {
+    color: "orange",
+    label: "Out for Delivery",
+    icon: Truck,
   },
   paid: {
-    color: "blue",
+    color: "green",
     label: "Paid",
     icon: CreditCard,
   },
-  rejected: {
+  completed: {
+    color: "green",
+    label: "Completed",
+    icon: CheckCircle,
+  },
+  cancelled: {
     color: "red",
-    label: "Rejected",
+    label: "Cancelled",
     icon: XCircle,
   },
 };
@@ -95,7 +101,7 @@ const OrderStep = ({
   );
 };
 
-const RequestTracking = ({ request }: { request: TRequest & TMongoose }) => {
+const RequestTracking = ({ request }: { request: TOrder & TMongoose }) => {
   const currentStep = orderStatusMap[request.status || "pending"];
   const StatusIcon = statusConfig[request.status]?.icon || XCircle;
   const statusDetails = statusConfig[request.status] || statusConfig.pending;
@@ -105,10 +111,10 @@ const RequestTracking = ({ request }: { request: TRequest & TMongoose }) => {
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <span>Order #{request.requestId}</span>
+            <span>Order #{request.orderId}</span>
             <Badge
               variant={
-                request.status === "approved"
+                request.status === "processing"
                   ? "default"
                   : request.status === "paid"
                   ? "secondary"
@@ -124,7 +130,7 @@ const RequestTracking = ({ request }: { request: TRequest & TMongoose }) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {request.status !== "cancelled" && request.status !== "rejected" ? (
+          {request.status !== "cancelled" ? (
             <div>
               <OrderStep
                 title="Pending"
@@ -145,7 +151,7 @@ const RequestTracking = ({ request }: { request: TRequest & TMongoose }) => {
                 isCompleted={currentStep > 2}
               />
             </div>
-          ) : request.status === "cancelled" ? (
+          ) : (
             <div className="text-center text-red-500">
               <XCircle className="mx-auto mb-4 w-12 h-12" />
               <h3 className="text-xl font-semibold">Order Cancelled</h3>
@@ -153,12 +159,6 @@ const RequestTracking = ({ request }: { request: TRequest & TMongoose }) => {
                 Your request is cancelled either accidentally or you have done
                 so
               </p>
-            </div>
-          ) : (
-            <div className="text-center text-red-500">
-              <XCircle className="mx-auto mb-4 w-12 h-12" />
-              <h3 className="text-xl font-semibold">Order Rejected</h3>
-              <p>Your request was rejected by owner</p>
             </div>
           )}
         </CardContent>
@@ -196,7 +196,7 @@ const RequestTracking = ({ request }: { request: TRequest & TMongoose }) => {
                   <div>
                     <h4 className="font-medium">{request.listingId.title}</h4>
                     <p className="text-gray-500">
-                      {request.listingId.bedroomNumber} Bedrooms
+                      {request.listingId.category}
                     </p>
                   </div>
                   <Badge variant="outline">
@@ -213,7 +213,7 @@ const RequestTracking = ({ request }: { request: TRequest & TMongoose }) => {
           >
             <Button variant={"link"}>Go to verify page</Button>
           </Link>
-          {request.status !== "rejected" && request.status !== "paid" && (
+          {request.status !== "paid" && (
             <Link href={`${request.transaction?.paymentUrl}`}>
               <Button variant={"link"}>Go to payment page</Button>
             </Link>

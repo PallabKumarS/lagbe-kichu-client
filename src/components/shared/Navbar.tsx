@@ -75,9 +75,9 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           {user?.email ? (
             <>
-              {user?.role === "landlord" && (
+              {user?.role === "seller" && (
                 <Link
-                  href="/dashboard/landlord/create-listing"
+                  href="/dashboard/seller/create-listing"
                   className="hidden sm:block"
                 >
                   <Button variant="outline" className="rounded-full">
@@ -180,9 +180,9 @@ export default function Navbar() {
                   {item.label}
                 </Link>
               ))}
-              {user && user.role === "landlord" && (
+              {user && user.role === "seller" && (
                 <Link
-                  href="/dashboard/landlord/create-listing"
+                  href="/dashboard/seller/create-listing"
                   className="block text-muted-foreground hover:text-primary transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >

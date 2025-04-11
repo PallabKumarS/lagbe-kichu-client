@@ -1,7 +1,6 @@
 import RequestTracking from "@/components/modules/pages/OrderTracking";
 import Container from "@/components/shared/Container";
 import { getSingleRequest } from "@/services/RequestService";
-import { TMongoose, TRequest } from "@/types";
 import { Metadata } from "next";
 
 export async function generateMetadata({

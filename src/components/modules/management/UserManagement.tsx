@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { DialogComponent } from "@/components/shared/Dialog";
-import NoData from "@/components/shared/NoData";
 import { TableComponent } from "@/components/shared/Table";
 import {
   deleteUser,

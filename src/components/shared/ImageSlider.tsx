@@ -22,7 +22,7 @@ const isValidImageUrl = (url: string) => {
 const ImageSlider = ({ images, variant }: ImageSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fallbackImage, setFallbackImage] = useState(
-    "https://res.cloudinary.com/dchqfpvjb/image/upload/v1741016548/house2_jvg6nd.jpg"
+    "https://res.cloudinary.com/dchqfpvjb/image/upload/v1744367811/CJrg-LWjjfsCEAE_rlwotv.png"
   );
 
   const handleNext = (e: React.MouseEvent) => {

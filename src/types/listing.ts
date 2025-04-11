@@ -12,6 +12,6 @@ export type TListing = {
   discountEndDate?: Date;
   isDiscountActive?: boolean;
   isAvailable?: boolean;
-  listingId?: string;
+  listingId: string;
   isDeleted?: boolean;
 };
