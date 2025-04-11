@@ -4,13 +4,14 @@ import {
   Settings,
   LogOut,
   User,
-  Building,
+  PackageOpen,
   Users,
   FileText,
   ChevronUp,
   LogIn,
   HomeIcon,
   TrainTrack,
+  Package,
 } from "lucide-react";
 
 import {
@@ -44,8 +45,8 @@ const items = [
     href: "/",
   },
   {
-    title: "All Rentals",
-    icon: Building,
+    title: "All Listings",
+    icon: PackageOpen,
     href: "/listings",
   },
   {
@@ -68,8 +69,8 @@ const adminRoutes = [
     href: "/dashboard/admin/user-management",
   },
   {
-    title: "Properties",
-    icon: Building,
+    title: "Listings",
+    icon: PackageOpen,
     href: "/dashboard/admin/listing-management",
   },
 ];
@@ -77,14 +78,14 @@ const adminRoutes = [
 // seller routes
 const landlordRoutes = [
   {
-    title: "My Properties",
-    icon: Building,
+    title: "My Listings",
+    icon: PackageOpen,
     href: "/dashboard/seller/create-listing",
   },
   {
-    title: "Requests",
+    title: "Orders",
     icon: FileText,
-    href: "/dashboard/seller/requests",
+    href: "/dashboard/seller/orders",
   },
 ];
 
@@ -93,7 +94,7 @@ const tenantRoutes = [
   {
     title: "Applications",
     icon: FileText,
-    href: "/dashboard/buyer/requests",
+    href: "/dashboard/buyer/orders",
   },
   {
     title: "Track Requests",
@@ -123,11 +124,19 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <div className="flex-shrink-0" onClick={() => router.push("/")}>
-                <h1 className="text-2xl font-black">
-                  <span className="text-gradient">Lagbe Kichu</span>
-                </h1>
-              </div>
+              <SidebarMenuItem key={"logo"}>
+                <SidebarMenuButton asChild>
+                  <a href={"/"}>
+                    <Package className="text-primary" />
+                    <span
+                      className="text-gradient"
+                      style={{ fontSize: "26px" }}
+                    >
+                      Lagbe Kichu
+                    </span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

@@ -114,8 +114,8 @@ export default function RegisterForm() {
                   className="flex flex-col space-y-1"
                 >
                   {[
-                    ["Tenant", "tenant"],
-                    ["Landlord", "landlord"],
+                    ["Buyer", "buyer"],
+                    ["Seller", "seller"],
                   ].map((option, index) => (
                     <FormItem
                       className="flex items-center space-x-3 space-y-0"

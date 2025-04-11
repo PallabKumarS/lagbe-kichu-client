@@ -30,7 +30,7 @@ export default function Navbar() {
   const user = useAppSelector(userSelector);
 
   const navItems = [
-    { href: "/listings", label: "All Rentals" },
+    { href: "/listings", label: "All Listings" },
     { href: "/about", label: "About" },
   ];
 

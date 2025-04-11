@@ -9,13 +9,14 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { TMeta } from "@/types";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export function PaginationComponent({ meta }: { meta: TMeta }) {
   const router = useRouter();
+  const pathname = usePathname()
 
   const handlePagination = (page: number) => {
-    router.push(`listings?page=${page}`);
+    router.push(`${pathname}?page=${page}`);
   };
 
   return (

@@ -44,7 +44,7 @@ const Footer = () => {
               }}
               className="transition-transform hover:scale-105 flex items-center justify-center"
             >
-              <Package className="mr-2 text-primary" />
+              <Package className="mr-2 text-primary size-9" />
               <h1 className="text-2xl font-black">
                 <span className="text-gradient">Lagbe Kichu</span>
               </h1>
