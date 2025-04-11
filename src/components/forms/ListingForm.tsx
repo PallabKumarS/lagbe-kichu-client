@@ -22,11 +22,10 @@ import { userSelector } from "@/redux/features/authSlice";
 import { TListing, TMongoose } from "@/types";
 
 const formSchema = z.object({
-  houseLocation: z.string().min(1),
-  rentPrice: z.number(),
-  bedroomNumber: z.number().min(1),
+  title: z.string().min(1),
+  price: z.number(),
   description: z.string().min(1),
-  features: z.string().optional(),
+  category: z.string().min(1),
   images: z.array(z.object({ value: z.string().min(1) })),
 });
 
@@ -44,11 +43,10 @@ export default function ListingForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      houseLocation: listing?.houseLocation || "",
-      rentPrice: listing?.rentPrice || 0,
-      bedroomNumber: listing?.bedroomNumber || 0,
+      title: listing?.title || "",
+      price: listing?.price || 0,
+      category: listing?.category || "",
       description: listing?.description || "",
-      features: listing?.features || "",
       images: listing?.images.map((img) => {
         return { value: img };
       }) || [{ value: "" }],
@@ -77,14 +75,14 @@ export default function ListingForm({
     const data = {
       ...values,
       images,
-      landlordId: user?.userId as string,
+      sellerId: user?.userId as string,
     };
 
     if (edit) {
       const editData = {
         ...values,
         images,
-        landlordId: listing?.landlordId.userId as string,
+        sellerId: listing?.sellerId.userId as string,
       };
 
       try {
@@ -129,16 +127,16 @@ export default function ListingForm({
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 max-w-3xl mx-auto py-10 overflow-y-auto"
       >
-        {/* house location field  */}
+        {/* title field  */}
         <FormField
           control={form.control}
-          name="houseLocation"
+          name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>House Location</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="State the location of the house"
+                  placeholder="Title of the listing"
                   type="text"
                   {...field}
                 />
@@ -152,37 +150,13 @@ export default function ListingForm({
         {/* rent price field  */}
         <FormField
           control={form.control}
-          name="rentPrice"
+          name="price"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Rent Price</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter the rent price"
-                  type="number"
-                  {...field}
-                  onChange={(e) => {
-                    const value = Number(e.target.value);
-                    field.onChange(value);
-                  }}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* bedroom number field  */}
-        <FormField
-          control={form.control}
-          name="bedroomNumber"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Number of Bedrooms</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter the number of bedrooms"
                   type="number"
                   {...field}
                   onChange={(e) => {
@@ -259,17 +233,17 @@ export default function ListingForm({
           )}
         />
 
-        {/* features field  */}
+        {/* category field  */}
         <FormField
           control={form.control}
-          name="features"
+          name="category"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Features</FormLabel>
+              <FormLabel>category</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Describe feature if there's any"
-                  className="resize-none"
+                <Input
+                  placeholder="Specify a category for the listing"
+                  type="text"
                   {...field}
                 />
               </FormControl>

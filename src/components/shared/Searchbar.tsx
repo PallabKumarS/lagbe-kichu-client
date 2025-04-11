@@ -108,17 +108,17 @@ const Searchbar = () => {
                           ? result.images[0]
                           : "https://res.cloudinary.com/dchqfpvjb/image/upload/v1741016548/house2_jvg6nd.jpg"
                       }
-                      alt={result.houseLocation}
+                      alt={result.title}
                       width={48}
                       height={48}
                       className="rounded-md object-cover"
                     />
                     <div>
                       <p className="font-medium text-foreground">
-                        {result.houseLocation}
+                        {result.title}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        ${result.rentPrice}/month
+                        ${result.price}/month
                       </p>
                     </div>
                   </div>

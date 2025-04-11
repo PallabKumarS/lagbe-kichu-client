@@ -39,13 +39,13 @@ const AboutUs = () => {
   ];
 
   const contactInfo = {
-    email: "contact@nesthunt.com",
+    email: "contact@lagbekichu.com",
     phone: "+1 (555) 123-4567",
     address: "123 Property Lane, Real Estate City, 12345",
     social: {
-      facebook: "nesthunt",
-      twitter: "@nesthunt",
-      instagram: "@nesthuntofficial",
+      facebook: "lagbekichu",
+      twitter: "@lagbekichu",
+      instagram: "@lagbekichuofficial",
     },
   };
 
@@ -117,8 +117,9 @@ const AboutUs = () => {
             About Lagbe Kichu
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Your trusted partner in finding the perfect home. We combine
-            technology and expertise to make house hunting simple and enjoyable.
+            Your trusted partner in finding the perfect products. We combine
+            technology and expertise to make product discovery simple and
+            enjoyable.
           </p>
         </motion.div>
 
@@ -131,9 +132,9 @@ const AboutUs = () => {
             <h2 className="text-3xl font-semibold">Our Mission</h2>
             <p className="text-muted-foreground">
               At Lagbe Kichu, we&apos;re committed to revolutionizing the way
-              people find their dream homes. We believe everyone deserves a
-              place they can call home, and we&apos;re here to make that journey
-              as smooth as possible.
+              people find their desired products. We believe everyone deserves
+              access to the best products, and we&apos;re here to make that
+              journey as smooth as possible.
             </p>
           </div>
           <motion.div
@@ -143,8 +144,8 @@ const AboutUs = () => {
             <h3 className="text-2xl font-semibold mb-4">Why Choose Us?</h3>
             <ul className="space-y-3">
               {[
-                "Trusted by thousands of happy homeowners",
-                "Cutting-edge property search technology",
+                "Trusted by thousands of happy customers",
+                "Cutting-edge product search technology",
                 "Transparent and hassle-free process",
                 "Dedicated customer support team",
               ].map((item, index) => (
@@ -187,10 +188,10 @@ const AboutUs = () => {
           variants={itemVariants}
         >
           {[
-            ["5000+", "Properties Listed"],
-            ["2000+", "Happy Clients"],
-            ["150+", "Expert Agents"],
-            ["15+", "Years Experience"],
+            ["10000+", "Products Listed"],
+            ["5000+", "Happy Customers"],
+            ["200+", "Verified Sellers"],
+            ["10+", "Years Experience"],
           ].map(([number, label], index) => (
             <motion.div
               key={index}

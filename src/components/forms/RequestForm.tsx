@@ -22,7 +22,7 @@ import Link from "next/link";
 import { createRequest } from "@/services/RequestService";
 
 const formSchema = z.object({
-  tenantId: z.string().min(1),
+  buyerId: z.string().min(1),
   moveInDate: z.string().min(1),
   rentDuration: z.string().min(1),
   message: z.string().optional(),
@@ -38,7 +38,7 @@ export default function RequestForm({ listing, user }: RequestModalProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tenantId: user?.userId || "",
+      buyerId: user?.userId || "",
       moveInDate: "",
       rentDuration: "",
       message: "",
@@ -56,9 +56,9 @@ export default function RequestForm({ listing, user }: RequestModalProps) {
     const toastId = toast.loading("Submitting your request...");
 
     const request = {
-      tenantId: user?.userId,
+      buyerId: user?.userId,
       listingId: listing.listingId,
-      landlordId: listing.landlordId.userId,
+      sellerId: listing.sellerId.userId,
       moveInDate: values.moveInDate,
       rentDuration: values.rentDuration,
       message: values.message,
@@ -91,7 +91,7 @@ export default function RequestForm({ listing, user }: RequestModalProps) {
       >
         <FormField
           control={form.control}
-          name="tenantId"
+          name="buyerId"
           render={({ field }) => (
             <FormItem>
               <FormLabel>User Info</FormLabel>

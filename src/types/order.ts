@@ -1,16 +1,20 @@
 import { TListing } from "./listing";
 import { TUser } from "./user";
 
-export type TRequest = {
-  tenantId: TUser;
+export type TOrder = {
+  buyerId: TUser;
   listingId: TListing;
-  landlordId: TUser;
-  requestId: string;
-  status: "pending" | "approved" | "rejected" | "paid" | "cancelled";
+  sellerId: TUser;
+  orderId: string;
+  status:
+    | "pending"
+    | "processing"
+    | "out for delivery"
+    | "paid"
+    | "completed"
+    | "cancelled";
   message?: string;
-  moveInDate: Date;
-  rentDuration: string;
-  landlordPhoneNumber?: string;
+  sellerPhoneNumber?: string;
   transaction?: TTransaction;
 };
 

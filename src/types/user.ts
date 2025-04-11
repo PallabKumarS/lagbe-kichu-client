@@ -1,12 +1,13 @@
 export type TUser = {
-  userId: string;
+  userId?: string;
   name: string;
   email: string;
-  role: "admin" | "tenant" | "landlord";
+  role: "admin" | "buyer" | "seller";
+  subRole?: "manager" | "accountant" | "inventory_staff";
   phone?: string;
   address?: string;
   passwordChangedAt?: Date;
-  isDeleted: boolean;
-  isActive: boolean;
+  isDeleted?: boolean;
+  isActive?: boolean;
   profileImage?: string;
 };

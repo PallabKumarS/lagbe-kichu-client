@@ -183,7 +183,7 @@ const RequestTracking = ({ request }: { request: TRequest & TMongoose }) => {
             <div>
               <p className="text-gray-500">Total Amount</p>
               <p className="font-semibold text-green-600">
-                ${request.listingId.rentPrice}
+                ${request.listingId.price}
               </p>
             </div>
           </div>
@@ -194,15 +194,13 @@ const RequestTracking = ({ request }: { request: TRequest & TMongoose }) => {
               <CardContent className="pt-4">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h4 className="font-medium">
-                      {request.listingId.houseLocation}
-                    </h4>
+                    <h4 className="font-medium">{request.listingId.title}</h4>
                     <p className="text-gray-500">
                       {request.listingId.bedroomNumber} Bedrooms
                     </p>
                   </div>
                   <Badge variant="outline">
-                    ${request.listingId.rentPrice}/month
+                    ${request.listingId.price}/month
                   </Badge>
                 </div>
               </CardContent>

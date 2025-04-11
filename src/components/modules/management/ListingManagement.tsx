@@ -33,8 +33,8 @@ const ListingManagement = ({ listings, meta }: TProps) => {
     "Actions",
   ];
   const cellProperties: (keyof TListing)[] = [
-    "houseLocation",
-    "rentPrice",
+    "title",
+    "price",
     "bedroomNumber",
     "isAvailable",
   ];
@@ -101,11 +101,11 @@ const ListingManagement = ({ listings, meta }: TProps) => {
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Location</h3>
-          <p>{listing.houseLocation}</p>
+          <p>{listing.title}</p>
         </div>
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Price</h3>
-          <p className="text-green-600 font-medium">${listing.rentPrice}</p>
+          <p className="text-green-600 font-medium">${listing.price}</p>
         </div>
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Bedrooms</h3>

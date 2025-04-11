@@ -1,14 +1,17 @@
 import { TUser } from "./user";
 
 export type TListing = {
-  houseLocation: string;
+  title: string;
+  category: string;
   description: string;
-  rentPrice: number;
-  bedroomNumber: number;
+  price: number;
   images: string[];
-  landlordId: TUser;
-  isAvailable: boolean;
-  listingId: string;
-  features?: string;
-  isDeleted: boolean;
+  sellerId: TUser;
+  discount?: number;
+  discountStartDate?: Date;
+  discountEndDate?: Date;
+  isDiscountActive?: boolean;
+  isAvailable?: boolean;
+  listingId?: string;
+  isDeleted?: boolean;
 };

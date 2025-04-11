@@ -26,11 +26,12 @@ const ListingDetails = ({ listing }: ListingDetailsProps) => {
       const requests = await getPersonalRequests();
 
       const filteredRequests = requests?.data?.filter(
-        (request: TRequest) => request?.listingId.listingId === listing.listingId
+        (request: TRequest) =>
+          request?.listingId.listingId === listing.listingId
       );
 
       const isMatched = filteredRequests?.some(
-        (request: TRequest) => request?.tenantId.userId === user?.userId
+        (request: TRequest) => request?.buyerId.userId === user?.userId
       );
 
       setIsMatched(isMatched);
@@ -49,9 +50,7 @@ const ListingDetails = ({ listing }: ListingDetailsProps) => {
       {/* Header Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">
-            {listing.houseLocation}
-          </h1>
+          <h1 className="text-3xl font-bold tracking-tight">{listing.title}</h1>
           <Badge
             className={listing.isAvailable ? "bg-green-500" : "bg-red-500"}
           >
@@ -60,7 +59,7 @@ const ListingDetails = ({ listing }: ListingDetailsProps) => {
         </div>
         <div className="flex items-center gap-2 text-muted-foreground">
           <MapPin className="h-4 w-4" />
-          <p>{listing.houseLocation}</p>
+          <p>{listing.title}</p>
         </div>
       </div>
 
@@ -109,7 +108,7 @@ const ListingDetails = ({ listing }: ListingDetailsProps) => {
         >
           <div className="rounded-xl border bg-card p-6 shadow-sm">
             <h2 className="text-2xl font-semibold text-primary">
-              ${listing.rentPrice.toLocaleString()}/month
+              ${listing.price.toLocaleString()}/month
             </h2>
 
             <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">

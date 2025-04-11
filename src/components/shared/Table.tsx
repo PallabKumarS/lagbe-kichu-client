@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
 
@@ -17,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Ban, Edit, Eye, MapPin, Trash2 } from "lucide-react";
-import { TMeta, TMongoose, TRequest, TUser } from "@/types";
+import { TMeta, TMongoose, TOrder, TUser } from "@/types";
 import { PaginationComponent } from "./Pagination";
 import ConfirmationBox from "./ConfirmationBox";
 import { Button } from "../ui/button";
@@ -60,10 +61,10 @@ export function TableComponent<T>({
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleCreatePayment = async (item: TRequest & TMongoose) => {
+  const handleCreatePayment = async (item: TOrder & TMongoose) => {
     const toastId = toast.loading("Creating payment...");
     try {
-      const res = await createPayment(item.requestId);
+      const res = await createPayment(item.orderId);
 
       if (res.success) {
         toast.success(res.message, {
@@ -82,6 +83,7 @@ export function TableComponent<T>({
       toast.error("Error creating payment", {
         id: toastId,
       });
+      console.log(error);
     }
   };
 
@@ -152,7 +154,7 @@ export function TableComponent<T>({
               <TableCell className="flex items-center justify-center gap-2">
                 {/* view action  */}
                 {pathname.includes("requests")
-                  ? user?.role === "tenant" &&
+                  ? user?.role === "buyer" &&
                     onView && (
                       <Button
                         onClick={() => onView && onView(item)}
@@ -189,7 +191,7 @@ export function TableComponent<T>({
                 {/* delete action  */}
                 {pathname.includes("requests")
                   ? onDelete &&
-                    user?.role !== "landlord" &&
+                    user?.role !== "seller" &&
                     !(item as any)?.isDeleted && (
                       <ConfirmationBox
                         trigger={
@@ -239,7 +241,7 @@ function formatCellContent<T>(
   setOpen: Dispatch<SetStateAction<boolean>>,
   onStatusChange?: (data: T & TMongoose, status?: string) => void,
   onRoleChange?: (user: T & TMongoose, role: string) => void,
-  handleCreatePayment?: (item: TRequest & TMongoose) => void,
+  handleCreatePayment?: (item: TOrder & TMongoose) => void,
   router?: any
 ): React.ReactNode {
   if (item.isDeleted) {
@@ -321,7 +323,7 @@ function formatCellContent<T>(
             className={`px-2 py-1 rounded-md ${
               content === "admin"
                 ? "bg-purple-100 text-purple-600"
-                : content === "landlord"
+                : content === "seller"
                 ? "bg-blue-100 text-blue-600"
                 : "bg-green-100 text-green-600"
             }`}
@@ -336,16 +338,16 @@ function formatCellContent<T>(
               Admin
             </DropdownMenuItem>
             <DropdownMenuItem
-              disabled={content === "landlord" || content === "admin"}
-              onClick={() => onRoleChange && onRoleChange(item, "landlord")}
+              disabled={content === "seller" || content === "admin"}
+              onClick={() => onRoleChange && onRoleChange(item, "seller")}
             >
-              Landlord
+              Seller
             </DropdownMenuItem>
             <DropdownMenuItem
-              disabled={content === "tenant" || content === "admin"}
-              onClick={() => onRoleChange && onRoleChange(item, "tenant")}
+              disabled={content === "buyer" || content === "admin"}
+              onClick={() => onRoleChange && onRoleChange(item, "buyer")}
             >
-              Tenant
+              Buyer
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -377,8 +379,8 @@ function formatCellContent<T>(
             {content[0].toUpperCase() + content.slice(1)}
           </DropdownMenuTrigger>
 
-          {/* for landlord role  */}
-          {user?.role === "landlord" && (user?.phone as string) ? (
+          {/* for seller role  */}
+          {user?.role === "seller" && (user?.phone as string) ? (
             <DropdownMenuContent className="">
               <DropdownMenuItem
                 disabled={content === "approved" || content === "paid"}
@@ -406,7 +408,7 @@ function formatCellContent<T>(
               </DropdownMenuItem>
             </DropdownMenuContent>
           ) : (
-            user?.role === "landlord" && (
+            user?.role === "seller" && (
               <PhoneUpdateModal
                 user={user}
                 request={item}
@@ -451,12 +453,12 @@ function formatCellContent<T>(
 
     // For transaction status
     if (prop === "transaction") {
-      if (user?.role === "landlord") {
+      if (user?.role === "seller") {
         return null;
       } else {
         return item?.status !== "rejected" &&
           item?.status !== "pending" &&
-          user?.role === "tenant" ? (
+          user?.role === "buyer" ? (
           // <Link href={`${item?.status === "paid" ? "" : content.paymentUrl}`}>
           <Button
             onClick={() => {
@@ -492,24 +494,24 @@ function formatCellContent<T>(
       }
     }
 
-    // For user IDs (landlord and tenant)
-    if (prop === "landlordId") {
+    // For user IDs (seller and buyer)
+    if (prop === "sellerId") {
       return (
         <div className="flex flex-wrap justify-center items-center space-x-2">
           <span className="text-primary font-semibold">
-            {content.name || "Landlord"}
+            {content.name || "Seller"}
           </span>
           <span className="text-xs text-gray-500">({content.email})</span>
         </div>
       );
     }
 
-    // For user IDs (tenant)
-    if (prop === "tenantId") {
+    // For user IDs (buyer)
+    if (prop === "sellerId") {
       return (
         <div className="flex flex-wrap justify-center items-center mt-auto space-x-2">
           <span className="text-primary font-semibold">
-            {content.name || "Tenant"}
+            {content.name || "Buyer"}
           </span>
           <span className="text-xs text-gray-500">({content.email})</span>
         </div>
@@ -522,11 +524,9 @@ function formatCellContent<T>(
         <div className="flex flex-wrap justify-center items-center space-x-2">
           <MapPin className="w-4 h-4 text-primary" />
           <div>
-            <p className="text-primary font-semibold">
-              {content.houseLocation}
-            </p>
+            <p className="text-primary font-semibold">{content.title}</p>
             <p className="text-xs text-gray-500">
-              {content.bedroomNumber} Bedrooms | ${content.rentPrice}/month
+              {content.bedroomNumber} Bedrooms | ${content.price}/month
             </p>
           </div>
         </div>

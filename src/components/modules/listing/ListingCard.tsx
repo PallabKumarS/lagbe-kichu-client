@@ -72,12 +72,12 @@ const ListingCard = ({
         <CardContent className="p-4">
           <div className="flex items-center gap-2 text-muted-foreground">
             <MapPin className="h-4 w-4" />
-            <p className="text-sm">{listing.houseLocation}</p>
+            <p className="text-sm">{listing.title}</p>
           </div>
 
           <div className="mt-3 space-y-2">
             <h3 className="font-semibold">
-              ${listing.rentPrice.toLocaleString()}/month
+              ${listing.price.toLocaleString()}/month
             </h3>
             <p className="line-clamp-2 text-sm text-muted-foreground">
               {listing.description}

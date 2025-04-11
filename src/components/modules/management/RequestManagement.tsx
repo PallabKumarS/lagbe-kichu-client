@@ -34,9 +34,9 @@ const RequestManagement = ({
   }
 
   const cellProperties: (keyof TRequest)[] = [
-    "landlordId",
+    "sellerId",
     "listingId",
-    "tenantId",
+    "buyerId",
     "status",
     "transaction",
   ];
@@ -99,18 +99,18 @@ const RequestManagement = ({
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Landlord Info</h3>
-          <p>Name: {request.landlordId.name}</p>
-          <p>Email: {request.landlordId.email}</p>
+          <p>Name: {request.sellerId.name}</p>
+          <p>Email: {request.sellerId.email}</p>
         </div>
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Tenant Info</h3>
-          <p>Name: {request.tenantId.name}</p>
-          <p>Email: {request.tenantId.email}</p>
+          <p>Name: {request.buyerId.name}</p>
+          <p>Email: {request.buyerId.email}</p>
         </div>
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Listing Details</h3>
-          <p>Location: {request.listingId.houseLocation}</p>
-          <p>Price: ${request.listingId.rentPrice}</p>
+          <p>Location: {request.listingId.title}</p>
+          <p>Price: ${request.listingId.price}</p>
           <p>Bedrooms: {request.listingId.bedroomNumber}</p>
         </div>
         <div className="space-y-2">

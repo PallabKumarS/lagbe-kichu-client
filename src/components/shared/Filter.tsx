@@ -44,10 +44,7 @@ const Filter = () => {
     fetchLocations();
   }, [pathname, router]);
 
-  const handleFilter = (query: {
-    houseLocation?: string[];
-    [key: string]: any;
-  }) => {
+  const handleFilter = (query: { title?: string[]; [key: string]: any }) => {
     const params = new URLSearchParams();
 
     if (Number(query.bedrooms) > 0) {
@@ -63,8 +60,8 @@ const Filter = () => {
       params.set("availability", String(query.availability));
     }
 
-    if (Array.isArray(query.houseLocation)) {
-      params.set("houseLocation", query.houseLocation.join(", "));
+    if (Array.isArray(query.title)) {
+      params.set("title", query.title.join(", "));
     }
 
     router.push(`/listings?${params.toString()}`);
@@ -127,7 +124,7 @@ const Filter = () => {
                           return [...prev, value];
                         });
                         handleFilter({
-                          houseLocation: [...selectedLocations, value],
+                          title: [...selectedLocations, value],
                         });
                       }}
                     >

@@ -3,7 +3,8 @@ import { RootState } from "../store";
 
 interface IInitialState {
   user: {
-    role: "admin" | "tenant" | "landlord";
+    role: "admin" | "buyer" | "seller";
+    subRole?: "manager" | "accountant" | "inventory_staff";
     phone?: string;
     address?: string;
     passwordChangedAt?: Date;

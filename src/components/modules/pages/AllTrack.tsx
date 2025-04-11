@@ -35,7 +35,7 @@ const AllTrack = ({ requests }: { requests: (TRequest & TMongoose)[] }) => {
               <div className="bg-white shadow-md rounded-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer border hover:border-blue-500">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-semibold text-gray-800">
-                    {request?.listingId?.houseLocation || "Unnamed Request"}
+                    {request?.listingId?.title || "Unnamed Request"}
                   </h2>
                   <span
                     className={`font-bold ${getStatusColor(
@@ -49,7 +49,7 @@ const AllTrack = ({ requests }: { requests: (TRequest & TMongoose)[] }) => {
                 <div className="space-y-2 text-gray-600">
                   <div className="flex items-center">
                     <MapPin className="mr-2 text-blue-500 w-5 h-5" />
-                    <span>{request?.listingId?.houseLocation || "N/A"}</span>
+                    <span>{request?.listingId?.title || "N/A"}</span>
                   </div>
 
                   <div className="flex items-center">

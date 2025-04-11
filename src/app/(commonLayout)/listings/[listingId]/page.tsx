@@ -12,7 +12,7 @@ export async function generateMetadata({
   const listing = await getSingleListing((await params).listingId);
 
   return {
-    title: `NH || ${listing?.data?.houseLocation}`,
+    title: `NH || ${listing?.data?.title}`,
     description: listing?.data?.description,
   };
 }
@@ -25,7 +25,7 @@ const ListingDetailsPage = async ({
   const listingId = (await params).listingId;
   const listing = await getSingleListing(listingId);
 
-  console.log(listing)
+  console.log(listing);
 
   if (!listing) {
     return (
