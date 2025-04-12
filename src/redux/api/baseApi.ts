@@ -64,12 +64,15 @@ export const baseApi = createApi({
   endpoints: () => ({}),
   tagTypes: [
     "users",
-    "products",
+    "listings",
     "orders",
     "category",
     "user",
+    "PListings",
+    "listing",
+    "POrders",
     "order",
-    "product",
+    "listings",
     "payment",
   ],
 });

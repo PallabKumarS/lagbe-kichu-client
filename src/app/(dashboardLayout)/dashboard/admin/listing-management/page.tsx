@@ -1,5 +1,4 @@
 import ListingManagement from "@/components/modules/management/ListingManagement";
-import { getAllListings } from "@/services/ListingService";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,13 +7,16 @@ export const metadata: Metadata = {
     "This is Listing Management Page of the dashboard used by admin only",
 };
 
-const ListingManagementPage = async () => {
-  const listings = await getAllListings({ limit: 12 });
-
+const ListingManagementPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string }>;
+}) => {
+  const query = await searchParams;
 
   return (
     <div>
-      <ListingManagement listings={listings?.data} meta={listings?.meta} />
+      <ListingManagement query={query} />
     </div>
   );
 };

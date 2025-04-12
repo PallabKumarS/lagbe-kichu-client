@@ -1,5 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCurrentUser } from "./services/AuthService";
+import { cookies } from "next/headers";
+import { jwtDecode } from "jwt-decode";
+
+const getCurrentUser = async () => {
+  const accessToken = (await cookies()).get("accessToken")?.value;
+  let decodedData = null;
+
+  if (accessToken) {
+    decodedData = await jwtDecode(accessToken);
+    return decodedData;
+  } else {
+    return null;
+  }
+};
 
 type Role = keyof typeof roleBasedPrivateRoutes;
 
@@ -14,9 +27,9 @@ const roleBasedPrivateRoutes = {
 const sharedRoutes = [/^\/dashboard\/settings/, /^\/dashboard\/profile/];
 
 export const middleware = async (request: NextRequest) => {
-  const { pathname } = request.nextUrl;
-
   const userInfo = await getCurrentUser();
+
+  const { pathname } = request.nextUrl;
 
   if (!userInfo) {
     if (authRoutes.includes(pathname)) {

@@ -9,6 +9,7 @@ const userApi = baseApi.injectEndpoints({
         const queryString = new URLSearchParams(
           query as Record<string, string>
         ).toString();
+
         return {
           url: `/users?${queryString}`,
           method: "GET",
@@ -23,7 +24,7 @@ const userApi = baseApi.injectEndpoints({
         url: `/users/${userId}`,
         method: "GET",
       }),
-      providesTags: (_result, _err, userId) => [{ type: "user", id: userId }],
+      providesTags: ["user"],
     }),
 
     // Get current (me)

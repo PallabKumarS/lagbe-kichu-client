@@ -1,10 +1,5 @@
 import CreateListing from "@/components/modules/listing/CreateListing";
-import DelayedNoData from "@/components/shared/DelayedNoData";
-import LoadingData from "@/components/shared/LoadingData";
-import NoData from "@/components/shared/NoData";
-import { getPersonalListings } from "@/services/ListingService";
 import { Metadata } from "next";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Dashboard || Create Listing",
@@ -12,18 +7,14 @@ export const metadata: Metadata = {
     "Create Listing with appropriate information and images for the property",
 };
 
-const CreateListingPage = async () => {
-  const listings = await getPersonalListings();
+const CreateListingPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string }>;
+}) => {
+  const query = await searchParams;
 
-  // if (listings?.data?.length === 0) {
-  //   return (
-  //     <Suspense fallback={<LoadingData />}>
-  //       <DelayedNoData />
-  //     </Suspense>
-  //   );
-  // }
-
-  return <CreateListing listings={listings?.data} />;
+  return <CreateListing query={query} />;
 };
 
 export default CreateListingPage;

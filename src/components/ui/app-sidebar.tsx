@@ -37,6 +37,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname, useRouter } from "next/navigation";
 // import { deleteCookie } from "@/services/AuthService";
 import { privateRoutes } from "@/constants";
+import { deleteCookie } from "@/services/AuthService";
 
 // common routes for all users
 const items = [
@@ -117,6 +118,8 @@ export function AppSidebar() {
 
   const handleLogout = () => {
     dispatch(logout());
+    deleteCookie();
+
     if (privateRoutes.some((route) => pathname.match(route))) {
       router.push("/login");
     }

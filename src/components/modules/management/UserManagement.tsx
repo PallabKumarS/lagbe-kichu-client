@@ -3,26 +3,26 @@
 
 import { DialogComponent } from "@/components/shared/Dialog";
 import LoadingData from "@/components/shared/LoadingData";
-import { TableComponent } from "@/components/shared/Table";
-import { useGetAllUsersQuery } from "@/redux/api/user/userApi";
 import {
-  deleteUser,
-  updateUserRole,
-  updateUserStatus,
-} from "@/services/UserService";
+  useDeleteUserMutation,
+  useGetAllUsersQuery,
+  useUpdateUserRoleMutation,
+  useUpdateUserStatusMutation,
+} from "@/redux/api/userApi";
 import { TMongoose, TUser } from "@/types";
 import { Ban } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { UserTable } from "./UserTable";
 
-const UserManagement = () => {
-  const { data: users, isLoading } = useGetAllUsersQuery(
-    { limit: 12 },
-    {
-      refetchOnMountOrArgChange: true,
-      refetchOnReconnect: true,
-    }
-  );
+const UserManagement = ({ query }: { query: Record<string, string> }) => {
+  const { data: users, isFetching } = useGetAllUsersQuery(query, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+  const [deleteUser] = useDeleteUserMutation();
+  const [updateUserRole] = useUpdateUserRoleMutation();
+  const [updateUserStatus] = useUpdateUserStatusMutation();
 
   const [selectedUser, setSelectedUser] = useState<(TUser & TMongoose) | null>(
     null
@@ -30,13 +30,10 @@ const UserManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"edit" | "view">("view");
 
-  const heads = ["Name", "Email", "Role", "Status", "Actions"];
-  const cellProperties: (keyof TUser)[] = ["name", "email", "role", "isActive"];
-
   const handleDelete = async (user: TUser & TMongoose) => {
     const toastId = toast.loading("Deleting user...");
     try {
-      const res = await deleteUser(user.userId);
+      const res = await deleteUser(user.userId).unwrap();
 
       if (res.success) {
         toast.success(res.message, {
@@ -64,7 +61,7 @@ const UserManagement = () => {
   const handleStatus = async (user: TUser & TMongoose) => {
     const toastId = toast.loading("Updating user status...");
     try {
-      const res = await updateUserStatus(user.userId);
+      const res = await updateUserStatus(user.userId).unwrap();
       if (res.success) {
         toast.success(res.message, {
           id: toastId,
@@ -85,7 +82,7 @@ const UserManagement = () => {
   const handleRole = async (user: TUser & TMongoose, role: string) => {
     const toastId = toast.loading("Updating user role...");
     try {
-      const res = await updateUserRole(user.userId, role);
+      const res = await updateUserRole({ userId: user.userId, role }).unwrap();
       if (res.success) {
         toast.success(res.message, {
           id: toastId,
@@ -128,20 +125,15 @@ const UserManagement = () => {
     </div>
   );
 
-  if (isLoading) {
-    return <LoadingData />;
-  }
+  if (isFetching) return <LoadingData />;
 
   return (
     <div>
-      <TableComponent
-        cellProperties={cellProperties}
+      <UserTable
         data={users?.data}
-        heads={heads}
         meta={users?.meta}
-        caption="User Management"
-        onDelete={handleDelete}
         onView={handleView}
+        onDelete={handleDelete}
         onStatusChange={handleStatus}
         onRoleChange={handleRole}
       />

@@ -16,10 +16,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2Icon, Plus } from "lucide-react";
-import { createListing, updateListing } from "@/services/ListingService";
 import { useAppSelector } from "@/redux/hook";
 import { userSelector } from "@/redux/features/authSlice";
 import { TListing, TMongoose } from "@/types";
+import {
+  useCreateListingMutation,
+  useUpdateListingMutation,
+} from "@/redux/api/listingApi";
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -39,6 +42,9 @@ export default function ListingForm({
   edit = false,
 }: listingFormProps) {
   const user = useAppSelector(userSelector);
+
+  const [createListing] = useCreateListingMutation();
+  const [updateListing] = useUpdateListingMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,7 +92,10 @@ export default function ListingForm({
       };
 
       try {
-        const res = await updateListing(listing?.listingId as string, editData);
+        const res = await updateListing({
+          listingId: listing?.listingId as string,
+          data: editData,
+        }).unwrap();
         if (res.success) {
           toast.success(res.message, {
             id: toastId,
@@ -103,7 +112,7 @@ export default function ListingForm({
       }
     } else {
       try {
-        const res = await createListing(data);
+        const res = await createListing(data).unwrap();
         if (res.success) {
           toast.success(res.message, {
             id: toastId,
@@ -147,16 +156,16 @@ export default function ListingForm({
           )}
         />
 
-        {/* rent price field  */}
+        {/* price field  */}
         <FormField
           control={form.control}
           name="price"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Rent Price</FormLabel>
+              <FormLabel>Price</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter the rent price"
+                  placeholder="Enter the price"
                   type="number"
                   {...field}
                   onChange={(e) => {

@@ -18,7 +18,7 @@ import { LoaderCircleIcon } from "lucide-react";
 import { TUser } from "@/types";
 import { useAppDispatch } from "@/redux/hook";
 import { login } from "@/redux/features/authSlice";
-import { useUpdateUserMutation } from "@/redux/api/user/userApi";
+import { useUpdateUserMutation } from "@/redux/api/userApi";
 
 const formSchema = z.object({
   name: z.string(),

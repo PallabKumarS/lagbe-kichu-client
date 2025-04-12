@@ -6,7 +6,13 @@ export const metadata: Metadata = {
     "This is Category Management Page of the dashboard used by admin only",
 };
 
-const ListingManagementPage = async () => {
+const ListingManagementPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string }>;
+}) => {
+  const query = await searchParams;
+
   return <div></div>;
 };
 

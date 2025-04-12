@@ -1,57 +1,7 @@
 "use server";
 
-import { getValidToken } from "@/lib/verifyToken";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
-import { FieldValues } from "react-hook-form";
-
-export const registerUser = async (userData: FieldValues) => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API as string}/users/create-user`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      }
-    );
-    const result = await res.json();
-
-    if (result.success) {
-      (await cookies()).set("accessToken", result.data.accessToken);
-      (await cookies()).set("refreshToken", result?.data?.refreshToken);
-    }
-
-    return result;
-  } catch (error: any) {
-    return Error(error);
-  }
-};
-
-export const loginUser = async (userData: FieldValues) => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
-
-    const result = await res.json();
-
-    if (result?.success) {
-      (await cookies()).set("accessToken", result?.data?.accessToken);
-      (await cookies()).set("refreshToken", result?.data?.refreshToken);
-    }
-
-    return result;
-  } catch (error: any) {
-    return Error(error);
-  }
-};
 
 export const getCurrentUser = async () => {
   const accessToken = (await cookies()).get("accessToken")?.value;
@@ -65,33 +15,9 @@ export const getCurrentUser = async () => {
   }
 };
 
-export const passwordChange = async (userData: FieldValues) => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/auth/change-password`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: await getValidToken(),
-        },
-        body: JSON.stringify(userData),
-      }
-    );
-
-    const result = await res.json();
-
-    if (result.success) {
-    }
-
-    return result;
-  } catch (error: any) {
-    throw new Error(error.message || "Something went wrong");
-  }
-};
-
 export const deleteCookie = async () => {
   (await cookies()).delete("accessToken");
+  (await cookies()).delete("refreshToken");
 };
 
 export const getNewToken = async () => {

@@ -1,17 +1,22 @@
+"use client";
+
 import ListingForm from "@/components/forms/ListingForm";
 import Container from "@/components/shared/Container";
 import { Modal } from "@/components/shared/Modal";
 import NoData from "@/components/shared/NoData";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { TListing, TMongoose } from "@/types";
 import ListingCard from "./ListingCard";
+import { useGetPersonalListingsQuery } from "@/redux/api/listingApi";
+import { TListing, TMongoose } from "@/types";
+import { PaginationComponent } from "@/components/shared/Pagination";
 
-const CreateListing = ({
-  listings,
-}: {
-  listings: (TListing & TMongoose)[];
-}) => {
+const CreateListing = ({ query }: { query: Record<string, string> }) => {
+  const { data: listings } = useGetPersonalListingsQuery(query, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+
   return (
     <Container>
       <div className="flex flex-col md:flex-row items-center justify-between gap-y-5 gap-x-2 mb-20">
@@ -48,9 +53,9 @@ const CreateListing = ({
         />
       </div>
 
-      {listings?.length > 0 ? (
+      {listings?.data?.length > 0 ? (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(min(290px,100%),1fr))] lg:grid-cols-2 2xl:grid-cols-3 gap-4 mb-10">
-          {listings?.map((listing) => (
+          {listings?.map((listing: TListing & TMongoose) => (
             <ListingCard
               edit={true}
               key={listing.listingId}
@@ -61,6 +66,9 @@ const CreateListing = ({
       ) : (
         <NoData />
       )}
+      <div className="mt-6 flex justify-center">
+        <PaginationComponent meta={listings?.data?.meta} />
+      </div>
     </Container>
   );
 };

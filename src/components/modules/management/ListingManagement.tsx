@@ -1,22 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import ListingForm from "@/components/forms/ListingForm";
 import { DialogComponent } from "@/components/shared/Dialog";
 import ImageSlider from "@/components/shared/ImageSlider";
-import { TableComponent } from "@/components/shared/Table";
-import { deleteListing, updateListingStatus } from "@/services/ListingService";
-import { TListing, TMeta, TMongoose } from "@/types";
+import {
+  useDeleteListingMutation,
+  useGetAllListingsQuery,
+  useUpdateListingStatusMutation,
+} from "@/redux/api/listingApi";
+import { TListing, TMongoose } from "@/types";
 import { Ban } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { ListingTable } from "./ListingTable";
+import LoadingData from "@/components/shared/LoadingData";
 
 type TProps = {
-  listings: (TListing & TMongoose)[];
-  meta: TMeta;
+  query: Record<string, string>;
 };
 
-const ListingManagement = ({ listings, meta }: TProps) => {
+const ListingManagement = ({ query }: TProps) => {
+  const { data: listings, isFetching } = useGetAllListingsQuery(query, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+  const [updateListingStatus] = useUpdateListingStatusMutation();
+  const [deleteListing] = useDeleteListingMutation();
+
   const [selectedUser, setSelectedUser] = useState<
     (TListing & TMongoose) | null
   >(null);
@@ -25,24 +37,10 @@ const ListingManagement = ({ listings, meta }: TProps) => {
 
   const router = useRouter();
 
-  const heads = [
-    "House Location",
-    "Rent Price",
-    "Bedroom Number",
-    "Status",
-    "Actions",
-  ];
-  const cellProperties: (keyof TListing)[] = [
-    "title",
-    "price",
-    "category",
-    "isAvailable",
-  ];
-
   const handleDelete = async (listing: TListing & TMongoose) => {
     const toastId = toast.loading("Deleting listing...");
     try {
-      const res = await deleteListing(listing.listingId);
+      const res = await deleteListing(listing.listingId).unwrap();
 
       if (res.success) {
         toast.success(res.message, {
@@ -68,7 +66,7 @@ const ListingManagement = ({ listings, meta }: TProps) => {
   const handleStatus = async (listing: TListing & TMongoose) => {
     const toastId = toast.loading("Updating listing status...");
     try {
-      const res = await updateListingStatus(listing.listingId);
+      const res = await updateListingStatus(listing.listingId).unwrap();
       if (res.success) {
         toast.success(res.message, {
           id: toastId,
@@ -147,14 +145,13 @@ const ListingManagement = ({ listings, meta }: TProps) => {
     </div>
   );
 
+  if (isFetching) return <LoadingData />;
+
   return (
     <div>
-      <TableComponent
-        cellProperties={cellProperties}
-        data={listings}
-        heads={heads}
-        meta={meta}
-        caption="Listing Management"
+      <ListingTable
+        data={listings?.data}
+        meta={listings?.meta}
         onDelete={handleDelete}
         onView={handleView}
         onStatusChange={handleStatus}

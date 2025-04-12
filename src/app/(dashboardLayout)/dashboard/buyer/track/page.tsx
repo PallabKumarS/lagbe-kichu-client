@@ -8,9 +8,14 @@ export const metadata: Metadata = {
   description: "This is Track Orders Page of the dashboard used by buyer only",
 };
 
-const TrackingPage = async () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const requests: any = await getPersonalRequests({ limit: 12 });
+const TrackingPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string }>;
+}) => {
+  const query = await searchParams;
+
+  const requests = await getPersonalRequests({ limit: 12 });
 
   return (
     <Container>

@@ -25,12 +25,12 @@ import {
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { updateRequest } from "@/services/RequestService";
 import { TUser } from "@/types";
-import { updateUser } from "@/services/UserService";
 import { useAppDispatch } from "@/redux/hook";
 import { login } from "@/redux/features/authSlice";
+import { useUpdateUserMutation } from "@/redux/api/userApi";
 
 const formSchema = z.object({
-  landlordPhoneNumber: z.string().min(11).max(15),
+  sellerPhoneNumber: z.string().min(11).max(15),
 });
 
 const PhoneUpdateModal = ({
@@ -44,11 +44,12 @@ const PhoneUpdateModal = ({
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const [updateUser] = useUpdateUserMutation();
   const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      landlordPhoneNumber: (user?.phone as string) || "",
+      sellerPhoneNumber: (user?.phone as string) || "",
     },
   });
 
@@ -57,13 +58,14 @@ const PhoneUpdateModal = ({
 
     try {
       const res1 = await updateRequest(request?.requestId as string, {
-        landlordPhoneNumber: values.landlordPhoneNumber,
+        sellerPhoneNumber: values.sellerPhoneNumber,
       });
 
       if (res1?.success) {
-        const res = await updateUser(user?.userId as string, {
-          phone: values.landlordPhoneNumber,
-        });
+        const res = await updateUser({
+          userId: user?.userId as string,
+          data: { phone: values.sellerPhoneNumber },
+        }).unwrap();
 
         dispatch(login(res?.data));
 
@@ -110,7 +112,7 @@ const PhoneUpdateModal = ({
           >
             <FormField
               control={form.control}
-              name="landlordPhoneNumber"
+              name="sellerPhoneNumber"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>

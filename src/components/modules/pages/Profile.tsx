@@ -15,7 +15,7 @@ import {
 import Link from "next/link";
 import { useAppDispatch } from "@/redux/hook";
 import { setUser } from "@/redux/features/authSlice";
-import { useGetMeQuery } from "@/redux/api/user/userApi";
+import { useGetMeQuery } from "@/redux/api/userApi";
 import LoadingData from "@/components/shared/LoadingData";
 
 const Profile = () => {

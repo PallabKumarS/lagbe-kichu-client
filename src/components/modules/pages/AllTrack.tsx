@@ -1,13 +1,13 @@
 import { TMongoose, TOrder } from "@/types";
 import Link from "next/link";
-import { MapPin, Clock, CheckCircle } from "lucide-react";
+import { MapPin, CheckCircle } from "lucide-react";
 
 const AllTrack = ({ requests }: { requests: (TOrder & TMongoose)[] }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
         return "text-yellow-500";
-      case "approved":
+      case "processing":
         return "text-green-500";
       case "rejected":
         return "text-red-500";

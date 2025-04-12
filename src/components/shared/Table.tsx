@@ -383,9 +383,9 @@ function formatCellContent<T>(
           {user?.role === "seller" && (user?.phone as string) ? (
             <DropdownMenuContent className="">
               <DropdownMenuItem
-                disabled={content === "approved" || content === "paid"}
+                disabled={content === "processing" || content === "paid"}
                 onClick={() =>
-                  onStatusChange && onStatusChange(item, "approved")
+                  onStatusChange && onStatusChange(item, "processing")
                 }
               >
                 Approve
@@ -399,9 +399,9 @@ function formatCellContent<T>(
                 Pending
               </DropdownMenuItem>
               <DropdownMenuItem
-                disabled={content === "rejected" || content === "paid"}
+                disabled={content === "cancelled" || content === "paid"}
                 onClick={() =>
-                  onStatusChange && onStatusChange(item, "rejected")
+                  onStatusChange && onStatusChange(item, "cancelled")
                 }
               >
                 Reject
@@ -422,9 +422,9 @@ function formatCellContent<T>(
           {user?.role === "admin" && (
             <DropdownMenuContent className="">
               <DropdownMenuItem
-                disabled={content === "approved" || content === "paid"}
+                disabled={content === "processing" || content === "paid"}
                 onClick={() =>
-                  onStatusChange && onStatusChange(item, "approved")
+                  onStatusChange && onStatusChange(item, "processing")
                 }
               >
                 Approve
@@ -459,7 +459,6 @@ function formatCellContent<T>(
         return item?.status !== "rejected" &&
           item?.status !== "pending" &&
           user?.role === "buyer" ? (
-          // <Link href={`${item?.status === "paid" ? "" : content.paymentUrl}`}>
           <Button
             onClick={() => {
               item?.status !== "paid" &&

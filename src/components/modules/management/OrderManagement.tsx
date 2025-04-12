@@ -1,22 +1,33 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { DialogComponent } from "@/components/shared/Dialog";
+import LoadingData from "@/components/shared/LoadingData";
 import { TableComponent } from "@/components/shared/Table";
+import {
+  useCreatePaymentMutation,
+  useDeleteOrderMutation,
+  useGetPersonalOrdersQuery,
+  useUpdateOrderStatusMutation,
+} from "@/redux/api/orderApi";
 import { userSelector } from "@/redux/features/authSlice";
 import { useAppSelector } from "@/redux/hook";
-import { deleteRequest, updateRequestStatus } from "@/services/RequestService";
-import { TMeta, TMongoose, TOrder } from "@/types";
+import { TMongoose, TOrder } from "@/types";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { OrderTable } from "./OrderTable";
 
-const RequestManagement = ({
-  requests,
-  meta,
-}: {
-  requests: (TOrder & TMongoose)[];
-  meta: TMeta;
-}) => {
+const OrderManagement = ({ query }: { query: Record<string, string> }) => {
+  const { data: orders, isFetching } = useGetPersonalOrdersQuery(query, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+
+  const [updateOrderStatus] = useUpdateOrderStatusMutation();
+  const [deleteOrder] = useDeleteOrderMutation();
+  const [createPayment] = useCreatePaymentMutation();
+
   const [selectedUser, setSelectedUser] = useState<(TOrder & TMongoose) | null>(
     null
   );
@@ -33,18 +44,10 @@ const RequestManagement = ({
     heads.push("Actions");
   }
 
-  const cellProperties: (keyof TOrder)[] = [
-    "sellerId",
-    "listingId",
-    "buyerId",
-    "status",
-    "transaction",
-  ];
-
   const handleDelete = async (order: TOrder & TMongoose) => {
     const toastId = toast.loading("Deleting order...");
     try {
-      const res = await deleteRequest(order.orderId);
+      const res = await deleteOrder(order.orderId).unwrap();
 
       if (res.success) {
         toast.success(res.message, {
@@ -70,7 +73,10 @@ const RequestManagement = ({
   const handleStatus = async (order: TOrder & TMongoose, status?: string) => {
     const toastId = toast.loading("Updating order status...");
     try {
-      const res = await updateRequestStatus(order.orderId, status as string);
+      const res = await updateOrderStatus({
+        orderId: order.orderId,
+        status: status as string,
+      }).unwrap();
       if (res.success) {
         toast.success(res.message, {
           id: toastId,
@@ -88,16 +94,42 @@ const RequestManagement = ({
     }
   };
 
+  const handleCreatePayment = async (item: TOrder & TMongoose) => {
+    const toastId = toast.loading("Creating payment...");
+    try {
+      const res = await createPayment(item.orderId).unwrap();
+
+      if (res.success) {
+        toast.success(res.message, {
+          id: toastId,
+        });
+
+        setTimeout(() => {
+          window.open(res?.data?.transaction?.paymentUrl, "_blank");
+        }, 1000);
+      } else {
+        toast.error(res.message, {
+          id: toastId,
+        });
+      }
+    } catch (error) {
+      toast.error("Error creating payment", {
+        id: toastId,
+      });
+      console.log(error);
+    }
+  };
+
   const renderViewContent = (order: TOrder & TMongoose) => (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <h3 className="font-semibold text-gray-700">Landlord Info</h3>
+          <h3 className="font-semibold text-gray-700">Seller Info</h3>
           <p>Name: {order.sellerId.name}</p>
           <p>Email: {order.sellerId.email}</p>
         </div>
         <div className="space-y-2">
-          <h3 className="font-semibold text-gray-700">buyer Info</h3>
+          <h3 className="font-semibold text-gray-700">Buyer Info</h3>
           <p>Name: {order.buyerId.name}</p>
           <p>Email: {order.buyerId.email}</p>
         </div>
@@ -132,18 +164,19 @@ const RequestManagement = ({
     </div>
   );
 
+  if (isFetching) return <LoadingData />;
+
   return (
     <div>
       <div>
-        <TableComponent
-          cellProperties={cellProperties}
-          data={requests}
-          heads={heads}
-          meta={meta}
-          caption="Order Management"
-          onDelete={handleDelete}
+        <OrderTable
+          data={orders?.data}
+          meta={orders?.meta}
           onView={handleView}
+          handleCreatePayment={handleCreatePayment}
+          key={"order"}
           onStatusChange={handleStatus}
+          onDelete={handleDelete}
         />
 
         <DialogComponent
@@ -159,4 +192,4 @@ const RequestManagement = ({
   );
 };
 
-export default RequestManagement;
+export default OrderManagement;

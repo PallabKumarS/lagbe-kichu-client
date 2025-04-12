@@ -20,6 +20,7 @@ import { logout, userSelector } from "@/redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import Searchbar from "./Searchbar";
 import { privateRoutes } from "@/constants";
+import { deleteCookie } from "@/services/AuthService";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,6 +36,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     dispatch(logout());
+    deleteCookie();
 
     if (privateRoutes.some((route) => pathname.match(route))) {
       router.push("/login");
