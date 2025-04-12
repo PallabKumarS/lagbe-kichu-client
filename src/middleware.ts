@@ -40,7 +40,6 @@ export const middleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
   console.log("userInfo:", userInfo);
-  console.log("pathname:", pathname);
 
   if (!userInfo) {
     if (authRoutes.includes(pathname)) {
@@ -59,11 +58,8 @@ export const middleware = async (request: NextRequest) => {
   if (userInfo?.role && roleBasedPrivateRoutes[userInfo.role as Role]) {
     const routes = roleBasedPrivateRoutes[userInfo.role as Role];
 
-    console.log("Checking routes for role:", userInfo.role, routes);
 
     if (routes.some((route) => pathname.match(route))) {
-      console.log("Matched route, allow access");
-
       return NextResponse.next();
     }
   }
