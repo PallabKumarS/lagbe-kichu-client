@@ -137,7 +137,7 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
           <h3 className="font-semibold text-gray-700">Listing Details</h3>
           <p>Location: {order.listingId.title}</p>
           <p>Price: ${order.listingId.price}</p>
-          <p>Category: {order.listingId.category}</p>
+          <p>Category: {order.listingId.category.title}</p>
         </div>
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Order Info</h3>
@@ -165,6 +165,8 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
   );
 
   if (isFetching) return <LoadingData />;
+  console.log(orders)
+
 
   return (
     <div>

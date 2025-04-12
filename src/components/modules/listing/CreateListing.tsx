@@ -23,7 +23,7 @@ const CreateListing = ({ query }: { query: Record<string, string> }) => {
 
   if (isFetching) return <LoadingData />;
 
-  console.log(listings)
+  console.log(listings);
 
   return (
     <Container>
@@ -77,7 +77,7 @@ const CreateListing = ({ query }: { query: Record<string, string> }) => {
         <NoData />
       )}
       <div className="mt-6 flex justify-center">
-        <PaginationComponent meta={listings?.data?.meta} />
+        <PaginationComponent meta={listings?.meta} />
       </div>
     </Container>
   );

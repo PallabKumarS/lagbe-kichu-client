@@ -91,6 +91,7 @@ const listingApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllListingsQuery,
+  useLazyGetAllListingsQuery,
   useGetSingleListingQuery,
   useGetPersonalListingsQuery,
   useCreateListingMutation,

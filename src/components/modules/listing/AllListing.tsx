@@ -1,15 +1,27 @@
+"use client";
+
 import Filter from "@/components/shared/Filter";
 import ListingCard from "./ListingCard";
 import NoData from "@/components/shared/NoData";
 import { PaginationComponent } from "@/components/shared/Pagination";
-import { TListing, TMeta, TMongoose } from "@/types";
+import { useGetAllListingsQuery } from "@/redux/api/listingApi";
+import LoadingData from "@/components/shared/LoadingData";
+import { TListing, TMongoose } from "@/types";
 
 interface AllListingProps {
-  listings: (TListing & TMongoose)[];
-  meta: TMeta;
+  query: Record<string, string>;
 }
 
-const AllListing = ({ listings, meta }: AllListingProps) => {
+const AllListing = ({ query }: AllListingProps) => {
+  const { data: listings, isFetching } = useGetAllListingsQuery(query, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+
+  if (isFetching) {
+    return <LoadingData />;
+  }
+
   return (
     <div className="space-y-8">
       <div className="gap-2 items-center flex flex-col md:flex-row justify-between">
@@ -25,9 +37,9 @@ const AllListing = ({ listings, meta }: AllListingProps) => {
         <Filter />
       </div>
 
-      {listings?.length > 0 ? (
+      {listings?.data?.length > 0 ? (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(min(290px,100%),1fr))] lg:grid-cols-3 gap-4 mb-20">
-          {listings.map((listing) => (
+          {listings?.data?.map((listing: TListing & TMongoose) => (
             <ListingCard key={listing._id} listing={listing} />
           ))}
         </div>
@@ -35,7 +47,7 @@ const AllListing = ({ listings, meta }: AllListingProps) => {
         <NoData />
       )}
 
-      <PaginationComponent meta={meta} />
+      <PaginationComponent meta={listings?.meta} />
     </div>
   );
 };

@@ -17,7 +17,7 @@ import { Button } from "../ui/button";
 import { LoaderCircleIcon } from "lucide-react";
 import { TUser } from "@/types";
 import { useAppDispatch } from "@/redux/hook";
-import { login } from "@/redux/features/authSlice";
+import { setUser } from "@/redux/features/authSlice";
 import { useUpdateUserMutation } from "@/redux/api/userApi";
 
 const formSchema = z.object({
@@ -62,7 +62,7 @@ export default function ProfileForm({
 
       if (res?.success) {
         toast.success(res?.message, { id: toastId });
-        dispatch(login(res?.data));
+        dispatch(setUser(res?.data));
       } else {
         toast.error(res?.message, { id: toastId });
       }

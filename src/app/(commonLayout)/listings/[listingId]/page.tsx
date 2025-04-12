@@ -1,8 +1,24 @@
 import ListingDetails from "@/components/modules/listing/ListingDetails";
 import Container from "@/components/shared/Container";
-import { getSingleListing } from "@/services/ListingService";
 import { Metadata } from "next";
 import Link from "next/link";
+
+const getSingleListing = async (listingId: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/listings/${listingId}`,
+      {
+        next: {
+          tags: ["listing"],
+        },
+      }
+    );
+    return await res.json();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return Error(error.message);
+  }
+};
 
 export async function generateMetadata({
   params,

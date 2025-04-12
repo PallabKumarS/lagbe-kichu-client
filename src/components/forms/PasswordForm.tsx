@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { PasswordInput } from "../ui/password-input";
 import { LoaderCircleIcon } from "lucide-react";
-import { useChangePasswordMutation } from "@/redux/api/auth/authApi";
+import { useChangePasswordMutation } from "@/redux/api/authApi";
 
 const formSchema = z.object({
   oldPassword: z.string().min(1),

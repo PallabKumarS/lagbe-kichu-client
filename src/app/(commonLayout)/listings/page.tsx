@@ -1,6 +1,5 @@
 import AllListing from "@/components/modules/listing/AllListing";
 import Container from "@/components/shared/Container";
-import { getAllListings } from "@/services/ListingService";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,13 +18,9 @@ const AllListingsPage = async ({
     isDeleted: "false",
   };
 
-  // Get all listings
-  const listings = await getAllListings(enhancedSearchParams);
-
-
   return (
     <Container className="">
-      <AllListing listings={listings?.data} meta={listings?.meta} />
+      <AllListing query={enhancedSearchParams} />
     </Container>
   );
 };

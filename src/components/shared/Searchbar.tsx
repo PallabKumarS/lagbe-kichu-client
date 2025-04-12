@@ -5,8 +5,7 @@ import { ChevronUpCircle, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { TListing } from "@/types";
 import Image from "next/image";
-import { getAllListings } from "@/services/ListingService";
-import { Button } from "../ui/button";
+import { useLazyGetAllListingsQuery } from "@/redux/api/listingApi";
 
 const isValidImageUrl = (url: string) => {
   const pattern = new RegExp(
@@ -22,6 +21,8 @@ const Searchbar = () => {
   const [searchResults, setSearchResults] = useState<TListing[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  const [triggerSearch] = useLazyGetAllListingsQuery();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
@@ -43,12 +44,13 @@ const Searchbar = () => {
   }, []);
 
   const handleSearch = async (searchTerm: string) => {
+    if (!searchTerm) return setSearchResults([]);
     try {
-      const res = await getAllListings({ searchTerm: searchTerm, limit: 5 });
+      const res = await triggerSearch({ searchTerm, limit: 5 }).unwrap();
 
-      setSearchResults(res?.data);
+      setSearchResults(res.data);
     } catch (error) {
-      console.error("Error fetching search results:", error);
+      console.error("RTK Query search error:", error);
     }
   };
 

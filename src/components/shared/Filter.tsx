@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import {
   Sheet,
@@ -22,49 +21,49 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { getListingLocations } from "@/services/ListingService";
 import { Checkbox } from "../ui/checkbox";
+import { useGetAllCategoriesQuery } from "@/redux/api/categoryApi";
+import { TCategory, TMongoose } from "@/types";
 
 const Filter = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const [priceRange, setPriceRange] = useState([0, 50000]);
-  const [locations, setLocations] = useState<[{ location: string }] | []>([]);
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
 
-  useEffect(() => {
-    const fetchLocations: any = async () => {
-      const res = await getListingLocations();
-      setLocations(res?.data);
-    };
+  const [title, setTitle] = useState<string>("");
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [availability, setAvailability] = useState<string | undefined>();
 
-    fetchLocations();
-  }, [pathname, router]);
+  const { data: categories, isFetching } = useGetAllCategoriesQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
-  const handleFilter = (query: { title?: string[]; [key: string]: any }) => {
+  const handleApplyFilter = () => {
     const params = new URLSearchParams();
 
-    if (Number(query.bedrooms) > 0) {
-      params.set("bedroomNumber", Number(query.bedrooms).toString());
+    if (title) params.set("title", title);
+    if (priceRange[0] > 0 || priceRange[1] < 50000) {
+      params.set("minPrice", priceRange[0].toString());
+      params.set("maxPrice", priceRange[1].toString());
     }
-
-    if (Number(query.minPrice) && Number(query.minPrice) > 0) {
-      params.set("minPrice", Number(query.minPrice).toString());
-      params.set("maxPrice", Number(query.maxPrice).toString());
+    if (availability !== undefined) {
+      params.set("availability", availability);
     }
-
-    if (query.availability !== undefined) {
-      params.set("availability", String(query.availability));
-    }
-
-    if (Array.isArray(query.title)) {
-      params.set("title", query.title.join(", "));
+    if (selectedCategories.length > 0) {
+      params.set("category", selectedCategories.join(","));
     }
 
     router.push(`/listings?${params.toString()}`);
+  };
+
+  const handleClearFilter = () => {
+    setTitle("");
+    setPriceRange([0, 50000]);
+    setSelectedCategories([]);
+    setAvailability(undefined);
+    router.push("/listings");
   };
 
   return (
@@ -80,7 +79,7 @@ const Filter = () => {
           <SheetTitle>Filter Listings</SheetTitle>
         </SheetHeader>
         <div className="space-y-4 mt-4">
-          {/* price range here  */}
+          {/* Price Range */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Price Range</label>
             <div className="pt-2">
@@ -89,13 +88,9 @@ const Filter = () => {
                 max={50000}
                 step={500}
                 value={priceRange}
-                onValueChange={(priceRange) => {
-                  setPriceRange(priceRange);
-                  handleFilter({
-                    minPrice: priceRange[0],
-                    maxPrice: priceRange[1],
-                  });
-                }}
+                onValueChange={(priceRange) =>
+                  setPriceRange(priceRange as [number, number])
+                }
                 className="my-4"
               />
               <div className="flex justify-between text-sm">
@@ -105,37 +100,42 @@ const Filter = () => {
             </div>
           </div>
 
-          {/* locations here  */}
+          {/* Title */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Location</label>
-            <Command className="bg-chart-5">
-              <CommandInput placeholder="Type a location or search..." />
+            <label className="text-sm font-medium">Title</label>
+            <Input
+              type="text"
+              placeholder="Enter title of the product"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+
+          {/* Categories */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Categories</label>
+            <Command className="bg-chart-1 px-2">
+              <CommandInput placeholder="Type a category or search..." />
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
-                <CommandGroup>
-                  {locations?.map((location) => (
+                <CommandGroup aria-checked="true">
+                  {categories?.data?.map((category: TCategory & TMongoose) => (
                     <CommandItem
-                      key={location.location}
-                      onSelect={(value) => {
-                        setSelectedLocations((prev) => {
-                          if (prev.includes(value)) {
-                            return prev.filter((loc) => loc !== value);
-                          }
-                          return [...prev, value];
-                        });
-                        handleFilter({
-                          title: [...selectedLocations, value],
-                        });
+                      className="flex items-center gap-2"
+                      key={category._id}
+                      disabled={isFetching}
+                      onSelect={() => {
+                        setSelectedCategories((prev) =>
+                          prev.includes(category._id)
+                            ? prev.filter((id) => id !== category._id)
+                            : [...prev, category._id]
+                        );
                       }}
                     >
-                      <div className="flex items-center gap-2">
-                        <Checkbox
-                          checked={selectedLocations.includes(
-                            location.location
-                          )}
-                        />
-                        {location.location}
-                      </div>
+                      <Checkbox
+                        checked={selectedCategories.includes(category._id)}
+                      />
+                      {category.title}
                     </CommandItem>
                   ))}
                 </CommandGroup>
@@ -143,30 +143,12 @@ const Filter = () => {
             </Command>
           </div>
 
-          {/* bedroom here  */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Bedrooms</label>
-            <Input
-              type="number"
-              min={1}
-              placeholder="Number of bedrooms"
-              onChange={(e) => {
-                handleFilter({
-                  bedrooms: Number(e.target.value),
-                });
-              }}
-            />
-          </div>
-
-          {/* availability here  */}
+          {/* Availability */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Availability</label>
             <RadioGroup
-              onValueChange={(value) => {
-                handleFilter({
-                  availability: value === "true" ? "true" : "false",
-                });
-              }}
+              value={availability}
+              onValueChange={(value) => setAvailability(value)}
               className="flex flex-col space-y-1 mt-2"
             >
               <div className="flex items-center space-x-2">
@@ -174,23 +156,20 @@ const Filter = () => {
                 <Label htmlFor="available">Available</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="false" id="rented" />
-                <Label htmlFor="rented">Rented</Label>
+                <RadioGroupItem value="false" id="out_of_stock" />
+                <Label htmlFor="out_of_stock">Out of stock</Label>
               </div>
             </RadioGroup>
           </div>
-        </div>
 
-        <Button
-          variant={"outline"}
-          className="w-full mt-4"
-          onClick={() => {
-            handleFilter({});
-            setSelectedLocations([]);
-          }}
-        >
-          Clear
-        </Button>
+          {/* Buttons */}
+          <div className="grid grid-cols-2 gap-4 pt-4">
+            <Button onClick={handleApplyFilter}>Apply Filter</Button>
+            <Button variant="outline" onClick={handleClearFilter}>
+              Clear
+            </Button>
+          </div>
+        </div>
       </SheetContent>
     </Sheet>
   );
