@@ -9,3 +9,11 @@ export type TReview = {
   rating: number;
   comment?: string;
 };
+
+export interface IReview {
+  userId: string;
+  listingId: string;
+  orderId: string;
+  rating: number;
+  comment?: string;
+}

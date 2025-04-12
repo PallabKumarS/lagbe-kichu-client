@@ -1,3 +1,5 @@
+import CategoryManagement from "@/components/modules/management/CategoryManagement";
+import Container from "@/components/shared/Container";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,7 +15,11 @@ const ListingManagementPage = async ({
 }) => {
   const query = await searchParams;
 
-  return <div></div>;
+  return (
+    <Container>
+      <CategoryManagement query={query} />
+    </Container>
+  );
 };
 
 export default ListingManagementPage;

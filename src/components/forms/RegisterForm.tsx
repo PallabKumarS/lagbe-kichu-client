@@ -18,7 +18,7 @@ import { Button } from "../ui/button";
 import { PasswordInput } from "../ui/password-input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { LoaderCircleIcon } from "lucide-react";
-import { useRegisterMutation } from "@/redux/api/auth/authApi";
+import { useRegisterMutation } from "@/redux/api/authApi";
 
 const formSchema = z.object({
   name: z.string(),

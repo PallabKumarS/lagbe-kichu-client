@@ -12,10 +12,18 @@ type TModalProps = {
   title: string;
   trigger: ReactNode;
   content: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
-export function Modal({ title, trigger, content }: TModalProps) {
+export function Modal({
+  title,
+  trigger,
+  content,
+  open,
+  onOpenChange,
+}: TModalProps) {
   return (
-    <Dialog>
+    <Dialog onOpenChange={onOpenChange} open={open}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="max-h-[calc(100vh-4rem)] overflow-y-auto bg-card min-w-[280px] w-2/3">
         <DialogHeader>

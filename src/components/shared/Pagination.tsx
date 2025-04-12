@@ -13,7 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 export function PaginationComponent({ meta }: { meta: TMeta }) {
   const router = useRouter();
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const handlePagination = (page: number) => {
     router.push(`${pathname}?page=${page}`);

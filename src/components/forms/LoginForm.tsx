@@ -19,7 +19,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/redux/hook";
 import { Loader2Icon } from "lucide-react";
 import { login } from "@/redux/features/authSlice";
-import { useLoginMutation } from "@/redux/api/auth/authApi";
+import { useLoginMutation } from "@/redux/api/authApi";
 
 const formSchema = z.object({
   email: z.string(),

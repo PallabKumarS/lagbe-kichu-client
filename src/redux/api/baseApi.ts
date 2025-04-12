@@ -66,7 +66,7 @@ export const baseApi = createApi({
     "users",
     "listings",
     "orders",
-    "category",
+    "categories",
     "user",
     "PListings",
     "listing",
@@ -74,6 +74,7 @@ export const baseApi = createApi({
     "order",
     "listings",
     "payment",
+    "reviews",
   ],
 });
 

@@ -23,16 +23,9 @@ import { BiCategoryAlt } from "react-icons/bi";
 interface ListingCardProps {
   listing: TListing & TMongoose;
   edit?: boolean;
-  onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
 }
 
-const ListingCard = ({
-  listing,
-  edit = false,
-  onEdit,
-  onDelete,
-}: ListingCardProps) => {
+const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
   const handleDelete = async (listingId: string) => {
     const toastId = toast.loading("Deleting listing...");
 
@@ -78,9 +71,7 @@ const ListingCard = ({
           </div>
 
           <div className="mt-3 space-y-2">
-            <h3 className="font-semibold">
-              ${listing.price.toLocaleString()}/month
-            </h3>
+            <h3 className="font-semibold">${listing.price.toLocaleString()}</h3>
             <p className="line-clamp-2 text-sm text-muted-foreground">
               {listing.description}
             </p>
@@ -91,7 +82,7 @@ const ListingCard = ({
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
               <BiCategoryAlt className="h-4 w-4" />
-              <span className="text-sm">{listing.category}</span>
+              <span className="text-sm">{listing.category.title}</span>
             </div>
             <div className="flex items-center gap-1">
               {listing.isAvailable ? (

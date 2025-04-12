@@ -18,11 +18,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2Icon, Plus } from "lucide-react";
 import { useAppSelector } from "@/redux/hook";
 import { userSelector } from "@/redux/features/authSlice";
-import { TListing, TMongoose } from "@/types";
+import { TCategory, TListing, TMongoose } from "@/types";
 import {
   useCreateListingMutation,
   useUpdateListingMutation,
 } from "@/redux/api/listingApi";
+import { useGetAllCategoriesQuery } from "@/redux/api/categoryApi";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -43,6 +51,10 @@ export default function ListingForm({
 }: listingFormProps) {
   const user = useAppSelector(userSelector);
 
+  const { data: categories, isFetching } = useGetAllCategoriesQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
   const [createListing] = useCreateListingMutation();
   const [updateListing] = useUpdateListingMutation();
 
@@ -51,7 +63,7 @@ export default function ListingForm({
     defaultValues: {
       title: listing?.title || "",
       price: listing?.price || 0,
-      category: listing?.category || "",
+      category: listing?.category.title || "",
       description: listing?.description || "",
       images: listing?.images.map((img) => {
         return { value: img };
@@ -248,15 +260,25 @@ export default function ListingForm({
           name="category"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>category</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Specify a category for the listing"
-                  type="text"
-                  {...field}
-                />
-              </FormControl>
-
+              <FormLabel>Category</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                disabled={isFetching}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {categories?.data?.map((cat: TCategory & TMongoose) => (
+                    <SelectItem key={cat._id} value={cat._id}>
+                      {cat.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

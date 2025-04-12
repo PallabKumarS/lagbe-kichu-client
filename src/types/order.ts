@@ -18,6 +18,23 @@ export type TOrder = {
   transaction?: TTransaction;
 };
 
+export interface IOrder {
+  buyerId: string;
+  listingId: TListing;
+  sellerId: string;
+  orderId: string;
+  status:
+    | "pending"
+    | "processing"
+    | "out for delivery"
+    | "paid"
+    | "completed"
+    | "cancelled";
+  message?: string;
+  sellerPhoneNumber?: string;
+  transaction?: TTransaction;
+};
+
 export type TTransaction = {
   paymentId?: string;
   transactionStatus?: string;

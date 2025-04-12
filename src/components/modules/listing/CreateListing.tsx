@@ -10,12 +10,20 @@ import ListingCard from "./ListingCard";
 import { useGetPersonalListingsQuery } from "@/redux/api/listingApi";
 import { TListing, TMongoose } from "@/types";
 import { PaginationComponent } from "@/components/shared/Pagination";
+import LoadingData from "@/components/shared/LoadingData";
+import { useState } from "react";
 
 const CreateListing = ({ query }: { query: Record<string, string> }) => {
-  const { data: listings } = useGetPersonalListingsQuery(query, {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const { data: listings, isFetching } = useGetPersonalListingsQuery(query, {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
+
+  if (isFetching) return <LoadingData />;
+
+  console.log(listings)
 
   return (
     <Container>
@@ -49,13 +57,15 @@ const CreateListing = ({ query }: { query: Record<string, string> }) => {
               Create Listing
             </Button>
           }
+          open={modalOpen}
+          onOpenChange={setModalOpen}
           content={<ListingForm />}
         />
       </div>
 
       {listings?.data?.length > 0 ? (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(min(290px,100%),1fr))] lg:grid-cols-2 2xl:grid-cols-3 gap-4 mb-10">
-          {listings?.map((listing: TListing & TMongoose) => (
+          {listings?.data?.map((listing: TListing & TMongoose) => (
             <ListingCard
               edit={true}
               key={listing.listingId}

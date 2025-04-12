@@ -1,8 +1,9 @@
+import { TCategory } from "./category";
 import { TUser } from "./user";
 
 export type TListing = {
   title: string;
-  category: string;
+  category: TCategory;
   description: string;
   price: number;
   images: string[];

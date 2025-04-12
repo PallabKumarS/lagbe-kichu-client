@@ -1,5 +1,5 @@
 import baseApi from "@/redux/api/baseApi";
-import { TOrder } from "@/types"; // adjust as needed
+import { IOrder } from "@/types"; // adjust as needed
 
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -44,7 +44,7 @@ const orderApi = baseApi.injectEndpoints({
 
     // Create order
     createOrder: builder.mutation({
-      query: (data: Partial<TOrder>) => ({
+      query: (data: Partial<IOrder>) => ({
         url: `/orders`,
         method: "POST",
         body: data,
@@ -59,7 +59,7 @@ const orderApi = baseApi.injectEndpoints({
         data,
       }: {
         orderId: string;
-        data: Partial<TOrder>;
+        data: Partial<IOrder>;
       }) => ({
         url: `/orders/${orderId}`,
         method: "PATCH",
