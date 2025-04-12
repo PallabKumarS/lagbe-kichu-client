@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { DialogComponent } from "@/components/shared/Dialog";
 import LoadingData from "@/components/shared/LoadingData";
-import { TableComponent } from "@/components/shared/Table";
 import {
   useCreatePaymentMutation,
   useDeleteOrderMutation,
@@ -44,7 +44,7 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
     heads.push("Actions");
   }
 
-  const handleDelete = async (order: TOrder & TMongoose) => {
+  const handleDelete = async (order: TOrder) => {
     const toastId = toast.loading("Deleting order...");
     try {
       const res = await deleteOrder(order.orderId).unwrap();
@@ -66,11 +66,11 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
     }
   };
 
-  const handleView = async (order: TOrder & TMongoose) => {
+  const handleView = async (order: TOrder) => {
     router.push(`/dashboard/buyer/track/${order.orderId}`);
   };
 
-  const handleStatus = async (order: TOrder & TMongoose, status?: string) => {
+  const handleStatus = async (order: TOrder, status?: string) => {
     const toastId = toast.loading("Updating order status...");
     try {
       const res = await updateOrderStatus({
@@ -94,7 +94,7 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
     }
   };
 
-  const handleCreatePayment = async (item: TOrder & TMongoose) => {
+  const handleCreatePayment = async (item: TOrder) => {
     const toastId = toast.loading("Creating payment...");
     try {
       const res = await createPayment(item.orderId).unwrap();
@@ -120,24 +120,25 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
     }
   };
 
-  const renderViewContent = (order: TOrder & TMongoose) => (
+  const renderViewContent = (order: TOrder) => (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <h3 className="font-semibold text-gray-700">Seller Info</h3>
-          <p>Name: {order.sellerId.name}</p>
-          <p>Email: {order.sellerId.email}</p>
+          <h3 className="font-semibold text-gray-700">Ordered Items</h3>
+          {order.listingId?.map((listing, idx) => (
+            <div key={idx} className="border p-3 rounded-md">
+              <p className="font-medium">{listing.title}</p>
+              <p className="text-sm text-gray-500">{listing.category.title}</p>
+              <p className="text-sm text-green-600 font-semibold">
+                ${listing.price}
+              </p>
+            </div>
+          ))}
         </div>
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Buyer Info</h3>
           <p>Name: {order.buyerId.name}</p>
           <p>Email: {order.buyerId.email}</p>
-        </div>
-        <div className="space-y-2">
-          <h3 className="font-semibold text-gray-700">Listing Details</h3>
-          <p>Location: {order.listingId.title}</p>
-          <p>Price: ${order.listingId.price}</p>
-          <p>Category: {order.listingId.category.title}</p>
         </div>
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Order Info</h3>
@@ -165,8 +166,7 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
   );
 
   if (isFetching) return <LoadingData />;
-  console.log(orders)
-
+  console.log(orders);
 
   return (
     <div>
