@@ -1,6 +1,5 @@
 import AllTrack from "@/components/modules/pages/AllTrack";
 import Container from "@/components/shared/Container";
-import { getPersonalRequests } from "@/services/RequestService";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,11 +14,9 @@ const TrackingPage = async ({
 }) => {
   const query = await searchParams;
 
-  const requests = await getPersonalRequests({ limit: 12 });
-
   return (
     <Container>
-      <AllTrack requests={requests?.data} />
+      <AllTrack query={query} />
     </Container>
   );
 };

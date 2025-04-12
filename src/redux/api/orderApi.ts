@@ -108,7 +108,7 @@ const orderApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: {},
       }),
-      invalidatesTags: ["orders", "POrders", "order"],
+      invalidatesTags: ["orders", "POrders", "order", "payment"],
     }),
 
     // Verify payment
@@ -117,6 +117,7 @@ const orderApi = baseApi.injectEndpoints({
         url: `/orders/verify-payment/${paymentId}`,
         method: "GET",
       }),
+      providesTags: ["payment"],
     }),
   }),
 });

@@ -4,10 +4,10 @@ import Container from "@/components/shared/Container";
 import { getValidToken } from "@/lib/verifyToken";
 import { Metadata } from "next";
 
-const getSingleRequest = async (requestId: string) => {
+const getSingleRequest = async (orderId: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/requests/${requestId}`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/orders/${orderId}`,
       {
         next: {
           tags: ["request"],
@@ -26,9 +26,9 @@ const getSingleRequest = async (requestId: string) => {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ requestId: string }>;
+  params: Promise<{ orderId: string }>;
 }): Promise<Metadata> {
-  const request = await getSingleRequest((await params).requestId);
+  const request = await getSingleRequest((await params).orderId);
 
   return {
     title: `Track || ${request?.data?.listingId.listingId}`,
@@ -40,15 +40,13 @@ export async function generateMetadata({
 const TrackDetailsPage = async ({
   params,
 }: {
-  params: Promise<{ requestId: string }>;
+  params: Promise<{ orderId: string }>;
 }) => {
-  const request = await getSingleRequest((await params).requestId);
-
-  if (!request) return <div>Request not found</div>;
+  const orderId = (await params).orderId;
 
   return (
     <Container>
-      <RequestTracking request={request?.data} />
+      <RequestTracking orderId={orderId} />
     </Container>
   );
 };

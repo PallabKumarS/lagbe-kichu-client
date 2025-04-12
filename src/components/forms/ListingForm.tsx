@@ -38,6 +38,7 @@ const formSchema = z.object({
   description: z.string().min(1),
   category: z.string().min(1),
   images: z.array(z.object({ value: z.string().min(1) })),
+  videoLink: z.string().min(1),
 });
 
 type listingFormProps = {
@@ -68,6 +69,7 @@ export default function ListingForm({
       images: listing?.images.map((img) => {
         return { value: img };
       }) || [{ value: "" }],
+      videoLink: listing?.videoLink || "",
     },
   });
 
@@ -279,6 +281,22 @@ export default function ListingForm({
                   ))}
                 </SelectContent>
               </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* video link field  */}
+        <FormField
+          control={form.control}
+          name="videoLink"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Video Link</FormLabel>
+              <FormControl>
+                <Input placeholder="add a video link" type="text" {...field} />
+              </FormControl>
+
               <FormMessage />
             </FormItem>
           )}

@@ -3,14 +3,14 @@ import { TUser } from "./user";
 
 export type TOrder = {
   buyerId: TUser;
-  listingId: TListing;
-  sellerId: TUser;
+  listingId: TListing[];
   orderId: string;
+  price: number;
+  paymentType: "payment" | "cash";
   status:
     | "pending"
     | "processing"
     | "out for delivery"
-    | "paid"
     | "completed"
     | "cancelled";
   message?: string;
@@ -20,20 +20,20 @@ export type TOrder = {
 
 export interface IOrder {
   buyerId: string;
-  listingId: TListing;
-  sellerId: string;
+  listingId: string[];
   orderId: string;
-  status:
+  price: number;
+  paymentType: "payment" | "cash";
+  status?:
     | "pending"
     | "processing"
     | "out for delivery"
-    | "paid"
     | "completed"
     | "cancelled";
   message?: string;
   sellerPhoneNumber?: string;
   transaction?: TTransaction;
-};
+}
 
 export type TTransaction = {
   paymentId?: string;

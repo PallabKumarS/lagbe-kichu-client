@@ -12,6 +12,7 @@ export type TListing = {
   discountStartDate?: Date;
   discountEndDate?: Date;
   isDiscountActive?: boolean;
+  videoLink: string;
   isAvailable?: boolean;
   listingId: string;
   isDeleted?: boolean;
@@ -25,6 +26,7 @@ export interface IListing {
   images: string[];
   sellerId: string;
   discount?: number;
+  videoLink: string;
   discountStartDate?: Date;
   discountEndDate?: Date;
   isDiscountActive?: boolean;

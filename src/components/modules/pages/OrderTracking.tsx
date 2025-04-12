@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -6,10 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Clock, CreditCard, Truck, XCircle } from "lucide-react";
-import { TMongoose, TOrder } from "@/types";
+import { CheckCircle, Clock, Truck, XCircle } from "lucide-react";
+import { TListing, TMongoose, TOrder } from "@/types";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useGetSingleOrderQuery } from "@/redux/api/orderApi";
+import LoadingData from "@/components/shared/LoadingData";
 
 const orderStatusMap = {
   pending: 0,
@@ -35,11 +39,6 @@ const statusConfig = {
     color: "orange",
     label: "Out for Delivery",
     icon: Truck,
-  },
-  paid: {
-    color: "green",
-    label: "Paid",
-    icon: CreditCard,
   },
   completed: {
     color: "green",
@@ -101,24 +100,35 @@ const OrderStep = ({
   );
 };
 
-const RequestTracking = ({ request }: { request: TOrder & TMongoose }) => {
-  const currentStep = orderStatusMap[request.status || "pending"];
-  const StatusIcon = statusConfig[request.status]?.icon || XCircle;
-  const statusDetails = statusConfig[request.status] || statusConfig.pending;
+const OrderTracking = ({ orderId }: { orderId: string }) => {
+  const { data, isFetching } = useGetSingleOrderQuery(orderId, {
+    skip: !orderId,
+    refetchOnMountOrArgChange: true,
+  });
+
+  if (isFetching) return <LoadingData />;
+
+  const order = data?.data as TOrder & TMongoose;
+
+  console.log(order);
+
+  const currentStep = orderStatusMap[order.status || "pending"];
+  const StatusIcon = statusConfig[order.status]?.icon || XCircle;
+  const statusDetails = statusConfig[order.status] || statusConfig.pending;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <span>Order #{request.orderId}</span>
+            <span>Order #{order.orderId}</span>
             <Badge
               variant={
-                request.status === "processing"
+                order.status === "processing"
                   ? "default"
-                  : request.status === "paid"
+                  : order.status === "out for delivery"
                   ? "secondary"
-                  : request.status === "cancelled"
+                  : order.status === "cancelled"
                   ? "destructive"
                   : "outline"
               }
@@ -130,17 +140,17 @@ const RequestTracking = ({ request }: { request: TOrder & TMongoose }) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {request.status !== "cancelled" ? (
+          {order.status !== "cancelled" ? (
             <div>
               <OrderStep
                 title="Pending"
-                description="Requested | Awaiting owner response"
+                description="Ordered | Awaiting owner response"
                 isActive={currentStep === 0}
                 isCompleted={currentStep > 0}
               />
               <OrderStep
-                title="Approved"
-                description="Owner approved your request"
+                title="Processing"
+                description="Being Ready for Delivery"
                 isActive={currentStep === 1}
                 isCompleted={currentStep > 1}
               />
@@ -156,8 +166,7 @@ const RequestTracking = ({ request }: { request: TOrder & TMongoose }) => {
               <XCircle className="mx-auto mb-4 w-12 h-12" />
               <h3 className="text-xl font-semibold">Order Cancelled</h3>
               <p>
-                Your request is cancelled either accidentally or you have done
-                so
+                Your order is cancelled either accidentally or you have done so
               </p>
             </div>
           )}
@@ -173,7 +182,7 @@ const RequestTracking = ({ request }: { request: TOrder & TMongoose }) => {
             <div>
               <p className="text-gray-500">Order Date</p>
               <p className="font-semibold">
-                {new Date(request.createdAt).toLocaleDateString("en-US", {
+                {new Date(order.createdAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
@@ -182,39 +191,37 @@ const RequestTracking = ({ request }: { request: TOrder & TMongoose }) => {
             </div>
             <div>
               <p className="text-gray-500">Total Amount</p>
-              <p className="font-semibold text-green-600">
-                ${request.listingId.price}
-              </p>
+              <p className="font-semibold text-green-600">${order.price}</p>
             </div>
           </div>
 
           <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-4">Property Details</h3>
-            <Card>
-              <CardContent className="pt-4">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h4 className="font-medium">{request.listingId.title}</h4>
-                    <p className="text-gray-500">
-                      {request.listingId.category}
-                    </p>
-                  </div>
-                  <Badge variant="outline">
-                    ${request.listingId.price}/month
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
+            <h3 className="text-lg font-semibold mb-4">Order Items</h3>
+            <div className="space-y-4">
+              {order.listingId?.map((item: TListing, idx) => (
+                <Card key={idx}>
+                  <CardContent className="pt-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-medium">{item.title}</h4>
+                        <p className="text-gray-500">{item.category.title}</p>
+                      </div>
+                      <Badge variant="outline">${item.price}</Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </CardContent>
         <CardFooter>
           <Link
-            href={`/verify-payment?order_id=${request.transaction?.paymentId}`}
+            href={`/verify-payment?order_id=${order.transaction?.paymentId}`}
           >
             <Button variant={"link"}>Go to verify page</Button>
           </Link>
-          {request.status !== "paid" && (
-            <Link href={`${request.transaction?.paymentUrl}`}>
+          {order.status !== "cancelled" && (
+            <Link href={`${order.transaction?.paymentUrl}`}>
               <Button variant={"link"}>Go to payment page</Button>
             </Link>
           )}
@@ -224,4 +231,4 @@ const RequestTracking = ({ request }: { request: TOrder & TMongoose }) => {
   );
 };
 
-export default RequestTracking;
+export default OrderTracking;

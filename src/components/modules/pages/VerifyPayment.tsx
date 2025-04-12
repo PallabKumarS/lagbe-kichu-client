@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -15,10 +17,11 @@ import {
   CreditCard,
   User,
   Mail,
-  MapPin,
 } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { useVerifyPaymentQuery } from "@/redux/api/orderApi";
+import LoadingData from "@/components/shared/LoadingData";
 
 const StatusIcon = ({ status }: { status: string }) => {
   switch (status) {
@@ -39,9 +42,14 @@ const StatusIcon = ({ status }: { status: string }) => {
   }
 };
 
-export default function VerifyPayment({ requestData }: { requestData: any }) {
+export default function VerifyPayment({ order_id }: { order_id: string }) {
+  const { data: orderData, isFetching } = useVerifyPaymentQuery(order_id, {
+    skip: !order_id,
+    refetchOnMountOrArgChange: true,
+  });
+
   const getStatusVariant = () => {
-    switch (requestData?.bank_status) {
+    switch (orderData?.bank_status) {
       case "Success":
         return "default";
       case "Failed":
@@ -51,6 +59,9 @@ export default function VerifyPayment({ requestData }: { requestData: any }) {
     }
   };
 
+  if (isFetching) return <LoadingData />;
+
+  // console.log(orderData);
 
   return (
     <div className="container mx-auto p-4">
@@ -64,21 +75,21 @@ export default function VerifyPayment({ requestData }: { requestData: any }) {
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               Payment Status
-              <StatusIcon status={requestData?.bank_status} />
+              <StatusIcon status={orderData?.data?.bank_status} />
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-6 text-center">
               <h2
                 className={`text-2xl font-bold mb-4 ${
-                  requestData?.bank_status === "Success"
+                  orderData?.data?.bank_status === "Success"
                     ? "text-green-600 dark:text-green-300"
-                    : requestData?.bank_status === "Failed"
+                    : orderData?.data?.bank_status === "Failed"
                     ? "text-red-600 dark:text-red-300"
                     : "text-yellow-600 dark:text-yellow-300"
                 }`}
               >
-                Payment {requestData?.bank_status}
+                Payment {orderData?.data?.bank_status}
               </h2>
 
               <div className="space-y-2">
@@ -87,7 +98,7 @@ export default function VerifyPayment({ requestData }: { requestData: any }) {
                     Transaction ID:
                   </span>
                   <span className="text-gray-900 dark:text-gray-100">
-                    {requestData?.bank_trx_id || "N/A"}
+                    {orderData?.data?.bank_trx_id || "N/A"}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -95,7 +106,7 @@ export default function VerifyPayment({ requestData }: { requestData: any }) {
                     Amount:
                   </span>
                   <span className="text-gray-900 dark:text-gray-100">
-                    {requestData?.currency} {requestData?.amount}
+                    {orderData?.data?.currency} {orderData?.data?.amount}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -103,7 +114,7 @@ export default function VerifyPayment({ requestData }: { requestData: any }) {
                     Order Number:
                   </span>
                   <span className="text-gray-900 dark:text-gray-100">
-                    {requestData?.customer_order_id}
+                    {orderData?.data?.customer_order_id}
                   </span>
                 </div>
               </div>
@@ -111,7 +122,7 @@ export default function VerifyPayment({ requestData }: { requestData: any }) {
           </CardContent>
           <CardFooter className="justify-center">
             <Link
-              href={`/dashboard/tenant/track/${requestData?.customer_order_id}`}
+              href={`/dashboard/buyer/track/${orderData?.data?.customer_order_id}`}
             >
               <Button size="lg" variant={getStatusVariant()}>
                 Track Your Orders <ArrowRight className="h-5 w-5 ml-2" />
@@ -135,7 +146,7 @@ export default function VerifyPayment({ requestData }: { requestData: any }) {
                     Transaction Date
                   </p>
                   <p className="font-semibold text-gray-900 dark:text-gray-100">
-                    {new Date(requestData?.date_time).toLocaleString()}
+                    {new Date(orderData?.data?.date_time).toLocaleString()}
                   </p>
                 </div>
               </div>
@@ -145,28 +156,28 @@ export default function VerifyPayment({ requestData }: { requestData: any }) {
                 <div className="flex items-center gap-2">
                   <User className="w-5 h-5 text-primary dark:text-primary-foreground" />
                   <span className="text-gray-900 dark:text-gray-100">
-                    {requestData?.name}
+                    {orderData?.data?.name}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-5 h-5 text-primary dark:text-primary-foreground" />
                   <span className="text-gray-900 dark:text-gray-100">
-                    {requestData?.email}
+                    {orderData?.data?.email}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CreditCard className="w-5 h-5 text-primary dark:text-primary-foreground" />
                   <span className="text-gray-900 dark:text-gray-100">
-                    Method: {requestData?.method}
+                    Method: {orderData?.data?.method}
                   </span>
                 </div>
               </div>
 
               {/* Additional Badges */}
               <div className="mt-4 flex flex-wrap gap-2">
-                <Badge variant="secondary">{requestData?.invoice_no}</Badge>
-                <Badge variant="secondary">{requestData?.sp_code}</Badge>
-                <Badge variant="secondary">{requestData?.sp_message}</Badge>
+                <Badge variant="secondary">{orderData?.data?.invoice_no}</Badge>
+                <Badge variant="secondary">{orderData?.data?.sp_code}</Badge>
+                <Badge variant="secondary">{orderData?.data?.sp_message}</Badge>
               </div>
             </div>
           </CardContent>

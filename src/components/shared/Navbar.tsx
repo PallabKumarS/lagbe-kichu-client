@@ -21,6 +21,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import Searchbar from "./Searchbar";
 import { privateRoutes } from "@/constants";
 import { deleteCookie } from "@/services/AuthService";
+import CartNotifyIcon from "./CartNotification";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -125,6 +126,9 @@ export default function Navbar() {
           )}
 
           <ThemeToggle />
+          <Link href={"/cart"}>
+            <CartNotifyIcon />
+          </Link>
 
           {/* Mobile Menu Button */}
           <Button

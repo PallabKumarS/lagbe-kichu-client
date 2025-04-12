@@ -2,12 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 
-const getCurrentUser = async () => {
+type DecodedUser = {
+  userId: string;
+  role: "admin" | "buyer" | "seller";
+  email: string;
+  iat: number;
+  exp: number;
+};
+
+const getCurrentUser = async (): Promise<DecodedUser | null> => {
   const accessToken = (await cookies()).get("accessToken")?.value;
   let decodedData = null;
 
   if (accessToken) {
-    decodedData = await jwtDecode(accessToken);
+    decodedData = jwtDecode(accessToken) as DecodedUser;
     return decodedData;
   } else {
     return null;
@@ -31,6 +39,9 @@ export const middleware = async (request: NextRequest) => {
 
   const { pathname } = request.nextUrl;
 
+  console.log("userInfo:", userInfo);
+  console.log("pathname:", pathname);
+
   if (!userInfo) {
     if (authRoutes.includes(pathname)) {
       return NextResponse.next();
@@ -48,7 +59,11 @@ export const middleware = async (request: NextRequest) => {
   if (userInfo?.role && roleBasedPrivateRoutes[userInfo.role as Role]) {
     const routes = roleBasedPrivateRoutes[userInfo.role as Role];
 
+    console.log("Checking routes for role:", userInfo.role, routes);
+
     if (routes.some((route) => pathname.match(route))) {
+      console.log("Matched route, allow access");
+
       return NextResponse.next();
     }
   }
@@ -57,5 +72,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/dashboard", "/dashboard/:path*", "/verify-payment"],
+  matcher: ["/dashboard", "/dashboard/:path*", "/verify-payment(.*)"],
 };

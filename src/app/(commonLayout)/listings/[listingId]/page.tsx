@@ -1,7 +1,6 @@
 import ListingDetails from "@/components/modules/listing/ListingDetails";
 import Container from "@/components/shared/Container";
 import { Metadata } from "next";
-import Link from "next/link";
 
 const getSingleListing = async (listingId: string) => {
   try {
@@ -14,7 +13,7 @@ const getSingleListing = async (listingId: string) => {
       }
     );
     return await res.json();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return Error(error.message);
   }
@@ -39,30 +38,10 @@ const ListingDetailsPage = async ({
   params: Promise<{ listingId: string }>;
 }) => {
   const listingId = (await params).listingId;
-  const listing = await getSingleListing(listingId);
-
-  console.log(listing);
-
-  if (!listing) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <div className="text-4xl">🥲</div>
-        <h2 className="text-2xl font-semibold text-gray-800">
-          No Listing Found
-        </h2>
-        <p className="text-gray-600">
-          This listing may have been removed or is no longer available.
-        </p>
-        <Link href="/listings" className="text-primary hover:underline">
-          Browse other listings
-        </Link>
-      </div>
-    );
-  }
 
   return (
     <Container>
-      <ListingDetails listing={listing?.data} />
+      <ListingDetails listingId={listingId} />
     </Container>
   );
 };
