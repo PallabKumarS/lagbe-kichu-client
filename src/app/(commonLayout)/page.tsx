@@ -7,7 +7,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "LagbeKichu | Home",
   description:
-    "Welcome to LagbeKichu, your gateway to finding your dream home.",
+    "Welcome to LagbeKichu, your gateway to finding your dream products and services. We're here to help you discover the perfect match for your needs.",
 };
 
 const page = () => {

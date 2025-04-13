@@ -30,7 +30,8 @@ const AllListing = ({ query }: AllListingProps) => {
             Available Properties
           </h1>
           <p className="text-muted-foreground">
-            Discover your perfect home from our curated collection of properties
+            Discover your perfect product from our curated collection of
+            listings
           </p>
         </div>
 

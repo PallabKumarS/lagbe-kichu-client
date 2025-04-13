@@ -60,7 +60,7 @@ const AboutUs = () => {
       icon: Search,
       title: "Smart Search",
       description:
-        "Advanced filters to help you find your perfect home quickly",
+        "Advanced filters to help you find your perfect product quickly",
     },
     {
       icon: Users2,
