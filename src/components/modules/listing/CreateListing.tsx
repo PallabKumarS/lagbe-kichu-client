@@ -23,7 +23,6 @@ const CreateListing = ({ query }: { query: Record<string, string> }) => {
 
   if (isFetching) return <LoadingData />;
 
-  console.log(listings);
 
   return (
     <Container>

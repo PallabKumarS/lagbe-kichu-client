@@ -10,87 +10,90 @@
 }
 
 :root {
-  --background: hsla(65, 29%, 92%, 0.74); /* for main background color  */
-  --foreground: hsl(78, 18%, 43%); /* for main text color  */
-  --card: hsl(56, 28%, 90%); /* for card background color  */
-  --card-foreground: hsl(78, 18%, 43%); /* for card or tabs label color  */
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(36, 83%, 49%);
-  --primary: hsl(
-    98,
-    27%,
-    53%
-  ); /* for primary (works with anything primary) color  */
-  --primary-foreground: hsla(0, 0%, 100%, 0.979);
-  --secondary: hsla(0, 89%, 51%, 0.342);
-  --secondary-foreground: hsl(
-    120,
-    4%,
-    26%
-  ); /* for secondary like pop over text or button text color  */
-  --muted: hsla(204, 20%, 95%, 0.527);
-  --muted-foreground: hsl(120, 4%, 26%); /* for card text color  */
-  --accent: hsl(98, 80%, 43%); /* hover background color  */
-  --accent-foreground: hsl(111, 11%, 25%); /* hover text color  */
-  --destructive: hsl(0, 70%, 50%);
-  --destructive-foreground: hsla(0, 94%, 51%, 0.466);
-  --border: hsla(73, 67%, 54%); /* border color  */
-  --input: hsla(82, 17%, 75%, 0.815); /* input field border color  */
-  --ring: hsl(73, 67%, 54%); /* selected border color  */
-  --radius: 0.75rem;
-  --chart-1: hsl(48, 100%, 96%);
-  --chart-2: hsl(170, 60%, 45%);
-  --chart-3: hsl(0, 70%, 50%);
-  --chart-4: hsl(280, 60%, 55%);
-  --chart-5: hsla(84, 33%, 97%, 0.63);
-  --sidebar: hsl(
-    65,
-    29%,
-    92%,
-    0.74
-  ); /* sidebar background color and filter bar background color  */
-  --sidebar-foreground: hsl(240 5.3% 26.1%);
-  --sidebar-primary: hsl(240 5.9% 10%);
-  --sidebar-primary-foreground: hsl(78, 18%, 43%);
-  --sidebar-accent: hsl(98, 80%, 43%);
-  --sidebar-accent-foreground: hsl(79, 13%, 24%);
-  --sidebar-border: hsl(220 13% 91%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  /* Main Background and Text */
+  --background: hsl(210, 20%, 98%); /* Soft, light gray-white */
+  --foreground: hsl(220, 15%, 20%); /* Deep charcoal */
+
+  /* Card and Surface Colors */
+  --card: hsl(210, 15%, 95%); /* Very light gray */
+  --card-foreground: hsl(220, 15%, 25%); /* Slightly lighter charcoal */
+
+  /* Primary Color (Main Brand Color) */
+  --primary: hsl(215, 80%, 55%); /* Vibrant blue */
+  --primary-foreground: hsl(0, 0%, 100%); /* Pure white */
+
+  /* Secondary Color */
+  --secondary: hsl(260, 60%, 65%); /* Soft purple */
+  --secondary-foreground: hsl(0, 0%, 100%); /* Pure white */
+
+  /* Accent Colors */
+  --accent: hsl(170, 70%, 45%); /* Teal/Turquoise */
+  --accent-foreground: hsl(0, 0%, 100%); /* Pure white */
+
+  /* Muted Colors */
+  --muted: hsl(210, 15%, 90%); /* Light gray */
+  --muted-foreground: hsl(220, 15%, 40%); /* Soft gray */
+
+  /* Destructive (Error) Colors */
+  --destructive: hsl(350, 70%, 50%); /* Vibrant red */
+  --destructive-foreground: hsl(0, 0%, 100%); /* Pure white */
+
+  /* Border and Input Colors */
+  --border: hsl(210, 15%, 85%); /* Light gray */
+  --input: hsl(210, 15%, 90%); /* Slightly lighter gray */
+  --ring: hsl(215, 80%, 55%); /* Same as primary */
+
+  /* Additional Chart and Visualization Colors */
+  --chart-1: hsl(
+    210,
+    15%,
+    90%
+  ); /* Very light gray - almost white, softer than previous */
+  --chart-2: hsl(170, 70%, 45%); /* Teal - keeps the fresh, modern feel */
+  --chart-3: hsl(215, 80%, 55%); /* Blue - primary theme color */
+  --chart-4: hsl(260, 60%, 65%); /* Soft Purple - complementary */
+
+  /* Sidebar Colors */
+  --sidebar: hsl(210, 15%, 95%); /* Very light gray */
+  --sidebar-foreground: hsl(220, 15%, 25%); /* Charcoal */
+  --sidebar-accent: hsl(215, 80%, 55%); /* Blue */
 }
 
 .dark {
-  --background: hsl(224, 29%, 18%);
-  --foreground: hsla(206, 14%, 90%, 0.575);
-  --card: hsl(225, 25%, 15%);
-  --card-foreground: hsl(210, 15%, 90%);
-  --popover: hsl(225, 25%, 15%);
-  --popover-foreground: hsl(210, 15%, 90%);
-  --primary: hsl(98, 75%, 27%);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(225, 20%, 25%);
-  --secondary-foreground: hsl(210, 15%, 90%);
-  --muted: hsl(225, 20%, 25%);
-  --muted-foreground: hsl(210, 15%, 70%);
-  --accent: hsl(98, 75%, 27%);
-  --accent-foreground: hsl(0, 0%, 100%);
-  --destructive: hsl(0, 70%, 50%);
-  --destructive-foreground: hsl(0, 0%, 100%);
-  --border: hsl(98, 73%, 14%);
-  --input: hsl(225, 20%, 25%);
-  --ring: hsl(98, 75%, 27%);
-  --chart-1: hsl(209, 61%, 11%);
-  --chart-2: hsl(170, 60%, 50%);
-  --chart-3: hsl(45, 70%, 55%);
-  --chart-4: hsl(280, 60%, 60%);
-  --chart-5: hsla(240, 68%, 17%, 0.932);
-  --sidebar: hsl(240 5.9% 10%);
-  --sidebar-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-primary: hsl(224.3 76.3% 48%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(240 3.7% 15.9%);
-  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-border: hsl(240 3.7% 15.9%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  /* Dark Mode Variant */
+  --background: hsl(220, 15%, 15%); /* Deep charcoal */
+  --foreground: hsl(210, 15%, 90%); /* Light gray */
+
+  --card: hsl(220, 15%, 20%); /* Slightly lighter charcoal */
+  --card-foreground: hsl(210, 15%, 85%); /* Soft light gray */
+
+  --primary: hsl(215, 80%, 60%); /* Brighter blue */
+  --primary-foreground: hsl(0, 0%, 100%); /* Pure white */
+
+  --secondary: hsl(260, 60%, 70%); /* Lighter purple */
+  --secondary-foreground: hsl(0, 0%, 100%); /* Pure white */
+
+  --accent: hsl(170, 70%, 50%); /* Brighter teal */
+  --accent-foreground: hsl(0, 0%, 100%); /* Pure white */
+
+  --muted: hsl(220, 15%, 25%); /* Dark gray */
+  --muted-foreground: hsl(210, 15%, 70%); /* Light gray */
+
+  --destructive: hsl(350, 70%, 55%); /* Brighter red */
+  --destructive-foreground: hsl(0, 0%, 100%); /* Pure white */
+
+  --border: hsl(220, 15%, 30%); /* Dark gray */
+  --input: hsl(220, 15%, 25%); /* Slightly lighter dark gray */
+  --ring: hsl(215, 80%, 60%); /* Brighter blue */
+
+  --chart-1: hsl(220, 15%, 40%); /* Deeper gray - more contrast in dark mode */
+  --chart-2: hsl(170, 70%, 50%); /* Slightly brighter teal */
+  --chart-3: hsl(215, 80%, 60%); /* Brighter blue */
+  --chart-4: hsl(260, 60%, 70%); /* Lighter purple */
+
+  --sidebar: hsl(220, 15%, 20%); /* Charcoal */
+  --sidebar-foreground: hsl(210, 15%, 90%); /* Light gray */
+  --sidebar-accent: hsl(215, 80%, 60%); /* Brighter blue */
 }
 
 @theme inline {
@@ -130,19 +133,72 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* global border radius */
+  --radius: 0.75rem;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border 
+          outline-ring/50
+          transition-colors
+          duration-500 
+          ease-in-out;
   }
+
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background 
+           text-foreground 
+           antialiased 
+           selection:bg-primary 
+           selection:text-primary-foreground;
+  }
+
+  /* Improve typography and spacing */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold text-foreground;
+  }
+
+  /* Enhance focus states */
+  *:focus-visible {
+    @apply outline-2 outline-ring 
+           outline-offset-2 
+           ring-2 
+           ring-primary/50;
+  }
+
+  /* Scrollbar styling */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(215, 80%, 55%) hsl(210, 15%, 90%);
+  }
+
+  /* Webkit scrollbar */
+  *::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  *::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full;
   }
 }
 
 .text-gradient {
-  background: linear-gradient(45deg, #00b09b, #96c93d);
+  background: linear-gradient(45deg, hsl(215, 80%, 55%), hsl(170, 70%, 45%));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

@@ -107,7 +107,7 @@ const Footer = () => {
           {/* Social Links */}
           <div className="space-y-4 mx-auto text-center">
             <h3 className="text-lg font-semibold">Follow Us</h3>
-            <div className="flex space-x-4 text-center">
+            <div className="flex space-x-4 text-center justify-center">
               {socialLinks.map(({ href, icon: Icon, label }, index) => (
                 <Link
                   href={href}

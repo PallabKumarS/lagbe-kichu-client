@@ -166,7 +166,7 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
   );
 
   if (isFetching) return <LoadingData />;
-  console.log(orders);
+
 
   return (
     <div>

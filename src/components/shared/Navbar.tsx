@@ -2,7 +2,17 @@
 
 import { Button } from "../ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, Menu, X } from "lucide-react";
+import {
+  LogOut,
+  Menu,
+  X,
+  Home,
+  List,
+  Info,
+  PlusCircle,
+  User,
+  Settings,
+} from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -20,8 +30,8 @@ import { logout, userSelector } from "@/redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import Searchbar from "./Searchbar";
 import { privateRoutes } from "@/constants";
-import { deleteCookie } from "@/services/AuthService";
 import CartNotifyIcon from "./CartNotification";
+import { deleteCookie } from "@/lib/deleteCookie";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,8 +41,8 @@ export default function Navbar() {
   const user = useAppSelector(userSelector);
 
   const navItems = [
-    { href: "/listings", label: "All Listings" },
-    { href: "/about", label: "About" },
+    { href: "/listings", label: "All Listings", icon: List },
+    { href: "/about", label: "About", icon: Info },
   ];
 
   const handleLogout = () => {
@@ -45,11 +55,14 @@ export default function Navbar() {
   };
 
   return (
-    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-30 pt-2">
-      <nav className="container mx-auto px-4 pb-2 lg:h-16 flex items-center justify-center lg:justify-between gap-4 flex-wrap lg:flex-nowrap">
-        {/* Logo */}
-        <div onClick={() => router.push("/")} className="flex-shrink-0">
-          <h1 className="text-2xl font-black">
+    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-30 py-2 shadow-sm">
+      <nav className="container mx-auto px-4 flex items-center justify-center lg:justify-between gap-4 flex-wrap lg:flex-nowrap">
+        {/* Logo with hover effect */}
+        <div
+          onClick={() => router.push("/")}
+          className="flex-shrink-0 cursor-pointer group"
+        >
+          <h1 className="text-2xl font-black transition-all duration-300 group-hover:scale-105">
             <span className="text-gradient">Lagbe Kichu</span>
           </h1>
         </div>
@@ -65,54 +78,85 @@ export default function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="
+                flex items-center gap-2 
+                text-muted-foreground 
+                hover:text-primary 
+                transition-colors 
+                group
+                px-3 py-2 
+                rounded-full 
+                hover:bg-accent/20
+              "
             >
+              <item.icon className="w-5 h-5 group-hover:rotate-6 transition-transform" />
               {item.label}
             </Link>
           ))}
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {user?.email ? (
             <>
               {user?.role === "seller" && (
                 <Link
                   href="/dashboard/seller/create-listing"
-                  className="hidden sm:block"
+                  className="hidden sm:flex items-center gap-2 
+                    bg-primary/10 text-primary 
+                    hover:bg-primary/20 
+                    px-3 py-2 
+                    rounded-full 
+                    transition-colors"
                 >
-                  <Button variant="outline" className="rounded-full">
-                    Post Rental
-                  </Button>
+                  <PlusCircle className="w-5 h-5" />
+                  Post Rental
                 </Link>
               )}
 
               <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Avatar>
+                <DropdownMenuTrigger className="focus:outline-none">
+                  <Avatar className="ring-2 ring-primary/30 hover:ring-primary/50 transition-all">
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel className="flex items-center gap-3">
+                    <User className="w-5 h-5 text-muted-foreground" />
+                    My Account
+                  </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Link href={`/dashboard/profile`}>Profile</Link>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href={`/dashboard/profile`}
+                      className="cursor-pointer flex items-center gap-3"
+                    >
+                      <User className="w-4 h-4" /> Profile
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href={`/dashboard/profile`}>Dashboard</Link>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href={`/dashboard/profile`}
+                      className="cursor-pointer flex items-center gap-3"
+                    >
+                      <Home className="w-4 h-4" /> Dashboard
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href={`/dashboard/settings`}>Settings</Link>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href={`/dashboard/settings`}
+                      className="cursor-pointer flex items-center gap-3"
+                    >
+                      <Settings className="w-4 h-4" /> Settings
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="text-red-500"
+                    className="text-destructive focus:text-destructive-foreground cursor-pointer flex items-center gap-3"
                     onClick={handleLogout}
                   >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Logout
+                    <LogOut className="w-4 h-4" /> Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -158,7 +202,7 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Search - Always visible on small screens */}
-      <div className="flex-grow max-w-xs md:hidden z-[100] mx-auto mb-2">
+      <div className="flex-grow max-w-xs md:hidden z-[100] mx-auto my-2">
         <Searchbar />
       </div>
 
@@ -178,18 +222,38 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block text-muted-foreground hover:text-primary transition-colors"
+                  className="
+                    flex items-center gap-3 
+                    text-muted-foreground 
+                    hover:text-primary 
+                    transition-colors 
+                    py-2 
+                    px-3 
+                    rounded-full 
+                    hover:bg-accent/20
+                  "
                   onClick={() => setIsMenuOpen(false)}
                 >
+                  <item.icon className="w-5 h-5" />
                   {item.label}
                 </Link>
               ))}
               {user && user.role === "seller" && (
                 <Link
                   href="/dashboard/seller/create-listing"
-                  className="block text-muted-foreground hover:text-primary transition-colors"
+                  className="
+                    flex items-center gap-3 
+                    text-muted-foreground 
+                    hover:text-primary 
+                    transition-colors 
+                    py-2 
+                    px-3 
+                    rounded-full 
+                    hover:bg-accent/20
+                  "
                   onClick={() => setIsMenuOpen(false)}
                 >
+                  <PlusCircle className="w-5 h-5" />
                   Post Rental
                 </Link>
               )}

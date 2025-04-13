@@ -1,7 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { getNewToken } from "@/services/AuthService";
-// import { getNewToken } from "@/services/AuthService";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
@@ -30,4 +29,43 @@ export const getValidToken = async (): Promise<string> => {
   }
 
   return token;
+};
+
+const getNewToken = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/auth/refresh-token`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: (await cookies()).get("refreshToken")!.value,
+        },
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const getCurrentUser = async () => {
+  const accessToken = (await cookies()).get("accessToken")?.value;
+  let decodedData = null;
+
+  if (accessToken) {
+    decodedData = jwtDecode(accessToken) as DecodedUser;
+    return decodedData;
+  } else {
+    return null;
+  }
+};
+
+type DecodedUser = {
+  userId: string;
+  role: "admin" | "buyer" | "seller";
+  email: string;
+  iat: number;
+  exp: number;
 };

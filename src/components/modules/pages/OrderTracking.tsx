@@ -110,7 +110,6 @@ const OrderTracking = ({ orderId }: { orderId: string }) => {
 
   const order = data?.data as TOrder & TMongoose;
 
-  console.log(order);
 
   const currentStep = orderStatusMap[order.status || "pending"];
   const StatusIcon = statusConfig[order.status]?.icon || XCircle;

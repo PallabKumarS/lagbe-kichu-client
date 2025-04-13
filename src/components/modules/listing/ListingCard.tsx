@@ -15,10 +15,10 @@ import ImageSlider from "@/components/shared/ImageSlider";
 import { Button } from "@/components/ui/button";
 import ConfirmationBox from "@/components/shared/ConfirmationBox";
 import { toast } from "sonner";
-import { deleteListing } from "@/services/ListingService";
 import { Modal } from "@/components/shared/Modal";
 import ListingForm from "@/components/forms/ListingForm";
 import { BiCategoryAlt } from "react-icons/bi";
+import { useDeleteListingMutation } from "@/redux/api/listingApi";
 
 interface ListingCardProps {
   listing: TListing & TMongoose;
@@ -26,11 +26,13 @@ interface ListingCardProps {
 }
 
 const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
+  const [deleteListing] = useDeleteListingMutation();
+
   const handleDelete = async (listingId: string) => {
     const toastId = toast.loading("Deleting listing...");
 
     try {
-      const res = await deleteListing(listingId);
+      const res = await deleteListing(listingId).unwrap();
       if (res.success) {
         toast.success(res?.message, { id: toastId });
       } else {

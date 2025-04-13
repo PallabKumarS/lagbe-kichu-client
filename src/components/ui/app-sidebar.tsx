@@ -13,6 +13,8 @@ import {
   TrainTrack,
   Package,
   FileSearch,
+  ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 
 import {
@@ -35,9 +37,8 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { logout, userSelector } from "@/redux/features/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname, useRouter } from "next/navigation";
-// import { deleteCookie } from "@/services/AuthService";
 import { privateRoutes } from "@/constants";
-import { deleteCookie } from "@/services/AuthService";
+import { deleteCookie } from "@/lib/deleteCookie";
 
 // common routes for all users
 const items = [
@@ -125,16 +126,63 @@ export function AppSidebar() {
     }
   };
 
+  const renderMenuItems = (routes: typeof items) => (
+    <SidebarMenu>
+      {routes.map((item) => (
+        <SidebarMenuItem
+          key={item.title}
+          className={`
+            group 
+            hover:bg-accent/10 
+            transition-colors 
+            duration-200 
+            ${pathname === item.href ? "bg-primary/10 text-primary" : ""}
+          `}
+        >
+          <SidebarMenuButton asChild>
+            <a href={item.href} className="flex items-center gap-3 w-full">
+              <item.icon
+                className={`
+                  w-5 h-5 
+                  group-hover:rotate-6 
+                  transition-transform
+                  ${
+                    pathname === item.href
+                      ? "text-primary"
+                      : "text-muted-foreground"
+                  }
+                `}
+              />
+              <span className="flex-grow">{item.title}</span>
+              <ChevronRight
+                className="
+                  w-4 h-4 
+                  opacity-0 
+                  group-hover:opacity-100 
+                  transition-opacity
+                  text-muted-foreground
+                "
+              />
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
+  );
+
   return (
     <Sidebar className="h-full" collapsible="icon">
-      <SidebarContent className="">
+      <SidebarContent>
         {/* Logo */}
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem key={"logo"}>
+              <SidebarMenuItem key="logo">
                 <SidebarMenuButton asChild>
-                  <a href={"/"}>
+                  <a
+                    href="/"
+                    className="flex items-center gap-3 hover:scale-105 transition-transform"
+                  >
                     <Package className="text-primary" />
                     <span
                       className="text-gradient"
@@ -151,91 +199,62 @@ export function AppSidebar() {
 
         {/* User Profile */}
         <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.href}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
+          <SidebarGroupContent>{renderMenuItems(items)}</SidebarGroupContent>
         </SidebarGroup>
 
-        {/* admin panel  */}
+        {/* Admin Panel */}
         {user?.role === "admin" && (
           <SidebarGroup>
-            <SidebarGroupLabel>Admin Panel</SidebarGroupLabel>
+            <SidebarGroupLabel className="flex items-center gap-2">
+              <Users className="w-4 h-4 text-muted-foreground" />
+              Admin Panel
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
-                {adminRoutes.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.href}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
+              {renderMenuItems(adminRoutes)}
             </SidebarGroupContent>
           </SidebarGroup>
         )}
 
-        {/* seller panel  */}
+        {/* Seller Panel */}
         {user?.role === "seller" && (
           <SidebarGroup>
-            <SidebarGroupLabel>Seller</SidebarGroupLabel>
+            <SidebarGroupLabel className="flex items-center gap-2">
+              <PackageOpen className="w-4 h-4 text-muted-foreground" />
+              Seller
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
-                {landlordRoutes.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.href}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
+              {renderMenuItems(landlordRoutes)}
             </SidebarGroupContent>
           </SidebarGroup>
         )}
 
-        {/* buyer panel  */}
+        {/* Buyer Panel */}
         {user?.role === "buyer" && (
           <SidebarGroup>
-            <SidebarGroupLabel>Buyer</SidebarGroupLabel>
+            <SidebarGroupLabel className="flex items-center gap-2">
+              <TrainTrack className="w-4 h-4 text-muted-foreground" />
+              Buyer
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
-                {tenantRoutes.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.href}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
+              {renderMenuItems(tenantRoutes)}
             </SidebarGroupContent>
           </SidebarGroup>
         )}
 
-        {/* logout */}
+        {/* Logout */}
         <div className="mt-auto border-t p-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex w-full items-center gap-3 rounded-lg p-2 hover:bg-muted">
-                <Avatar className="h-8 w-8">
+              <button
+                className="
+                  flex w-full items-center gap-3 
+                  rounded-lg p-2 
+                  hover:bg-accent/10 
+                  transition-colors 
+                  group
+                "
+              >
+                <Avatar className="h-8 w-8 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all">
                   {user?.profileImage ? (
                     <AvatarImage src={user?.profileImage} alt={user?.name} />
                   ) : (
@@ -249,29 +268,23 @@ export function AppSidebar() {
                     {user?.email}
                   </p>
                 </div>
-                <ChevronUp className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 text-muted-foreground group-hover:rotate-180 transition-transform" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="start" side="top">
               {user ? (
                 <DropdownMenuItem
-                  className="text-red-600"
-                  onClick={() => {
-                    handleLogout();
-                  }}
+                  className="text-destructive focus:text-destructive-foreground cursor-pointer flex items-center gap-3"
+                  onClick={handleLogout}
                 >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Logout
+                  <LogOut className="w-4 h-4" /> Logout
                 </DropdownMenuItem>
               ) : (
                 <DropdownMenuItem
-                  className="text-teal-600"
-                  onClick={() => {
-                    router.push("/login");
-                  }}
+                  className="text-primary focus:text-primary-foreground cursor-pointer flex items-center gap-3"
+                  onClick={() => router.push("/login")}
                 >
-                  <LogIn className="mr-2 h-4 w-4" />
-                  Login
+                  <LogIn className="w-4 h-4" /> Login
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>

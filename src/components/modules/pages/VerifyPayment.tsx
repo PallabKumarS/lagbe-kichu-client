@@ -61,7 +61,6 @@ export default function VerifyPayment({ order_id }: { order_id: string }) {
 
   if (isFetching) return <LoadingData />;
 
-  // console.log(orderData);
 
   return (
     <div className="container mx-auto p-4">

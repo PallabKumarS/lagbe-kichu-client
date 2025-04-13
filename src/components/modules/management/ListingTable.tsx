@@ -58,6 +58,14 @@ export function ListingTable({
     {
       accessorKey: "category",
       header: "Category",
+      cell: ({ row }) => {
+        const listing = row.original;
+        return (
+          <div className="px-3 py-1 bg-accent/10 hover:bg-accent/20 rounded-md text-sm font-medium inline-block capitalize transition-colors duration-200">
+            {listing.category.title}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "isAvailable",
@@ -98,7 +106,7 @@ export function ListingTable({
     {
       header: "Actions",
       cell: ({ row }) => (
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-center">
           <Button
             size="sm"
             variant="outline"
@@ -138,7 +146,7 @@ export function ListingTable({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead key={header.id} className="text-center">
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
@@ -154,7 +162,7 @@ export function ListingTable({
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="text-center">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

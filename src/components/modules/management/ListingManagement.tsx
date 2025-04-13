@@ -107,7 +107,7 @@ const ListingManagement = ({ query }: TProps) => {
         </div>
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Category</h3>
-          <p>{listing.category}</p>
+          <p>{listing.category.title}</p>
         </div>
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700">Status</h3>
