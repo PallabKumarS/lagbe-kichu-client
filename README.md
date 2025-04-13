@@ -1,16 +1,16 @@
 # Lagbe Kichu - Frontend
 
 This project is the frontend for Lagbe Kichu, built using Next.js with
-TypeScript. It provides role-based dashboards for tenants, landlords, and
-admins, along with property listing management and request tracking.
+TypeScript. It provides role-based dashboards for buyers, sellers, and admins,
+along with product listing management and order tracking.
 
 ## Live URL
 
-[Deployed Frontend](https://pks-nest-hunt-client.vercel.app)
+[Deployed Frontend](https://pks-lagbe-kichu-client.vercel.app)
 
 ## Repository
 
-[GitHub Repository](https://github.com/PallabKumarS/assignment-06-nest-hunt-client)
+[GitHub Repository](https://github.com/PallabKumarS/lagbe-kichu-client)
 
 ## Installation
 
@@ -49,9 +49,10 @@ bun run start
   - `/dashboard/settings` - Account settings
   - `/dashboard/admin/user-management` - Admin user management
   - `/dashboard/admin/listing-management` - Admin listing management
-  - `/dashboard/tenant/requests` - Tenant request tracking
-  - `/dashboard/landlord/requests` - Landlord request tracking
-  - `/dashboard/landlord/listings` - Landlord create and manage listings
+  - `/dashboard/admin/category-management` - Admin category management
+  - `/dashboard/buyer/orders` - Tenant request tracking
+  - `/dashboard/seller/orders` - Landlord request tracking
+  - `/dashboard/seller/listings` - Landlord create and manage listings
 - `/terms` - Terms & Conditions
 - `/privacy` - Privacy Policy
 - `/about` - About Us
