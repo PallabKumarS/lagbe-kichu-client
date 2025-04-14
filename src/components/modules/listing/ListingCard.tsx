@@ -63,7 +63,7 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="overflow-hidden h-[500px]">
+      <Card className="overflow-hidden h-[550px]">
         <CardHeader className="p-0">
           <div className="relative">
             <ImageSlider images={listing.images} variant="card" />
@@ -92,11 +92,12 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
           </div>
 
           {/* rating here  */}
-          {listing.rating && (
+          {listing.reviewRating && (
             <div className="flex items-center gap-2 mt-4">
               <div className="flex items-center text-yellow-500">
                 {[...Array(5)].map((_, index) => {
-                  const rounded = Math.floor(listing.rating.rating * 2) / 2;
+                  const rounded =
+                    Math.floor(listing.reviewRating.rating * 2) / 2;
                   return (
                     <span key={index}>
                       {rounded >= index + 1 ? (
@@ -111,8 +112,8 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
                 })}
               </div>
               <p className="text-sm text-muted-foreground">
-                ({listing.rating.totalRating} rating
-                {listing.rating.totalRating > 1 ? "s" : ""})
+                ({listing.reviewRating.totalCount} rating
+                {listing.reviewRating.totalCount > 1 ? "s" : ""})
               </p>
             </div>
           )}
