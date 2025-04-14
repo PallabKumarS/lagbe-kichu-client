@@ -55,6 +55,10 @@ export function OrderTable({ data, meta, onStatusChange }: OrderTableProps) {
           return "bg-yellow-100 text-yellow-600 hover:bg-yellow-200";
         case "cancelled":
           return "bg-red-100 text-red-600 hover:bg-red-200";
+        case "out for delivery":
+          return "bg-purple-100 text-purple-600 hover:bg-purple-200";
+        case "completed":
+          return "bg-blue-100 text-blue-600 hover:bg-blue-200";
         default:
           return "bg-gray-100 text-gray-600 hover:bg-gray-200";
       }
@@ -63,13 +67,17 @@ export function OrderTable({ data, meta, onStatusChange }: OrderTableProps) {
     const getStatusTransition = (currentStatus: TOrder["status"]) => {
       switch (currentStatus) {
         case "processing":
-          return "animate-pulse";
+          return "hover:animate-pulse";
         case "pending":
-          return "animate-bounce";
+          return "hover:animate-bounce";
         case "cancelled":
-          return "animate-shake";
+          return "hover:animate-[shake_1s_ease-in-out_infinite]";
+        case "out for delivery":
+          return "hover:animate-[fade_1s_ease-in-out_infinite]";
+        case "completed":
+          return "hover:animate-[wiggle_1s_ease-in-out_infinite]";
         default:
-          return "";
+          return "hover:animate-[fade_1s_ease-in-out_infinite]";
       }
     };
 
@@ -81,7 +89,7 @@ export function OrderTable({ data, meta, onStatusChange }: OrderTableProps) {
             px-3 py-1 rounded-full 
             ${getStatusClassName(status)} 
             ${getStatusTransition(status)}
-            transition-all duration-300 
+            transition-all duration-1000 
             transform hover:scale-105 
             focus:outline-none 
             focus:ring-2 

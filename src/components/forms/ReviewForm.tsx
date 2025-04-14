@@ -31,14 +31,12 @@ const formSchema = z.object({
 
 type ReviewFormProps = {
   listingId?: string;
-  orderId: string;
-  review?: TReview & TMongoose;
+  review?: (TReview & TMongoose) | null;
   edit?: boolean;
 };
 
 export default function ReviewForm({
   listingId,
-  orderId,
   review,
   edit = false,
 }: ReviewFormProps) {
@@ -74,7 +72,6 @@ export default function ReviewForm({
       userId: user?.userId as string,
       listingId:
         (listingId as string) || (review?.listingId.listingId as string),
-      orderId,
     };
 
     try {
@@ -98,7 +95,7 @@ export default function ReviewForm({
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 max-w-xl mx-auto py-10"
+        className="space-y-6 max-w-xl py-10"
       >
         {/* Star Rating */}
         <FormField

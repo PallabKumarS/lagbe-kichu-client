@@ -1,13 +1,11 @@
 "use client";
 
-import { TListing, TMongoose } from "@/types";
 import { motion } from "framer-motion";
 import ImageSlider from "@/components/shared/ImageSlider";
 import { Badge } from "@/components/ui/badge";
 import { Check, Calendar, ClipboardList } from "lucide-react";
 import { formatDistance } from "date-fns";
 import { useAppSelector, useAppDispatch } from "@/redux/hook";
-import { userSelector } from "@/redux/features/authSlice";
 import {
   cartSelector,
   addToCart,
@@ -20,13 +18,15 @@ import { useGetSingleListingQuery } from "@/redux/api/listingApi";
 import Link from "next/link";
 import LoadingData from "@/components/shared/LoadingData";
 import Container from "@/components/shared/Container";
+import BackButton from "@/components/shared/BackButton";
+import Reviews from "../management/Reviews";
+import ReviewForm from "@/components/forms/ReviewForm";
 
 interface ListingDetailsProps {
   listingId: string;
 }
 
 const ListingDetails = ({ listingId }: ListingDetailsProps) => {
-  const user = useAppSelector(userSelector);
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector(cartSelector);
   const [timeLeft, setTimeLeft] = useState<number>(0);
@@ -114,10 +114,13 @@ const ListingDetails = ({ listingId }: ListingDetailsProps) => {
                 {listing?.data?.isAvailable ? "Available" : "Rented"}
               </Badge>
             </div>
+
             <div className="flex items-center gap-2 text-muted-foreground">
               <ClipboardList className="h-4 w-4" />
               <p>{listing?.data?.title}</p>
             </div>
+
+            <BackButton />
           </div>
 
           {/* Image Slider */}
@@ -247,6 +250,9 @@ const ListingDetails = ({ listingId }: ListingDetailsProps) => {
                 </button>
               </div>
             )}
+          </div>
+          <div className="mt-12">
+            <Reviews listingId={listingId} />
           </div>
         </motion.div>
       ) : (

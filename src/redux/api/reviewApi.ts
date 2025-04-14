@@ -29,7 +29,7 @@ const reviewApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["reviews"],
+      invalidatesTags: ["reviews", "listing"],
     }),
 
     // Update a review
@@ -45,7 +45,7 @@ const reviewApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["reviews"],
+      invalidatesTags: ["reviews", "listing"],
     }),
 
     // Delete a review
@@ -54,7 +54,7 @@ const reviewApi = baseApi.injectEndpoints({
         url: `/reviews/${reviewId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["reviews"],
+      invalidatesTags: ["reviews", "listing"],
     }),
   }),
 });

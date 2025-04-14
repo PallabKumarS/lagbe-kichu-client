@@ -13,10 +13,9 @@ import ReviewForm from "@/components/forms/ReviewForm";
 
 type Props = {
   review: TReview & TMongoose;
-  onEdit?: (review: TReview) => void;
 };
 
-const ReviewCard = ({ review, onEdit }: Props) => {
+const ReviewCard = ({ review }: Props) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteReview, { isLoading }] = useDeleteReviewMutation();
 
@@ -53,7 +52,6 @@ const ReviewCard = ({ review, onEdit }: Props) => {
 
   const user = review.userId as TUser;
   const listing = review.listingId as TListing;
-  const order = review.orderId as TOrder;
 
   return (
     <Card className="rounded-2xl shadow-md hover:shadow-lg transition-shadow">
@@ -64,20 +62,10 @@ const ReviewCard = ({ review, onEdit }: Props) => {
               <h2 className="text-xl font-semibold">{user.name}</h2>
               <span className="text-xs text-gray-500">({user.email})</span>
             </div>
-            <div
-              className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                review.isReviewed
-                  ? "bg-green-100 text-green-600"
-                  : "bg-yellow-100 text-yellow-600"
-              }`}
-            >
-              {review.isReviewed ? "Completed" : "Pending"}
-            </div>
           </div>
 
           <div className="mt-2">
             <h3 className="font-medium text-lg">{listing.title}</h3>
-            <p className="text-sm text-gray-500">Order ID: {order.orderId}</p>
           </div>
 
           <div className="flex justify-between items-center">
@@ -95,25 +83,18 @@ const ReviewCard = ({ review, onEdit }: Props) => {
         </div>
 
         <div className="flex justify-end gap-2">
-          {onEdit && (
-            <Modal
-              title="Edit Review"
-              open={editModalOpen}
-              onOpenChange={setEditModalOpen}
-              trigger={
-                <Button variant="outline" size="icon">
-                  <Pencil className="w-4 h-4" />
-                </Button>
-              }
-              content={
-                <ReviewForm
-                  orderId={review.orderId.orderId}
-                  edit={true}
-                  review={review}
-                />
-              }
-            />
-          )}
+          <Modal
+            title="Edit Review"
+            open={editModalOpen}
+            onOpenChange={setEditModalOpen}
+            trigger={
+              <Button variant="outline" size="icon">
+                <Pencil className="w-4 h-4" />
+              </Button>
+            }
+            content={<ReviewForm edit={true} review={review} />}
+          />
+
           <ConfirmationBox
             title="Delete Review"
             description="Are you sure you want to delete this review? This action cannot be undone."
