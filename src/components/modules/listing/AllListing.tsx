@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { Search, X } from "lucide-react";
 import Filter from "@/components/shared/Filter";
 import ListingCard from "./ListingCard";
 import NoData from "@/components/shared/NoData";
@@ -12,11 +14,27 @@ interface AllListingProps {
   query: Record<string, string>;
 }
 
-const AllListing = ({ query }: AllListingProps) => {
+const AllListing = ({ query: initialQuery }: AllListingProps) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [query, setQuery] = useState(initialQuery);
+
   const { data: listings, isFetching } = useGetAllListingsQuery(query, {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
+
+  const handleSearch = () => {
+    const newQuery = {
+      ...initialQuery,
+      searchTerm,
+    };
+    setQuery(newQuery);
+  };
+
+  const handleClear = () => {
+    setSearchTerm("");
+    setQuery(initialQuery);
+  };
 
   if (isFetching) {
     return <LoadingData />;
@@ -33,6 +51,35 @@ const AllListing = ({ query }: AllListingProps) => {
             Discover your perfect product from our curated collection of
             listings
           </p>
+        </div>
+
+        {/* Search bar */}
+        <div className="w-full max-w-md">
+          <div className="relative flex items-center">
+            <div className="relative flex-grow">
+              <input
+                type="text"
+                placeholder="Search listings..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-4 pr-12 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              {searchTerm && (
+                <button
+                  onClick={handleClear}
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              )}
+            </div>
+            <button
+              onClick={handleSearch}
+              className="bg-primary text-white px-4 py-2 rounded-r-md hover:bg-primary-dark transition-colors flex items-center justify-center"
+            >
+              <Search className="w-6 h-7" />
+            </button>
+          </div>
         </div>
 
         <Filter />

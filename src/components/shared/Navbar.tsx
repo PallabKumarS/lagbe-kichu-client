@@ -69,7 +69,7 @@ export default function Navbar() {
 
         {/* Search Bar - Always in main navbar */}
         <div className="flex-grow max-w-md hidden md:block z-[100]">
-          <Searchbar />
+          {pathname !== "/listings" && <Searchbar />}
         </div>
 
         {/* Desktop Navigation */}
@@ -202,9 +202,11 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Search - Always visible on small screens */}
-      <div className="flex-grow max-w-xs md:hidden z-[100] mx-auto my-2">
-        <Searchbar />
-      </div>
+      {pathname !== "/listings" && (
+        <div className="flex-grow max-w-xs md:hidden z-[100] mx-auto my-2">
+          <Searchbar />
+        </div>
+      )}
 
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (

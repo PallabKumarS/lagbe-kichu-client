@@ -67,7 +67,7 @@ const Searchbar = () => {
           }}
           onFocus={() => setIsOpen(true)}
           onTouchStart={() => setIsOpen(true)}
-          placeholder="Search for houses..."
+          placeholder="Search for products..."
           className="w-full px-4 py-2 rounded-full border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 pl-10"
         />
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />

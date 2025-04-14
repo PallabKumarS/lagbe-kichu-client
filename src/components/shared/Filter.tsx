@@ -20,7 +20,6 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -31,7 +30,6 @@ import { TCategory, TMongoose } from "@/types";
 const Filter = () => {
   const router = useRouter();
 
-  const [title, setTitle] = useState<string>("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [availability, setAvailability] = useState<string | undefined>();
@@ -43,7 +41,6 @@ const Filter = () => {
   const handleApplyFilter = () => {
     const params = new URLSearchParams();
 
-    if (title) params.set("title", title);
     if (priceRange[0] > 0 || priceRange[1] < 50000) {
       params.set("minPrice", priceRange[0].toString());
       params.set("maxPrice", priceRange[1].toString());
@@ -59,7 +56,6 @@ const Filter = () => {
   };
 
   const handleClearFilter = () => {
-    setTitle("");
     setPriceRange([0, 50000]);
     setSelectedCategories([]);
     setAvailability(undefined);
@@ -100,25 +96,17 @@ const Filter = () => {
             </div>
           </div>
 
-          {/* Title */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Title</label>
-            <Input
-              type="text"
-              placeholder="Enter title of the product"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-
           {/* Categories */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Categories</label>
             <Command className="bg-chart-1 px-2">
-              <CommandInput placeholder="Type a category or search..." />
+              <CommandInput
+                className="h-8"
+                placeholder="Type a category or search..."
+              />
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
-                <CommandGroup aria-checked="true">
+                <CommandGroup aria-checked="mixed">
                   {categories?.data?.map((category: TCategory & TMongoose) => (
                     <CommandItem
                       className="flex items-center gap-2"
