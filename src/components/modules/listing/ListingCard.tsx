@@ -8,7 +8,18 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Check, X, Eye, Edit, Trash, Ban } from "lucide-react";
+import {
+  MapPin,
+  Check,
+  X,
+  Eye,
+  Edit,
+  Trash,
+  Ban,
+  Star,
+  StarHalf,
+  StarOff,
+} from "lucide-react";
 import Link from "next/link";
 import { TListing, TMongoose } from "@/types";
 import ImageSlider from "@/components/shared/ImageSlider";
@@ -52,7 +63,7 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="overflow-hidden h-[600px]">
+      <Card className="overflow-hidden h-[500px]">
         <CardHeader className="p-0">
           <div className="relative">
             <ImageSlider images={listing.images} variant="card" />
@@ -72,12 +83,39 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
             <p className="text-sm">{listing.title}</p>
           </div>
 
+          {/* listing details here  */}
           <div className="mt-3 space-y-2">
             <h3 className="font-semibold">${listing.price.toLocaleString()}</h3>
             <p className="line-clamp-2 text-sm text-muted-foreground">
               {listing.description}
             </p>
           </div>
+
+          {/* rating here  */}
+          {listing.rating && (
+            <div className="flex items-center gap-2 mt-4">
+              <div className="flex items-center text-yellow-500">
+                {[...Array(5)].map((_, index) => {
+                  const rounded = Math.floor(listing.rating.rating * 2) / 2;
+                  return (
+                    <span key={index}>
+                      {rounded >= index + 1 ? (
+                        <Star className="w-4 h-4 fill-yellow-400" />
+                      ) : rounded >= index + 0.5 ? (
+                        <StarHalf className="w-4 h-4 fill-yellow-400" />
+                      ) : (
+                        <StarOff className="w-4 h-4 text-muted" />
+                      )}
+                    </span>
+                  );
+                })}
+              </div>
+              <p className="text-sm text-muted-foreground">
+                ({listing.rating.totalRating} rating
+                {listing.rating.totalRating > 1 ? "s" : ""})
+              </p>
+            </div>
+          )}
         </CardContent>
 
         <CardFooter className="flex flex-col gap-4 border-t p-4 mt-auto">
@@ -103,6 +141,7 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
               </Button>
             </Link>
 
+            {/* only for seller and admin  */}
             {edit && (
               <>
                 <Modal

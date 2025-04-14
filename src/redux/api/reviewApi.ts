@@ -3,6 +3,16 @@ import { IReview } from "@/types"; // Adjust if needed
 
 const reviewApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // get all reviews
+    getAllReviews: builder.query({
+      query: (query: Record<string, string>) => ({
+        url: `/reviews`,
+        method: "GET",
+        params: query,
+      }),
+      providesTags: ["reviews"],
+    }),
+
     // Get all reviews for a specific listing
     getAllReviewsByListingId: builder.query({
       query: (listingId: string) => ({
@@ -51,6 +61,7 @@ const reviewApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllReviewsByListingIdQuery,
+  useGetAllReviewsQuery,
   useCreateReviewMutation,
   useUpdateReviewMutation,
   useDeleteReviewMutation,

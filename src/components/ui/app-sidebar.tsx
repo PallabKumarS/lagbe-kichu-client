@@ -7,7 +7,6 @@ import {
   PackageOpen,
   Users,
   FileText,
-  ChevronUp,
   LogIn,
   HomeIcon,
   TrainTrack,
@@ -15,6 +14,7 @@ import {
   FileSearch,
   ChevronRight,
   ChevronDown,
+  FilePenLineIcon,
 } from "lucide-react";
 
 import {
@@ -84,7 +84,7 @@ const adminRoutes = [
 ];
 
 // seller routes
-const landlordRoutes = [
+const sellerRoutes = [
   {
     title: "My Listings",
     icon: PackageOpen,
@@ -98,16 +98,16 @@ const landlordRoutes = [
 ];
 
 // buyer routes
-const tenantRoutes = [
+const buyerRoutes = [
   {
-    title: "Applications",
-    icon: FileText,
-    href: "/dashboard/buyer/orders",
-  },
-  {
-    title: "Track Requests",
+    title: "Track Orders",
     icon: TrainTrack,
     href: "/dashboard/buyer/track",
+  },
+  {
+    title: "Reviews",
+    icon: FilePenLineIcon,
+    href: "/dashboard/buyer/reviews",
   },
 ];
 
@@ -223,7 +223,7 @@ export function AppSidebar() {
               Seller
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              {renderMenuItems(landlordRoutes)}
+              {renderMenuItems(sellerRoutes)}
             </SidebarGroupContent>
           </SidebarGroup>
         )}
@@ -236,7 +236,7 @@ export function AppSidebar() {
               Buyer
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              {renderMenuItems(tenantRoutes)}
+              {renderMenuItems(buyerRoutes)}
             </SidebarGroupContent>
           </SidebarGroup>
         )}

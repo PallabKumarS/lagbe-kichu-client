@@ -30,7 +30,7 @@ const formSchema = z.object({
 });
 
 type ReviewFormProps = {
-  listingId: string;
+  listingId?: string;
   orderId: string;
   review?: TReview & TMongoose;
   edit?: boolean;
@@ -72,7 +72,8 @@ export default function ReviewForm({
     const data = {
       ...values,
       userId: user?.userId as string,
-      listingId,
+      listingId:
+        (listingId as string) || (review?.listingId.listingId as string),
       orderId,
     };
 

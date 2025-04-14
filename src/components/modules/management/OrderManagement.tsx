@@ -25,8 +25,6 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
   });
 
   const [updateOrderStatus] = useUpdateOrderStatusMutation();
-  const [deleteOrder] = useDeleteOrderMutation();
-  const [createPayment] = useCreatePaymentMutation();
 
   const [selectedUser, setSelectedUser] = useState<(TOrder & TMongoose) | null>(
     null
@@ -44,31 +42,6 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
     heads.push("Actions");
   }
 
-  const handleDelete = async (order: TOrder) => {
-    const toastId = toast.loading("Deleting order...");
-    try {
-      const res = await deleteOrder(order.orderId).unwrap();
-
-      if (res.success) {
-        toast.success(res.message, {
-          id: toastId,
-        });
-      } else {
-        toast.error(res.message, {
-          id: toastId,
-        });
-      }
-    } catch (error: any) {
-      console.error("Error deleting order:", error);
-      toast.error("Something went wrong", {
-        id: toastId,
-      });
-    }
-  };
-
-  const handleView = async (order: TOrder) => {
-    router.push(`/dashboard/buyer/track/${order.orderId}`);
-  };
 
   const handleStatus = async (order: TOrder, status?: string) => {
     const toastId = toast.loading("Updating order status...");
@@ -94,31 +67,6 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
     }
   };
 
-  const handleCreatePayment = async (item: TOrder) => {
-    const toastId = toast.loading("Creating payment...");
-    try {
-      const res = await createPayment(item.orderId).unwrap();
-
-      if (res.success) {
-        toast.success(res.message, {
-          id: toastId,
-        });
-
-        setTimeout(() => {
-          window.open(res?.data?.transaction?.paymentUrl, "_blank");
-        }, 1000);
-      } else {
-        toast.error(res.message, {
-          id: toastId,
-        });
-      }
-    } catch (error) {
-      toast.error("Error creating payment", {
-        id: toastId,
-      });
-      console.log(error);
-    }
-  };
 
   const renderViewContent = (order: TOrder) => (
     <div className="space-y-4">
@@ -174,11 +122,8 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
         <OrderTable
           data={orders?.data}
           meta={orders?.meta}
-          onView={handleView}
-          handleCreatePayment={handleCreatePayment}
           key={"order"}
           onStatusChange={handleStatus}
-          onDelete={handleDelete}
         />
 
         <DialogComponent

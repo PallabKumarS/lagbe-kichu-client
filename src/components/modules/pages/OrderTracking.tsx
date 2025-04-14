@@ -12,15 +12,18 @@ import { CheckCircle, Clock, Truck, XCircle } from "lucide-react";
 import { TListing, TMongoose, TOrder } from "@/types";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useGetSingleOrderQuery } from "@/redux/api/orderApi";
+import {
+  useCreatePaymentMutation,
+  useGetSingleOrderQuery,
+} from "@/redux/api/orderApi";
 import LoadingData from "@/components/shared/LoadingData";
+import { toast } from "sonner";
 
 const orderStatusMap = {
   pending: 0,
   processing: 1,
-  paid: 2,
-  "out for delivery": 3,
-  completed: 4,
+  "out for delivery": 2,
+  completed: 3,
   cancelled: 0,
 };
 
@@ -105,11 +108,37 @@ const OrderTracking = ({ orderId }: { orderId: string }) => {
     skip: !orderId,
     refetchOnMountOrArgChange: true,
   });
+  const [createPayment] = useCreatePaymentMutation();
+
+  const handleCreatePayment = async (item: TOrder) => {
+    const toastId = toast.loading("Creating payment...");
+    try {
+      const res = await createPayment(item.orderId).unwrap();
+
+      if (res.success) {
+        toast.success(res.message, {
+          id: toastId,
+        });
+
+        setTimeout(() => {
+          window.open(res?.data?.transaction?.paymentUrl, "_blank");
+        }, 1000);
+      } else {
+        toast.error(res.message, {
+          id: toastId,
+        });
+      }
+    } catch (error) {
+      toast.error("Error creating payment", {
+        id: toastId,
+      });
+      console.log(error);
+    }
+  };
 
   if (isFetching) return <LoadingData />;
 
   const order = data?.data as TOrder & TMongoose;
-
 
   const currentStep = orderStatusMap[order.status || "pending"];
   const StatusIcon = statusConfig[order.status]?.icon || XCircle;
@@ -154,10 +183,17 @@ const OrderTracking = ({ orderId }: { orderId: string }) => {
                 isCompleted={currentStep > 1}
               />
               <OrderStep
-                title="Paid"
-                description="Payment Received"
+                title="Out for Delivery"
+                description="On the way to your location"
                 isActive={currentStep === 2}
                 isCompleted={currentStep > 2}
+              />
+
+              <OrderStep
+                title="Completed"
+                description="Order Completed"
+                isActive={currentStep === 3}
+                isCompleted={currentStep === 3}
               />
             </div>
           ) : (
@@ -214,15 +250,10 @@ const OrderTracking = ({ orderId }: { orderId: string }) => {
           </div>
         </CardContent>
         <CardFooter>
-          <Link
-            href={`/verify-payment?order_id=${order.transaction?.paymentId}`}
-          >
-            <Button variant={"link"}>Go to verify page</Button>
-          </Link>
-          {order.status !== "cancelled" && (
-            <Link href={`${order.transaction?.paymentUrl}`}>
+          {order.status === "pending" && order.paymentType === "payment" && (
+            <div onClick={() => handleCreatePayment(order)}>
               <Button variant={"link"}>Go to payment page</Button>
-            </Link>
+            </div>
           )}
         </CardFooter>
       </Card>

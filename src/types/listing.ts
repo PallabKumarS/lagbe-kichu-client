@@ -8,10 +8,14 @@ export type TListing = {
   price: number;
   images: string[];
   sellerId: TUser;
-  discount?: number;
+  rating: {
+    rating: number;
+    totalRating: number;
+  };
+  discount: number;
   discountStartDate?: Date;
   discountEndDate?: Date;
-  isDiscountActive?: boolean;
+  isDiscountActive: boolean;
   videoLink: string;
   isAvailable?: boolean;
   listingId: string;

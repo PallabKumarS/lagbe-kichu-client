@@ -16,8 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Eye, Trash2 } from "lucide-react";
 import { TOrder, TMeta, TMongoose, TListing } from "@/types";
 import { PaginationComponent } from "@/components/shared/Pagination";
 import {
@@ -26,30 +24,17 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hook";
 import { userSelector } from "@/redux/features/authSlice";
-import ConfirmationBox from "@/components/shared/ConfirmationBox";
 
 interface OrderTableProps {
   data: (TOrder & TMongoose)[];
   meta: TMeta;
-  onView: (order: TOrder) => void;
   onStatusChange: (data: TOrder, status?: TOrder["status"]) => void;
-  handleCreatePayment: (item: TOrder) => void;
-  onDelete: (item: TOrder) => void;
 }
 
-export function OrderTable({
-  data,
-  meta,
-  onView,
-  onStatusChange,
-  handleCreatePayment,
-  onDelete,
-}: OrderTableProps) {
+export function OrderTable({ data, meta, onStatusChange }: OrderTableProps) {
   const user = useAppSelector(userSelector);
-  const router = useRouter();
 
   const availableStatuses: TOrder["status"][] = [
     "pending",
@@ -88,7 +73,7 @@ export function OrderTable({
       }
     };
 
-    if (user?.role !== "buyer" && user?.subRole !== "accountant") {
+    if (user?.subRole !== "accountant") {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger
@@ -101,7 +86,6 @@ export function OrderTable({
             focus:outline-none 
             focus:ring-2 
             focus:ring-opacity-50 
-            cursor-pointer 
             text-sm 
             font-semibold 
             shadow-sm
@@ -124,7 +108,6 @@ export function OrderTable({
                   hover:bg-gray-100 
                   transition-colors 
                   duration-200 
-                  cursor-pointer
                 `}
                 >
                   {newStatus.charAt(0).toUpperCase() + newStatus.slice(1)}
@@ -132,43 +115,6 @@ export function OrderTable({
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-      );
-    } else {
-      const handleClick = () => {
-        if (item.paymentType !== "cash" && user.role !== "seller") {
-          if (item.status === "pending") {
-            handleCreatePayment(item);
-          }
-        }
-      };
-
-      return (
-        <div
-          onClick={handleClick}
-          className={`
-          px-3 py-1 rounded-full 
-          ${getStatusClassName(status)}
-          
-          ${
-            item.paymentType !== "cash"
-              ? `transition-all duration-750  ${getStatusTransition(status)}`
-              : ""
-          }
-          text-sm 
-          font-semibold 
-          shadow-sm 
-          text-center
-          mx-auto
-          ${
-            item.status === "pending"
-              ? "cursor-pointer transform hover:scale-105"
-              : ""
-          }
-          ${item.paymentType !== "cash" ? "hover:shadow-md" : ""}
-        `}
-        >
-          {status.charAt(0).toUpperCase() + status.slice(1)}
-        </div>
       );
     }
   };
@@ -229,30 +175,7 @@ export function OrderTable({
         </div>
       ),
     },
-    user?.role === "buyer" && {
-      id: "actions",
-      header: "Actions",
-      cell: ({ row }: { row: { original: TOrder } }) => (
-        <div className="flex space-x-2 justify-center">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => onView(row.original)}
-          >
-            <Eye className="w-4 h-4" />
-          </Button>
-          <ConfirmationBox
-            trigger={
-              <Button size="sm" variant="destructive">
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            }
-            onConfirm={() => onDelete(row.original)}
-          />
-        </div>
-      ),
-    },
-  ].filter(Boolean) as ColumnDef<TOrder & TMongoose>[];
+  ];
 
   const table = useReactTable({
     data,
@@ -262,7 +185,7 @@ export function OrderTable({
 
   return (
     <div className="rounded-md border p-2">
-      <Table>
+      <Table className="overflow-x-auto">
         <TableCaption>Your Order List</TableCaption>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

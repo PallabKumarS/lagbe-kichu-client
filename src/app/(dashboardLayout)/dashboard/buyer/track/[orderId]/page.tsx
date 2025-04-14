@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import RequestTracking from "@/components/modules/pages/OrderTracking";
+import OrderTracking from "@/components/modules/pages/OrderTracking";
 import Container from "@/components/shared/Container";
 import { getValidToken } from "@/lib/verifyToken";
 import { Metadata } from "next";
@@ -31,9 +31,9 @@ export async function generateMetadata({
   const request = await getSingleRequest((await params).orderId);
 
   return {
-    title: `Track || ${request?.data?.listingId.listingId}`,
+    title: `Track || ${request?.data?.orderId}`,
     description:
-      "This is Track Details Page of the dashboard used by tenant only",
+      "This is Track Details Page of the dashboard used by buyer only",
   };
 }
 
@@ -46,7 +46,7 @@ const TrackDetailsPage = async ({
 
   return (
     <Container>
-      <RequestTracking orderId={orderId} />
+      <OrderTracking orderId={orderId} />
     </Container>
   );
 };

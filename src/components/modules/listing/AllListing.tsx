@@ -39,7 +39,7 @@ const AllListing = ({ query }: AllListingProps) => {
       </div>
 
       {listings?.data?.length > 0 ? (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(min(290px,100%),1fr))] lg:grid-cols-3 gap-4 mb-20">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(min(290px,100%),1fr))] gap-4 mb-20">
           {listings?.data?.map((listing: TListing & TMongoose) => (
             <ListingCard key={listing._id} listing={listing} />
           ))}

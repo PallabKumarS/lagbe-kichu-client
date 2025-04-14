@@ -11,9 +11,27 @@ import {
 import { TMeta } from "@/types";
 import { usePathname, useRouter } from "next/navigation";
 
-export function PaginationComponent({ meta }: { meta: TMeta }) {
+export function PaginationComponent({ meta }: { meta?: TMeta }) {
   const router = useRouter();
   const pathname = usePathname();
+
+  if (!meta) {
+    return (
+      <Pagination className="mb-10">
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious className="pointer-events-none opacity-50" />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink isActive={true}>1</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext className="pointer-events-none opacity-50" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    );
+  }
 
   const handlePagination = (page: number) => {
     router.push(`${pathname}?page=${page}`);
@@ -24,17 +42,17 @@ export function PaginationComponent({ meta }: { meta: TMeta }) {
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            onClick={() => handlePagination(meta?.page - 1)}
-            className={meta?.page <= 1 ? "pointer-events-none opacity-50" : ""}
+            onClick={() => handlePagination(meta.page - 1)}
+            className={meta.page <= 1 ? "pointer-events-none opacity-50" : ""}
           />
         </PaginationItem>
 
-        {Array(meta?.totalPage)
+        {Array(meta.totalPage)
           .fill("*")
           .map((_, index) => (
             <PaginationItem key={index}>
               <PaginationLink
-                isActive={meta?.page === index + 1}
+                isActive={meta.page === index + 1}
                 onClick={() => handlePagination(index + 1)}
               >
                 {index + 1}
@@ -46,7 +64,7 @@ export function PaginationComponent({ meta }: { meta: TMeta }) {
           <PaginationNext
             onClick={() => handlePagination(meta.page + 1)}
             className={
-              meta?.page >= meta?.totalPage
+              meta.page >= meta.totalPage
                 ? "pointer-events-none opacity-50"
                 : ""
             }
