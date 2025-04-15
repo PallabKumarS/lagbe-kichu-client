@@ -1,8 +1,10 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,8 +23,8 @@ import { LoaderCircle } from "lucide-react";
 // Zod schema for discount form
 const discountFormSchema = z.object({
   discount: z.number().min(0).max(100),
-  discountStartDate: z.date(),
-  discountEndDate: z.date(),
+  discountStartDate: z.coerce.date(),
+  discountEndDate: z.coerce.date(),
 });
 
 interface DiscountFormProps {
@@ -37,9 +39,8 @@ const DiscountForm = ({ listing }: DiscountFormProps) => {
     resolver: zodResolver(discountFormSchema),
     defaultValues: {
       discount: listing?.discount || 0,
-      discountStartDate:
-        new Date(listing?.discountStartDate || "") || new Date(),
-      discountEndDate: new Date(listing?.discountEndDate || "") || new Date(),
+      discountStartDate: new Date(listing.discountStartDate!) || new Date(),
+      discountEndDate: new Date(listing.discountEndDate!) || new Date(),
     },
   });
 
@@ -95,23 +96,22 @@ const DiscountForm = ({ listing }: DiscountFormProps) => {
           control={form.control}
           name="discountStartDate"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Start Date</FormLabel>
-              <FormControl>
-                <Input
-                  type="date"
-                  value={
-                    field.value
-                      ? new Date(field.value).toISOString().substring(0, 10)
-                      : ""
-                  }
-                  onChange={(e) => {
-                    const dateString = e.target.value;
-                    field.onChange(dateString ? new Date(dateString) : null);
-                  }}
-                />
-              </FormControl>
-              <FormMessage className="text-red-500" />
+            <FormItem className="flex flex-col">
+              <FormLabel>Discount Start Date</FormLabel>
+              <Controller
+                control={form.control}
+                name="discountStartDate"
+                render={({ field: { onChange, value } }) => (
+                  <DatePicker
+                    selected={value}
+                    onChange={onChange}
+                    showTimeSelect
+                    dateFormat="Pp"
+                    className="w-full p-2 border rounded"
+                  />
+                )}
+              />
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -121,23 +121,22 @@ const DiscountForm = ({ listing }: DiscountFormProps) => {
           control={form.control}
           name="discountEndDate"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>End Date</FormLabel>
-              <FormControl>
-                <Input
-                  type="date"
-                  value={
-                    field.value
-                      ? new Date(field.value).toISOString().substring(0, 10)
-                      : ""
-                  }
-                  onChange={(e) => {
-                    const dateString = e.target.value;
-                    field.onChange(dateString ? new Date(dateString) : null);
-                  }}
-                />
-              </FormControl>
-              <FormMessage className="text-red-500" />
+            <FormItem className="flex flex-col">
+              <FormLabel>Discount End Date</FormLabel>
+              <Controller
+                control={form.control}
+                name="discountEndDate"
+                render={({ field: { onChange, value } }) => (
+                  <DatePicker
+                    selected={value}
+                    onChange={onChange}
+                    showTimeSelect
+                    dateFormat="Pp"
+                    className="w-full p-2 border rounded"
+                  />
+                )}
+              />
+              <FormMessage />
             </FormItem>
           )}
         />

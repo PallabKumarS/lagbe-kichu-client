@@ -95,7 +95,7 @@ export default function ReviewForm({
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 max-w-xl py-10"
+        className={`space-y-6 max-w-xl py-10 ${edit ? "" : "mx-auto"}`}
       >
         {/* Star Rating */}
         <FormField

@@ -87,7 +87,7 @@ const Reviews = ({ listingId }: ReviewsProps) => {
       {reviews?.length > 0 ? (
         <div className="space-y-4">
           {hasOrdered && !hasReviewed && (
-            <div className="bg-card text-yellow-800 p-4 rounded-lg mb-4">
+            <div className="bg-card text-yellow-800 p-4 rounded-lg mb-4 ">
               <p className="font-semibold">
                 You have ordered this product. Please review it.
               </p>
