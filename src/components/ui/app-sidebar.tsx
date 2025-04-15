@@ -242,7 +242,7 @@ export function AppSidebar() {
         )}
 
         {/* Logout */}
-        <div className="mt-auto border-t p-4">
+        <div className="mt-auto border-t p-4 pl-0">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button

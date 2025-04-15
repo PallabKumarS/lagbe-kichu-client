@@ -82,29 +82,39 @@ const ReviewCard = ({ review }: Props) => {
           )}
         </div>
 
+        {/* button actions  */}
         <div className="flex justify-end gap-2">
-          <Modal
-            title="Edit Review"
-            open={editModalOpen}
-            onOpenChange={setEditModalOpen}
-            trigger={
-              <Button variant="outline" size="icon">
-                <Pencil className="w-4 h-4" />
-              </Button>
-            }
-            content={<ReviewForm edit={true} review={review} />}
-          />
+          <div>
+            <Modal
+              title="Edit Review"
+              open={editModalOpen}
+              onOpenChange={setEditModalOpen}
+              trigger={
+                <Button variant="outline" size="icon">
+                  <Pencil className="w-4 h-4" />
+                </Button>
+              }
+              content={<ReviewForm edit={true} review={review} />}
+            />
+          </div>
 
-          <ConfirmationBox
-            title="Delete Review"
-            description="Are you sure you want to delete this review? This action cannot be undone."
-            onConfirm={handleDelete}
-            trigger={
-              <Button variant="destructive" size="icon" disabled={isLoading}>
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            }
-          />
+          <div>
+            <ConfirmationBox
+              title="Delete Review"
+              description="Are you sure you want to delete this review? This action cannot be undone."
+              onConfirm={handleDelete}
+              trigger={
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  disabled={isLoading}
+                  className="hover:bg-red-300 transition-colors duration-500"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              }
+            />
+          </div>
         </div>
       </CardContent>
     </Card>
