@@ -20,6 +20,7 @@ import { useAppDispatch } from "@/redux/hook";
 import { Loader2Icon } from "lucide-react";
 import { login } from "@/redux/features/authSlice";
 import { useLoginMutation } from "@/redux/api/authApi";
+import { setCookies } from "@/services/auth.services";
 
 const formSchema = z.object({
   email: z.string(),
@@ -49,6 +50,9 @@ export default function LoginForm() {
 
       if (res?.success) {
         dispatch(login(res?.data?.accessToken));
+
+        // set cookies manually
+        await setCookies(res?.data?.accessToken, res?.data?.refreshToken);
         toast.success(res?.message, { id: toastId });
         if (redirectPath) {
           router.push(redirectPath);

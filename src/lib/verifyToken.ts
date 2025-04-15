@@ -20,12 +20,12 @@ export const isTokenExpired = async (token: string): Promise<boolean> => {
 export const getValidToken = async (): Promise<string> => {
   const cookieStore = await cookies();
 
-  let token = cookieStore.get("accessToken")!.value;
+  let token = cookieStore.get("access_token")!.value;
 
   if (!token || (await isTokenExpired(token))) {
     const { data } = await getNewToken();
     token = data?.accessToken;
-    cookieStore.set("accessToken", token);
+    cookieStore.set("access_token", token);
   }
 
   return token;
@@ -39,7 +39,7 @@ const getNewToken = async () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: (await cookies()).get("refreshToken")!.value,
+          Authorization: (await cookies()).get("refresh_token")!.value,
         },
       }
     );
@@ -51,7 +51,7 @@ const getNewToken = async () => {
 };
 
 export const getCurrentUser = async () => {
-  const accessToken = (await cookies()).get("accessToken")?.value;
+  const accessToken = (await cookies()).get("access_token")?.value;
   let decodedData = null;
 
   if (accessToken) {
