@@ -34,13 +34,16 @@ interface DiscountFormProps {
 const DiscountForm = ({ listing }: DiscountFormProps) => {
   const [addDiscount, { isLoading }] = useAddDiscountMutation();
 
-  type DiscountFormData = z.infer<typeof discountFormSchema>;
-  const form = useForm<DiscountFormData>({
+  const form = useForm<z.infer<typeof discountFormSchema>>({
     resolver: zodResolver(discountFormSchema),
     defaultValues: {
       discount: listing?.discount || 0,
-      discountStartDate: new Date(listing.discountStartDate!) || new Date(),
-      discountEndDate: new Date(listing.discountEndDate!) || new Date(),
+      discountStartDate: listing.discountStartDate
+        ? new Date(listing.discountStartDate)
+        : new Date(),
+      discountEndDate: listing.discountEndDate
+        ? new Date(listing.discountEndDate)
+        : new Date(),
     },
   });
 

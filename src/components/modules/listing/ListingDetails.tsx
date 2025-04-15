@@ -91,6 +91,7 @@ const ListingDetails = ({ listingId }: ListingDetailsProps) => {
   };
 
 
+
   return (
     <Container>
       {listing?.data ? (

@@ -121,7 +121,7 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
           )}
 
           {/* discount here  */}
-          {listing.discount ? (
+          {listing.discount && listing.isDiscountActive ? (
             <div className="flex items-center gap-2 text-green-600">
               <Percent className="h-4 w-4" />
               <p className="text-sm">
