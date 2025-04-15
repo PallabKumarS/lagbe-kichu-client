@@ -38,6 +38,8 @@ const Reviews = ({ listingId }: ReviewsProps) => {
   useEffect(() => {
     if (!(orders?.data?.length > 0) && !(data?.data?.length > 0)) return;
 
+    if (user?.role !== "buyer") return;
+
     const hasOrdered = orders?.data?.some(
       (order: TOrder) =>
         order.status === "completed" &&
