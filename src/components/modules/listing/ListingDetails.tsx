@@ -20,7 +20,6 @@ import LoadingData from "@/components/shared/LoadingData";
 import Container from "@/components/shared/Container";
 import BackButton from "@/components/shared/BackButton";
 import Reviews from "../management/Reviews";
-import ReviewForm from "@/components/forms/ReviewForm";
 
 interface ListingDetailsProps {
   listingId: string;
@@ -90,6 +89,8 @@ const ListingDetails = ({ listingId }: ListingDetailsProps) => {
       dispatch(removeFromCart(cartItem.listingId));
     }
   };
+
+  console.log(listing?.data);
 
   return (
     <Container>

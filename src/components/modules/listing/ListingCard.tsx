@@ -19,6 +19,7 @@ import {
   Star,
   StarHalf,
   StarOff,
+  Percent,
 } from "lucide-react";
 import Link from "next/link";
 import { TListing, TMongoose } from "@/types";
@@ -30,6 +31,7 @@ import { Modal } from "@/components/shared/Modal";
 import ListingForm from "@/components/forms/ListingForm";
 import { BiCategoryAlt } from "react-icons/bi";
 import { useDeleteListingMutation } from "@/redux/api/listingApi";
+import DiscountForm from "@/components/forms/DiscountForm";
 
 interface ListingCardProps {
   listing: TListing & TMongoose;
@@ -63,7 +65,7 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="overflow-hidden h-[550px]">
+      <Card className="overflow-hidden h-[560px]">
         <CardHeader className="p-0">
           <div className="relative">
             <ImageSlider images={listing.images} variant="card" />
@@ -77,7 +79,7 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
           </div>
         </CardHeader>
 
-        <CardContent className="p-4">
+        <CardContent className="px-4">
           <div className="flex items-center gap-2 text-muted-foreground">
             <MapPin className="h-4 w-4" />
             <p className="text-sm">{listing.title}</p>
@@ -93,7 +95,7 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
 
           {/* rating here  */}
           {listing.reviewRating && (
-            <div className="flex items-center gap-2 mt-4">
+            <div className="flex items-center gap-2 mt-4 mb-2">
               <div className="flex items-center text-yellow-500">
                 {[...Array(5)].map((_, index) => {
                   const rounded =
@@ -117,6 +119,24 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
               </p>
             </div>
           )}
+
+          {/* discount here  */}
+          {listing.discount ? (
+            <div className="flex items-center gap-2 text-green-600">
+              <Percent className="h-4 w-4" />
+              <p className="text-sm">
+                {listing.discount}% Discount
+                {listing.discountEndDate &&
+                  ` - ${new Date(
+                    listing?.discountEndDate
+                  ).toLocaleDateString()}`}
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p>No discount</p>
+            </div>
+          )}
         </CardContent>
 
         <CardFooter className="flex flex-col gap-4 border-t p-4 mt-auto">
@@ -134,10 +154,10 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
             </div>
           </div>
 
-          <div className="flex w-full items-center gap-2">
+          <div className="w-full items-center justify-center gap-2 flex flex-wrap">
             <Link href={`/listings/${listing.listingId}`} className="flex-1">
               <Button variant="default" className="w-full hover:bg-teal-500">
-                <Eye className="mr-2 h-4 w-4" />
+                <Eye className="mr-1 h-4 w-4" />
                 View Details
               </Button>
             </Link>
@@ -145,22 +165,36 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
             {/* only for seller and admin  */}
             {edit && (
               <>
+                {/* edit modal  */}
                 <Modal
                   trigger={
                     <Button variant="outline" className="flex-1">
-                      <Edit className="mr-2 h-4 w-4" />
+                      <Edit className="mr-1 h-4 w-4" />
                       Edit
                     </Button>
                   }
                   content={<ListingForm listing={listing} edit={true} />}
                   title="Edit Listing"
                 />
+                {/* discount modal  */}
+                <Modal
+                  trigger={
+                    <Button variant="secondary" className="flex-1">
+                      <Percent className="mr-1 h-4 w-4" />
+                      Discount
+                    </Button>
+                  }
+                  content={<DiscountForm listing={listing} />}
+                  title="Add Discount"
+                />
+
+                {/* delete modal  */}
                 <ConfirmationBox
                   trigger={
-                    <p className="flex items-center justify-center px-4 py-2 rounded-md border border-input bg-background text-sm font-medium ring-offset-background transition-colors hover:bg-red-500 hover:text-white flex-1">
-                      <Trash className="mr-2 h-4 w-4" />
+                    <Button variant="destructive" className="flex-1 w-full">
+                      <Trash className="mr-1 h-4 w-4" />
                       Delete
-                    </p>
+                    </Button>
                   }
                   onConfirm={() => handleDelete(listing.listingId!)}
                 />

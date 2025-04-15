@@ -86,6 +86,26 @@ const listingApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["listings", "PListings"],
     }),
+
+    // update listing discount
+    addDiscount: builder.mutation({
+      query: ({
+        listingId,
+        data,
+      }: {
+        listingId: string;
+        data: {
+          discount: number;
+          discountStartDate: Date;
+          discountEndDate: Date;
+        };
+      }) => ({
+        url: `/listings/discount/${listingId}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["listings", "PListings", "listing"],
+    }),
   }),
 });
 
@@ -98,6 +118,7 @@ export const {
   useUpdateListingMutation,
   useUpdateListingStatusMutation,
   useDeleteListingMutation,
+  useAddDiscountMutation
 } = listingApi;
 
 export default listingApi;
