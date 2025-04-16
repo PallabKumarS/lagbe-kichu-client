@@ -64,7 +64,7 @@ export default function ListingForm({
     defaultValues: {
       title: listing?.title || "",
       price: listing?.price || 0,
-      category: listing?.category.title || "",
+      category: listing?.category._id || "",
       description: listing?.description || "",
       images: listing?.images.map((img) => {
         return { value: img };

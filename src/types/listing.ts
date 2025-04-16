@@ -1,13 +1,14 @@
+import { TMongoose } from ".";
 import { TCategory } from "./category";
 import { TUser } from "./user";
 
 export type TListing = {
   title: string;
-  category: TCategory;
+  category: TCategory & TMongoose;
   description: string;
   price: number;
   images: string[];
-  sellerId: TUser;
+  sellerId: TUser & TMongoose;
   reviewRating: {
     rating: number;
     totalCount: number;
@@ -29,12 +30,12 @@ export interface IListing {
   price: number;
   images: string[];
   sellerId: string;
-  discount?: number;
   videoLink: string;
+  discount?: number;
   discountStartDate?: Date;
   discountEndDate?: Date;
   isDiscountActive?: boolean;
   isAvailable?: boolean;
-  listingId: string;
+  listingId?: string;
   isDeleted?: boolean;
 }
