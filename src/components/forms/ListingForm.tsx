@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2Icon, Plus } from "lucide-react";
+import { MinusCircle, Plus } from "lucide-react";
 import { useAppSelector } from "@/redux/hook";
 import { userSelector } from "@/redux/features/authSlice";
 import { TCategory, TListing, TMongoose } from "@/types";
@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { DragDropUploader } from "../shared/DragDropUploader";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -57,8 +58,10 @@ export default function ListingForm({
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
-  const [createListing] = useCreateListingMutation();
-  const [updateListing] = useUpdateListingMutation();
+  const [createListing, { isLoading: isCreating }] = useCreateListingMutation();
+  const [updateListing, { isLoading: isUpdating }] = useUpdateListingMutation();
+
+  const isLoading = edit ? isUpdating : isCreating;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,10 +78,10 @@ export default function ListingForm({
   });
 
   const {
-    formState: { isSubmitting },
-  } = form;
-
-  const { append: appendImage, fields: imageFields } = useFieldArray({
+    append: appendImage,
+    fields: imageFields,
+    remove: removeImage,
+  } = useFieldArray({
     control: form.control,
     name: "images",
   });
@@ -149,7 +152,7 @@ export default function ListingForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 max-w-3xl mx-auto py-10 overflow-y-auto px-2"
+        className="space-y-8 max-w-3xl py-10 overflow-y-auto px-2"
       >
         {/* title field  */}
         <FormField
@@ -213,7 +216,7 @@ export default function ListingForm({
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {imageFields.map((imageField, index) => (
-              <div key={index}>
+              <div key={imageField.id} className="relative">
                 <FormField
                   control={form.control}
                   name={`images.${index}.value`}
@@ -226,12 +229,21 @@ export default function ListingForm({
                           type="text"
                           placeholder="Paste image URL"
                           value={field.value || ""}
+                          className="pr-7"
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                <Button
+                  variant="ghost"
+                  className="absolute bottom-0 -right-2 hover:bg-base cursor-pointer"
+                  onClick={() => removeImage(index)}
+                  type="button"
+                >
+                  <MinusCircle className="text-red-500 size-5 z-10" />
+                </Button>
               </div>
             ))}
           </div>
@@ -314,7 +326,17 @@ export default function ListingForm({
           type="submit"
           disabled={imageFields.length === 0}
         >
-          {isSubmitting ? <Loader2Icon /> : edit ? "Update" : "Submit"}
+          {edit ? (
+            isLoading ? (
+              <ScaleLoader />
+            ) : (
+              "Update Listing"
+            )
+          ) : isLoading ? (
+            <ScaleLoader />
+          ) : (
+            "Create Listing"
+          )}
         </Button>
       </form>
     </Form>

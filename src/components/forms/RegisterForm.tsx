@@ -29,7 +29,7 @@ const formSchema = z.object({
 });
 
 export default function RegisterForm() {
-  const [registerUser] = useRegisterMutation();
+  const [registerUser, { isLoading }] = useRegisterMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,9 +37,6 @@ export default function RegisterForm() {
 
   const password = form.watch("password");
   const passwordConfirm = form.watch("passwordConfirm");
-  const {
-    formState: { isSubmitting },
-  } = form;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const toastId = toast.loading("Creating user...");
@@ -185,7 +182,7 @@ export default function RegisterForm() {
           disabled={!!(passwordConfirm && password !== passwordConfirm)}
           type="submit"
         >
-          {isSubmitting ? <LoaderCircleIcon /> : "Register"}
+          {isLoading ? <LoaderCircleIcon /> : "Register"}
         </Button>
       </form>
     </Form>

@@ -16,13 +16,15 @@ import { useState } from "react";
 const CreateListing = ({ query }: { query: Record<string, string> }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { data: listings, isFetching } = useGetPersonalListingsQuery(query, {
-    refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
-  });
+  const { data: listings, isFetching } = useGetPersonalListingsQuery(
+    { ...query, limit: 9 },
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    }
+  );
 
   if (isFetching) return <LoadingData />;
-
 
   return (
     <Container>

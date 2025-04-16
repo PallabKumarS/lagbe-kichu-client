@@ -18,7 +18,6 @@ const AllListingsPage = async ({
     isDeleted: "false",
   };
 
-
   return (
     <Container className="">
       <AllListing query={enhancedSearchParams} />

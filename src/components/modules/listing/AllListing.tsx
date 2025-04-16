@@ -19,7 +19,7 @@ const AllListing = ({ query: initialQuery }: AllListingProps) => {
   const [query, setQuery] = useState(initialQuery);
 
   const { data: listings, isFetching } = useGetAllListingsQuery(
-    { ...query,...initialQuery},
+    { ...query, ...initialQuery, limit: 10 },
     {
       refetchOnMountOrArgChange: true,
       refetchOnReconnect: true,
