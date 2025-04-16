@@ -18,10 +18,13 @@ const AllListing = ({ query: initialQuery }: AllListingProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [query, setQuery] = useState(initialQuery);
 
-  const { data: listings, isFetching } = useGetAllListingsQuery(query, {
-    refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
-  });
+  const { data: listings, isFetching } = useGetAllListingsQuery(
+    { ...query,...initialQuery},
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    }
+  );
 
   const handleSearch = () => {
     const newQuery = {

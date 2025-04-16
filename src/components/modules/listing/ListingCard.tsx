@@ -65,7 +65,7 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className={`overflow-hidden  ${edit ? "h-[580px]" : "h-[535px]"}`}>
+      <Card className={`overflow-hidden  ${edit ? "h-[580px]" : "h-[550px]"}`}>
         <CardHeader className="p-0">
           <div className="relative">
             <ImageSlider images={listing.images} variant="card" />
