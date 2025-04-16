@@ -133,23 +133,23 @@ const ListingDetails = ({ listingId }: ListingDetailsProps) => {
 
           {/* image and video link tabs  */}
           <Tabs defaultValue="images" className="w-full max-w-4xl mx-auto">
-            <TabsList className="grid w-full grid-cols-2 text-secondary-foreground h-10">
+            <TabsList className="grid w-full grid-cols-2 h-10">
               <TabsTrigger
                 value="images"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                className="data-[state=active]:bg-accent data-[state=active]:text-secondary data-[state=active]:dark:bg-accent data-[state=active]:dark:text-secondary"
               >
                 Images
               </TabsTrigger>
               <TabsTrigger
                 value="video"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                className="data-[state=active]:bg-accent data-[state=active]:text-secondary data-[state=active]:dark:bg-accent data-[state=active]:dark:text-secondary"
               >
                 Video
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="images">
-              <Card className="bg-background border-muted">
+              <Card className="bg-background border-muted mt-10">
                 <CardHeader>
                   <CardTitle>Image Gallery</CardTitle>
                   <CardDescription>
@@ -168,19 +168,19 @@ const ListingDetails = ({ listingId }: ListingDetailsProps) => {
             </TabsContent>
 
             <TabsContent value="video">
-              <Card className="bg-background border-muted">
+              <Card className="bg-background border-muted mt-10">
                 <CardHeader>
                   <CardTitle>Product Video</CardTitle>
                   <CardDescription>Watch the product in action</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 relative overflow-hidden rounded-t-lg">
                     <Youtube className="text-red-600" />
                     <h3 className="text-lg font-semibold text-foreground">
                       Watch on YouTube
                     </h3>
                   </div>
-                  <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-md">
+                  <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-md h-[60vh]">
                     <iframe
                       src={`https://www.youtube.com/embed/${extractYouTubeId(
                         listing?.data?.videoLink
