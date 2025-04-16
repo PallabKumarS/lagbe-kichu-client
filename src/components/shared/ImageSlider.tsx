@@ -57,7 +57,7 @@ const ImageSlider = ({ images, variant }: ImageSliderProps) => {
                 ? images[currentIndex]
                 : fallbackImage
             }
-            alt={`Property image ${currentIndex + 1}`}
+            alt={`Product image ${currentIndex + 1}`}
             fill
             className="object-cover"
             onError={() => setFallbackImage("/placeholder-house.jpg")}

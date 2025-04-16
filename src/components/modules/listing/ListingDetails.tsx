@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import ImageSlider from "@/components/shared/ImageSlider";
 import { Badge } from "@/components/ui/badge";
-import { Check, Calendar, ClipboardList } from "lucide-react";
+import { Check, Calendar, ClipboardList, Youtube } from "lucide-react";
 import { formatDistance } from "date-fns";
 import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import {
@@ -20,6 +20,7 @@ import LoadingData from "@/components/shared/LoadingData";
 import Container from "@/components/shared/Container";
 import BackButton from "@/components/shared/BackButton";
 import Reviews from "../management/Reviews";
+import { extractYouTubeId } from "@/lib/utils";
 
 interface ListingDetailsProps {
   listingId: string;
@@ -90,8 +91,6 @@ const ListingDetails = ({ listingId }: ListingDetailsProps) => {
     }
   };
 
-
-
   return (
     <Container>
       {listing?.data ? (
@@ -125,9 +124,30 @@ const ListingDetails = ({ listingId }: ListingDetailsProps) => {
           </div>
 
           {/* Image Slider */}
-          <div className="overflow-hidden rounded-xl">
+          <div className="overflow-hidden rounded-xl max-w-4xl mx-auto">
             <ImageSlider images={listing?.data?.images} variant="detail" />
           </div>
+
+          {/* Video Section - Responsive YouTube Embed */}
+          {listing?.data?.videoLink && (
+            <div className="max-w-4xl mx-auto my-8">
+              <div className="flex items-center gap-2 mb-4">
+                <Youtube className="text-red-600" />
+                <h3 className="text-xl font-semibold">Product Video</h3>
+              </div>
+              <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-md">
+                <iframe
+                  src={`https://www.youtube.com/embed/${extractYouTubeId(
+                    listing.data.videoLink
+                  )}`}
+                  title="Product Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Details Grid */}
           <div className="grid gap-8 md:grid-cols-2">
