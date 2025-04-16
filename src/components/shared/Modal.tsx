@@ -25,7 +25,7 @@ export function Modal({
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-h-[calc(100vh-4rem)] overflow-y-auto bg-card min-w-[280px] w-2/3">
+      <DialogContent className="max-h-[calc(100vh-4rem)] overflow-y-auto bg-card min-w-[290px] w-3/4">
         <DialogHeader>
           <DialogTitle className="text-primary">{title}</DialogTitle>
           <DialogDescription></DialogDescription>

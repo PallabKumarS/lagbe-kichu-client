@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { DragDropUploader } from "../shared/DragDropUploader";
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -148,7 +149,7 @@ export default function ListingForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 max-w-3xl mx-auto py-10 overflow-y-auto"
+        className="space-y-8 max-w-3xl mx-auto py-10 overflow-y-auto px-2"
       >
         {/* title field  */}
         <FormField
@@ -235,6 +236,13 @@ export default function ListingForm({
             ))}
           </div>
         </div>
+
+        {/* drag and drop field  */}
+        <DragDropUploader
+          name="images"
+          label="Upload your image(s)"
+          multiple={true}
+        />
 
         {/* description field  */}
         <FormField

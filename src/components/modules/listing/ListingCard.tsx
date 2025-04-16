@@ -79,7 +79,15 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
           </div>
         </CardHeader>
 
-        <CardContent className="px-4">
+        <CardContent
+          className="px-4"
+          style={{
+            paddingBottom: "0",
+            marginBottom: "0",
+            marginTop: "0",
+            paddingTop: "0",
+          }}
+        >
           <div className="flex items-center gap-2 text-muted-foreground">
             <MapPin className="h-4 w-4" />
             <p className="text-sm">{listing.title}</p>
@@ -88,14 +96,14 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
           {/* listing details here  */}
           <div className="mt-3 space-y-2">
             <h3 className="font-semibold">${listing.price.toLocaleString()}</h3>
-            <p className="line-clamp-2 text-sm text-muted-foreground">
+            <p className="line-clamp-1 text-sm text-muted-foreground">
               {listing.description}
             </p>
           </div>
 
           {/* rating here  */}
           {listing.reviewRating && (
-            <div className="flex items-center gap-2 mt-4 mb-2">
+            <div className="flex items-center gap-2 my-2">
               <div className="flex items-center text-yellow-500">
                 {[...Array(5)].map((_, index) => {
                   const rounded =
@@ -139,7 +147,8 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
           )}
         </CardContent>
 
-        <CardFooter className="flex flex-col gap-4 border-t p-4 mt-auto">
+        <CardFooter className="flex flex-col gap-4 border-t px-4 mt-auto">
+          {/* category and availability  */}
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
               <BiCategoryAlt className="h-4 w-4" />
