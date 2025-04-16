@@ -21,6 +21,14 @@ import Container from "@/components/shared/Container";
 import BackButton from "@/components/shared/BackButton";
 import Reviews from "../management/Reviews";
 import { extractYouTubeId } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 
 interface ListingDetailsProps {
   listingId: string;
@@ -123,31 +131,94 @@ const ListingDetails = ({ listingId }: ListingDetailsProps) => {
             <BackButton />
           </div>
 
+          {/* image and video link tabs  */}
+          <Tabs defaultValue="images" className="w-full max-w-4xl mx-auto">
+            <TabsList className="grid w-full grid-cols-2 text-secondary-foreground h-10">
+              <TabsTrigger
+                value="images"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                Images
+              </TabsTrigger>
+              <TabsTrigger
+                value="video"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                Video
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="images">
+              <Card className="bg-background border-muted">
+                <CardHeader>
+                  <CardTitle>Image Gallery</CardTitle>
+                  <CardDescription>
+                    Swipe to view product photos
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-hidden rounded-xl">
+                    <ImageSlider
+                      images={listing?.data?.images}
+                      variant="detail"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="video">
+              <Card className="bg-background border-muted">
+                <CardHeader>
+                  <CardTitle>Product Video</CardTitle>
+                  <CardDescription>Watch the product in action</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Youtube className="text-red-600" />
+                    <h3 className="text-lg font-semibold text-foreground">
+                      Watch on YouTube
+                    </h3>
+                  </div>
+                  <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-md">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${extractYouTubeId(
+                        listing?.data?.videoLink
+                      )}`}
+                      title="Product Video"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+
           {/* Image Slider */}
-          <div className="overflow-hidden rounded-xl max-w-4xl mx-auto">
+          {/* <div className="overflow-hidden rounded-xl max-w-4xl mx-auto">
             <ImageSlider images={listing?.data?.images} variant="detail" />
-          </div>
+          </div> */}
 
           {/* Video Section - Responsive YouTube Embed */}
-          {listing?.data?.videoLink && (
-            <div className="max-w-4xl mx-auto my-8">
-              <div className="flex items-center gap-2 mb-4">
-                <Youtube className="text-red-600" />
-                <h3 className="text-xl font-semibold">Product Video</h3>
-              </div>
-              <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-md">
-                <iframe
-                  src={`https://www.youtube.com/embed/${extractYouTubeId(
-                    listing.data.videoLink
-                  )}`}
-                  title="Product Video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
-              </div>
+          {/* <div className="max-w-4xl mx-auto my-8">
+            <div className="flex items-center gap-2 mb-4">
+              <Youtube className="text-red-600" />
+              <h3 className="text-xl font-semibold">Product Video</h3>
             </div>
-          )}
+            <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-md">
+              <iframe
+                src={`https://www.youtube.com/embed/${extractYouTubeId(
+                  listing.data.videoLink
+                )}`}
+                title="Product Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            </div>
+          </div> */}
 
           {/* Details Grid */}
           <div className="grid gap-8 md:grid-cols-2">
