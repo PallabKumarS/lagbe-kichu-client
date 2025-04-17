@@ -24,7 +24,9 @@ export function DragDropUploader({
   const { setValue, resetField } = useFormContext();
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
+  const [uploadedUrls, setUploadedUrls] = useState<{ value: string }[]>([]);
 
+  // handler function for file select
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
     if (!fileList) return;
@@ -34,19 +36,48 @@ export function DragDropUploader({
 
     try {
       setLoading(true);
-      const uploadedUrls = [];
+      const tempUrls: { value: string }[] = [];
 
       for (const file of selectedFiles) {
         const url = await uploadToCloudinary(file);
-        uploadedUrls.push({ value: url });
+        tempUrls.push(...uploadedUrls, { value: url });
+        setUploadedUrls([...uploadedUrls, { value: url }]);
       }
 
-      setValue(name, multiple ? uploadedUrls : uploadedUrls[0].value);
+      setValue(name, multiple ? tempUrls : tempUrls[0].value);
     } catch (error) {
       toast.error("Upload failed. Try again.");
     } finally {
       setLoading(false);
     }
+  };
+
+  // handler function for on drop event
+  const handleDrop = async (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    const droppedFiles = Array.from(e.dataTransfer.files).filter((file) =>
+      file.type.startsWith("image/")
+    );
+    if (!droppedFiles.length) return;
+
+    setFiles(multiple ? droppedFiles : [droppedFiles[0]]);
+
+   try {
+     setLoading(true);
+     const tempUrls: { value: string }[] = [];
+
+     for (const file of droppedFiles) {
+       const url = await uploadToCloudinary(file);
+       tempUrls.push(...uploadedUrls, { value: url });
+       setUploadedUrls([...uploadedUrls, { value: url }]);
+     }
+
+     setValue(name, multiple ? tempUrls : tempUrls[0].value);
+   } catch (error) {
+     toast.error("Upload failed. Try again.");
+   } finally {
+     setLoading(false);
+   }
   };
 
   const handleRemove = () => {
@@ -69,31 +100,7 @@ export function DragDropUploader({
               loading && "opacity-50 pointer-events-none"
             )}
             onDragOver={(e) => e.preventDefault()}
-            onDrop={async (e) => {
-              e.preventDefault();
-              const droppedFiles = Array.from(e.dataTransfer.files).filter(
-                (file) => file.type.startsWith("image/")
-              );
-              if (!droppedFiles.length) return;
-
-              setFiles(multiple ? droppedFiles : [droppedFiles[0]]);
-
-              try {
-                setLoading(true);
-                const uploadedUrls = [];
-
-                for (const file of droppedFiles) {
-                  const url = await uploadToCloudinary(file);
-                  uploadedUrls.push({ value: url });
-                }
-
-                setValue(name, multiple ? uploadedUrls : uploadedUrls[0].value);
-              } catch (err) {
-                toast.error("Upload failed. Try again.");
-              } finally {
-                setLoading(false);
-              }
-            }}
+            onDrop={(e) => handleDrop(e)}
           >
             <UploadCloud className="w-8 h-8 text-primary" />
             <span className="text-sm text-muted-foreground">

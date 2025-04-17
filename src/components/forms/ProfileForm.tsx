@@ -14,11 +14,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import { LoaderCircleIcon } from "lucide-react";
+// import { LoaderCircleIcon } from "lucide-react";
 import { TUser } from "@/types";
 import { useAppDispatch } from "@/redux/hook";
 import { setUser } from "@/redux/features/authSlice";
 import { useUpdateUserMutation } from "@/redux/api/userApi";
+import { DragDropUploader } from "../shared/DragDropUploader";
+import ButtonLoader from "../shared/ButtonLoader";
 
 const formSchema = z.object({
   name: z.string(),
@@ -33,7 +35,7 @@ export default function ProfileForm({
 }: {
   userData: Partial<TUser> | null;
 }) {
-  const [updateUser] = useUpdateUserMutation();
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,9 +49,6 @@ export default function ProfileForm({
     },
   });
 
-  const {
-    formState: { isSubmitting },
-  } = form;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const toastId = toast.loading("Updating user...");
@@ -168,9 +167,10 @@ export default function ProfileForm({
             </FormItem>
           )}
         />
+        <DragDropUploader name="profileImage" />
 
         <Button variant={"outline"} type="submit">
-          {isSubmitting ? <LoaderCircleIcon /> : "Update Profile"}
+          {isLoading ? <ButtonLoader /> : "Update Profile"}
         </Button>
       </form>
     </Form>

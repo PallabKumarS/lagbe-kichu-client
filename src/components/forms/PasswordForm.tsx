@@ -15,6 +15,7 @@ import {
 import { PasswordInput } from "../ui/password-input";
 import { LoaderCircleIcon } from "lucide-react";
 import { useChangePasswordMutation } from "@/redux/api/authApi";
+import ButtonLoader from "../shared/ButtonLoader";
 
 const formSchema = z.object({
   oldPassword: z.string().min(1),
@@ -23,7 +24,7 @@ const formSchema = z.object({
 });
 
 export default function PasswordForm() {
-  const [passwordChange] = useChangePasswordMutation();
+  const [passwordChange, { isLoading }] = useChangePasswordMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -31,10 +32,6 @@ export default function PasswordForm() {
 
   const newPassword = form.watch("newPassword");
   const newPasswordConfirmed = form.watch("newPasswordConfirmed");
-
-  const {
-    formState: { isSubmitting },
-  } = form;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const toastId = toast.loading("Updating password...");
@@ -128,7 +125,7 @@ export default function PasswordForm() {
           disabled={!!(newPassword !== newPasswordConfirmed)}
           type="submit"
         >
-          {isSubmitting ? <LoaderCircleIcon /> : "Change Password"}
+          {isLoading ? <ButtonLoader /> : "Change Password"}
         </Button>
       </form>
     </Form>

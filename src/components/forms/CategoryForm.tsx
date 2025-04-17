@@ -15,12 +15,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2Icon } from "lucide-react";
 import {
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
 } from "@/redux/api/categoryApi";
 import { TCategory, TMongoose } from "@/types";
+import { DragDropUploader } from "../shared/DragDropUploader";
+import ButtonLoader from "../shared/ButtonLoader";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -39,8 +40,12 @@ export default function CategoryForm({
   edit = false,
   setModal,
 }: CategoryFormProps) {
-  const [createCategory] = useCreateCategoryMutation();
-  const [updateCategory] = useUpdateCategoryMutation();
+  const [createCategory, { isLoading: isCreating }] =
+    useCreateCategoryMutation();
+  const [updateCategory, { isLoading: isUpdating }] =
+    useUpdateCategoryMutation();
+
+  const isLoading = edit ? isUpdating : isCreating;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,7 +59,6 @@ export default function CategoryForm({
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting },
   } = form;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -119,6 +123,8 @@ export default function CategoryForm({
           )}
         />
 
+        <DragDropUploader name="image" />
+
         {/* Description Field */}
         <FormField
           control={control}
@@ -139,13 +145,17 @@ export default function CategoryForm({
         />
 
         {/* Submit Button */}
-        <Button type="submit" variant="outline">
-          {isSubmitting ? (
-            <Loader2Icon className="animate-spin" />
-          ) : edit ? (
-            "Update"
+        <Button variant={"outline"} type="submit">
+          {edit ? (
+            isLoading ? (
+              <ButtonLoader />
+            ) : (
+              "Update Listing"
+            )
+          ) : isLoading ? (
+            <ButtonLoader />
           ) : (
-            "Submit"
+            "Create Listing"
           )}
         </Button>
       </form>

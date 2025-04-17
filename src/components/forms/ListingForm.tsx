@@ -32,7 +32,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { DragDropUploader } from "../shared/DragDropUploader";
-import ScaleLoader from "react-spinners/ScaleLoader";
+import ButtonLoader from "../shared/ButtonLoader";
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -85,6 +85,7 @@ export default function ListingForm({
     control: form.control,
     name: "images",
   });
+
 
   const addImage = () => {
     appendImage({ value: "" });
@@ -236,14 +237,16 @@ export default function ListingForm({
                     </FormItem>
                   )}
                 />
-                <Button
-                  variant="ghost"
-                  className="absolute bottom-0 -right-2 hover:bg-base cursor-pointer"
-                  onClick={() => removeImage(index)}
-                  type="button"
-                >
-                  <MinusCircle className="text-red-500 size-5 z-10" />
-                </Button>
+                {imageField.value && (
+                  <Button
+                    variant="ghost"
+                    className="absolute bottom-0 -right-2 hover:bg-base cursor-pointer"
+                    onClick={() => removeImage(index)}
+                    type="button"
+                  >
+                    <MinusCircle className="text-red-500 size-5 z-10" />
+                  </Button>
+                )}
               </div>
             ))}
           </div>
@@ -328,12 +331,12 @@ export default function ListingForm({
         >
           {edit ? (
             isLoading ? (
-              <ScaleLoader />
+              <ButtonLoader />
             ) : (
               "Update Listing"
             )
           ) : isLoading ? (
-            <ScaleLoader />
+            <ButtonLoader />
           ) : (
             "Create Listing"
           )}

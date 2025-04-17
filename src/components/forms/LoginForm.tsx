@@ -17,10 +17,10 @@ import { Button } from "../ui/button";
 import { PasswordInput } from "../ui/password-input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/redux/hook";
-import { Loader2Icon } from "lucide-react";
 import { login } from "@/redux/features/authSlice";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { setCookies } from "@/services/auth.services";
+import ButtonLoader from "../shared/ButtonLoader";
 
 const formSchema = z.object({
   email: z.string(),
@@ -28,7 +28,7 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
-  const [loginUser] = useLoginMutation();
+  const [loginUser, { isLoading }] = useLoginMutation();
 
   const searchParams = useSearchParams();
   const redirectPath = searchParams.get("redirectPath");
@@ -38,10 +38,6 @@ export default function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-
-  const {
-    formState: { isSubmitting },
-  } = useForm();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const toastId = toast.loading("logging in...");
@@ -114,7 +110,7 @@ export default function LoginForm() {
         />
 
         <Button variant={"outline"}>
-          {isSubmitting ? <Loader2Icon /> : "Login"}
+          {isLoading ? <ButtonLoader /> : "Login"}
         </Button>
       </form>
     </Form>

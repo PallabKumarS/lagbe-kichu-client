@@ -17,8 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { PasswordInput } from "../ui/password-input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { LoaderCircleIcon } from "lucide-react";
 import { useRegisterMutation } from "@/redux/api/authApi";
+import ButtonLoader from "../shared/ButtonLoader";
 
 const formSchema = z.object({
   name: z.string(),
@@ -182,7 +182,7 @@ export default function RegisterForm() {
           disabled={!!(passwordConfirm && password !== passwordConfirm)}
           type="submit"
         >
-          {isLoading ? <LoaderCircleIcon /> : "Register"}
+          {isLoading ? <ButtonLoader /> : "Register"}
         </Button>
       </form>
     </Form>

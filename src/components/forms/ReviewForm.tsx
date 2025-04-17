@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2Icon, Star } from "lucide-react";
 import { useAppSelector } from "@/redux/hook";
 import { userSelector } from "@/redux/features/authSlice";
 import {
@@ -23,6 +22,8 @@ import {
 } from "@/redux/api/reviewApi";
 import { TReview, TMongoose } from "@/types";
 import { cn } from "@/lib/utils";
+import ButtonLoader from "../shared/ButtonLoader";
+import { Star } from "lucide-react";
 
 const formSchema = z.object({
   rating: z.number().min(1).max(5),
@@ -41,8 +42,10 @@ export default function ReviewForm({
   edit = false,
 }: ReviewFormProps) {
   const user = useAppSelector(userSelector);
-  const [createReview] = useCreateReviewMutation();
-  const [updateReview] = useUpdateReviewMutation();
+  const [createReview, { isLoading: isCreating }] = useCreateReviewMutation();
+  const [updateReview, { isLoading: isUpdating }] = useUpdateReviewMutation();
+
+  const isLoading = edit ? isUpdating : isCreating;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,13 +55,7 @@ export default function ReviewForm({
     },
   });
 
-  const {
-    formState: { isSubmitting },
-    setValue,
-    watch,
-    control,
-    handleSubmit,
-  } = form;
+  const { setValue, watch, control, handleSubmit } = form;
 
   const rating = watch("rating");
 
@@ -144,13 +141,17 @@ export default function ReviewForm({
         />
 
         {/* Submit Button */}
-        <Button type="submit" variant="outline">
-          {isSubmitting ? (
-            <Loader2Icon className="animate-spin" />
-          ) : edit ? (
-            "Update"
+        <Button variant={"outline"} type="submit">
+          {edit ? (
+            isLoading ? (
+              <ButtonLoader />
+            ) : (
+              "Update Review"
+            )
+          ) : isLoading ? (
+            <ButtonLoader />
           ) : (
-            "Submit"
+            "Create Review"
           )}
         </Button>
       </form>
