@@ -2,10 +2,9 @@
 
 import StoreProvider from "./StoreProvider";
 import { ThemeProvider } from "./ThemeProvider";
-import { WebSocketProvider } from "./webSocketProvider";
+import { WebSocketProvider } from "./WebSocketProvider";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
-  
   return (
     <ThemeProvider
       attribute="class"
@@ -15,7 +14,8 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
     >
       <StoreProvider>
         <WebSocketProvider />
-        {children}</StoreProvider>
+        {children}
+      </StoreProvider>
     </ThemeProvider>
   );
 };

@@ -3,7 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Message {
   userId: string;
   content: string;
-  read: boolean;
+  read?: boolean;
+  [key: string]: any;
 }
 
 interface NotificationState {
