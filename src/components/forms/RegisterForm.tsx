@@ -128,7 +128,6 @@ export default function RegisterForm() {
                   ))}
                 </RadioGroup>
               </FormControl>
-              <FormDescription>Select your role</FormDescription>
               <FormMessage />
             </FormItem>
           )}
