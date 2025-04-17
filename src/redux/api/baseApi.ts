@@ -10,7 +10,7 @@ import {
 import { RootState } from "../store";
 import { login, logout } from "../features/authSlice";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_API as string;
+const baseUrl = `${process.env.NEXT_PUBLIC_BASE_API as string}/api`;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,

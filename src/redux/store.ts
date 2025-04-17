@@ -13,6 +13,7 @@ import storage from "./storage";
 import authSlice from "./features/authSlice";
 import baseApi from "./api/baseApi";
 import cartSlice from "./features/cartSlice";
+import notificationSlice from "./features/notificationSlice";
 
 const persistedAuthOptions = {
   key: "auth",
@@ -24,14 +25,24 @@ const persistedCartOptions = {
   storage,
 };
 
+const persistedNotificationOption = {
+  key: "notification",
+  storage,
+};
+
 const persistedAuth = persistReducer(persistedAuthOptions, authSlice.reducer);
 const persistedCart = persistReducer(persistedCartOptions, cartSlice.reducer);
+const persistedNotification = persistReducer(
+  persistedNotificationOption,
+  notificationSlice.reducer
+);
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       auth: persistedAuth,
       cart: persistedCart,
+      notification: persistedNotification,
       [baseApi.reducerPath]: baseApi.reducer,
     },
     middleware: (getDefaultMiddlewares: any) =>

@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AppDispatch, RootState } from "../store";
-import { clearCart } from "./cartSlice";
+import { RootState } from "../store";
 
 interface IInitialState {
   user: {

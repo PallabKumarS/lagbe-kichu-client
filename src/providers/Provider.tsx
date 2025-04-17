@@ -2,8 +2,10 @@
 
 import StoreProvider from "./StoreProvider";
 import { ThemeProvider } from "./ThemeProvider";
+import { WebSocketProvider } from "./webSocketProvider";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
+  
   return (
     <ThemeProvider
       attribute="class"
@@ -11,7 +13,9 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       enableSystem
       disableTransitionOnChange
     >
-      <StoreProvider>{children}</StoreProvider>
+      <StoreProvider>
+        <WebSocketProvider />
+        {children}</StoreProvider>
     </ThemeProvider>
   );
 };

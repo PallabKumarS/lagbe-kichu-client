@@ -32,6 +32,7 @@ import Searchbar from "./Searchbar";
 import { privateRoutes } from "@/constants";
 import CartNotifyIcon from "./CartNotification";
 import { deleteCookie } from "@/lib/deleteCookie";
+import { NotificationDrawer } from "./NotificationDrawer";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -173,6 +174,7 @@ export default function Navbar() {
           <Link href={"/cart"}>
             <CartNotifyIcon />
           </Link>
+          <NotificationDrawer />
 
           {/* Mobile Menu Button */}
           <Button
