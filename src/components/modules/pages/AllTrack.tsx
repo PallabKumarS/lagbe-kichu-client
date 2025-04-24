@@ -50,9 +50,7 @@ const AllTrack = ({ query }: { query: Record<string, string> }) => {
       }
     } catch (error: any) {
       console.error("Error deleting order:", error);
-      toast.error("Something went wrong", {
-        id: toastId,
-      });
+       toast.error(error.data.message, { id: toastId });
     }
   };
 

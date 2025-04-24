@@ -29,8 +29,8 @@ const CategoryCard = ({ category }: Props) => {
       } else {
         toast.error(res.message, { id: toastId });
       }
-    } catch (error) {
-      toast.error("Delete failed", { id: toastId });
+    } catch (error:any) {
+       toast.error(error.data.message, { id: toastId });
     }
   };
 

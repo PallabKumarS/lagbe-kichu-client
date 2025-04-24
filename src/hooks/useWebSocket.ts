@@ -51,8 +51,13 @@ export const useWebSocket = () => {
         }
       };
 
-      ws.onclose = () => {
-        console.log("WebSocket disconnected");
+      ws.onclose = (event) => {
+        console.log("WebSocket disconnected", {
+          code: event.code,
+          reason: event.reason,
+          wasClean: event.wasClean,
+        });
+
         reconnectTimeout = setTimeout(connect, 5000);
       };
     };

@@ -46,9 +46,7 @@ const UserManagement = ({ query }: { query: Record<string, string> }) => {
       }
     } catch (error: any) {
       console.error("Error deleting user:", error);
-      toast.error("Something went wrong", {
-        id: toastId,
-      });
+      toast.error(error.data.message, { id: toastId });
     }
   };
 
@@ -73,9 +71,7 @@ const UserManagement = ({ query }: { query: Record<string, string> }) => {
       }
     } catch (error: any) {
       console.error("Error updating user status:", error);
-      toast.error("Something went wrong", {
-        id: toastId,
-      });
+      toast.error(error.data.message, { id: toastId });
     }
   };
 
@@ -94,9 +90,7 @@ const UserManagement = ({ query }: { query: Record<string, string> }) => {
       }
     } catch (error: any) {
       console.error("Error updating user role:", error);
-      toast.error("Something went wrong", {
-        id: toastId,
-      });
+      toast.error(error.data.message, { id: toastId });
     }
   };
 

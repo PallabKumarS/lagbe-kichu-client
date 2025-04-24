@@ -42,7 +42,6 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
     heads.push("Actions");
   }
 
-
   const handleStatus = async (order: TOrder, status?: string) => {
     const toastId = toast.loading("Updating order status...");
     try {
@@ -61,12 +60,9 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
       }
     } catch (error: any) {
       console.error("Error updating order status:", error);
-      toast.error("Something went wrong", {
-        id: toastId,
-      });
+      toast.error(error.data.message, { id: toastId });
     }
   };
-
 
   const renderViewContent = (order: TOrder) => (
     <div className="space-y-4">
@@ -114,7 +110,6 @@ const OrderManagement = ({ query }: { query: Record<string, string> }) => {
   );
 
   if (isFetching) return <LoadingData />;
-
 
   return (
     <div>

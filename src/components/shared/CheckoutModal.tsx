@@ -70,9 +70,9 @@ const CheckoutModal: FC<CheckoutModalProps> = ({ isOpen, onClose, price }) => {
 
       dispatch(clearCart());
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      toast.error("Something went wrong", { id: toastId });
+      toast.error(error.data.message, { id: toastId });
     }
   };
 

@@ -19,7 +19,7 @@ const getSingleRequest = async (orderId: string) => {
     );
     return await res.json();
   } catch (error: any) {
-    return Error(error.message);
+    console.log(error);
   }
 };
 

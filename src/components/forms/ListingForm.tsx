@@ -86,7 +86,6 @@ export default function ListingForm({
     name: "images",
   });
 
-
   const addImage = () => {
     appendImage({ value: "" });
   };
@@ -125,9 +124,9 @@ export default function ListingForm({
             id: toastId,
           });
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Form submission error", error);
-        toast.error("Failed to submit the form. Please try again.");
+        toast.error(error.data.message, { id: toastId });
       }
     } else {
       try {
@@ -142,9 +141,9 @@ export default function ListingForm({
             id: toastId,
           });
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Form submission error", error);
-        toast.error("Failed to submit the form. Please try again.");
+        toast.error(error.data.message, { id: toastId });
       }
     }
   }

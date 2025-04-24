@@ -81,8 +81,8 @@ export default function CategoryForm({
       } else {
         toast.error(res.message, { id: toastId });
       }
-    } catch (err) {
-      toast.error("Something went wrong", { id: toastId });
+    } catch (err:any) {
+      toast.error(err.data.message, { id: toastId });
       console.error(err);
     }
   };

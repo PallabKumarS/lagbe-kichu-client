@@ -62,8 +62,8 @@ const DiscountForm = ({ listing }: DiscountFormProps) => {
       } else {
         toast.error(res.message, { id: toastId });
       }
-    } catch (error) {
-      toast.error("Error adding discount", { id: toastId });
+    } catch (error: any) {
+      toast.error(error.data.message, { id: toastId });
       console.error(error);
     }
   };

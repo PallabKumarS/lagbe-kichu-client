@@ -53,9 +53,7 @@ const ListingManagement = ({ query }: TProps) => {
       }
     } catch (error: any) {
       console.error("Error deleting listing:", error);
-      toast.error("Something went wrong", {
-        id: toastId,
-      });
+      toast.error(error.data.message, { id: toastId });
     }
   };
 
@@ -78,9 +76,7 @@ const ListingManagement = ({ query }: TProps) => {
       }
     } catch (error: any) {
       console.error("Error updating listing status:", error);
-      toast.error("Something went wrong", {
-        id: toastId,
-      });
+      toast.error(error.data.message, { id: toastId });
     }
   };
 

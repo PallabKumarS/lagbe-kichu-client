@@ -51,8 +51,8 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
       } else {
         toast.error(res?.message, { id: toastId });
       }
-    } catch (error) {
-      toast.error("Error deleting listing", { id: toastId });
+    } catch (error:any) {
+       toast.error(error.data.message, { id: toastId });
       console.log(error);
     }
   };

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { TListing } from "@/types";
 import Image from "next/image";
 import { useLazyGetAllListingsQuery } from "@/redux/api/listingApi";
+import { toast } from "sonner";
 
 const isValidImageUrl = (url: string) => {
   const pattern = new RegExp(
@@ -48,9 +49,9 @@ const Searchbar = () => {
     try {
       const res = await triggerSearch({ searchTerm, limit: 5 }).unwrap();
 
-      setSearchResults(res.data);
-    } catch (error) {
-      console.error("RTK Query search error:", error);
+      setSearchResults(res?.data);
+    } catch (error: any) {
+      toast.error(error.data.message);
     }
   };
 

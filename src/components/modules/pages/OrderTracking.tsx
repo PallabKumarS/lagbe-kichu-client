@@ -128,10 +128,8 @@ const OrderTracking = ({ orderId }: { orderId: string }) => {
           id: toastId,
         });
       }
-    } catch (error) {
-      toast.error("Error creating payment", {
-        id: toastId,
-      });
+    } catch (error: any) {
+      toast.error(error.data.message, { id: toastId });
       console.log(error);
     }
   };
