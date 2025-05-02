@@ -5,7 +5,7 @@ import { Metadata } from "next";
 const getSingleListing = async (listingId: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/listings/${listingId}`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/api/listings/${listingId}`,
       {
         next: {
           tags: ["listing"],
