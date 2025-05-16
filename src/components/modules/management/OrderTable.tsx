@@ -101,7 +101,7 @@ export function OrderTable({ data, meta, onStatusChange }: OrderTableProps) {
           >
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent className="bg-background/80">
             {availableStatuses
               .filter((newStatus) => newStatus !== status)
               .map((newStatus) => (
@@ -192,8 +192,21 @@ export function OrderTable({ data, meta, onStatusChange }: OrderTableProps) {
   });
 
   return (
-    <div className="rounded-md border p-2">
-      <Table className="overflow-x-auto">
+    <div
+      className="rounded-md border p-2"
+      style={{
+        overscrollBehavior: "contain",
+        maxWidth: "100%",
+        overflowX: "auto",
+      }}
+    >
+      <Table
+        className="w-full"
+        style={{
+          tableLayout: "auto",
+          width: "100%",
+        }}
+      >
         <TableCaption>Your Order List</TableCaption>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

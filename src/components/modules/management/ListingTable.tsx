@@ -85,7 +85,7 @@ export function ListingTable({
             >
               {content ? "Available" : "Not Available"}
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="bg-background/80">
               <DropdownMenuItem
                 disabled={content === true}
                 onClick={() => onStatusChange(listing)}
@@ -140,8 +140,21 @@ export function ListingTable({
   });
 
   return (
-    <div className="rounded-md border p-2">
-      <Table>
+    <div
+      className="rounded-md border p-2"
+      style={{
+        overscrollBehavior: "contain",
+        maxWidth: "100%",
+        overflowX: "auto",
+      }}
+    >
+      <Table
+        className="w-full"
+        style={{
+          tableLayout: "auto",
+          width: "100%",
+        }}
+      >
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>

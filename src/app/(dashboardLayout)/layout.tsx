@@ -7,12 +7,12 @@ import { NotificationDrawer } from "@/components/shared/NotificationDrawer";
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
-    <SidebarProvider className="flex min-h-screen">
+    <SidebarProvider className="flex min-h-screen overflow-x-hidden">
       <AppSidebar />
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col overflow-x-hidden">
         <div className="flex items-center justify-between border-b px-4 py-2">
           <SidebarTrigger />
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center justify-between gap-2 overflow-x-hidden">
             <ThemeToggle />
             <NotificationDrawer />
           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { toast } from "sonner";
@@ -7,7 +8,6 @@ import * as z from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,6 +19,7 @@ import { PasswordInput } from "../ui/password-input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { useRegisterMutation } from "@/redux/api/authApi";
 import ButtonLoader from "../shared/ButtonLoader";
+import { Dispatch, SetStateAction } from "react";
 
 const formSchema = z.object({
   name: z.string(),
@@ -28,7 +29,11 @@ const formSchema = z.object({
   passwordConfirm: z.string(),
 });
 
-export default function RegisterForm() {
+export default function RegisterForm({
+  setActiveTab,
+}: {
+  setActiveTab: Dispatch<SetStateAction<"login" | "register">>;
+}) {
   const [registerUser, { isLoading }] = useRegisterMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -44,10 +49,11 @@ export default function RegisterForm() {
       const res = await registerUser(values).unwrap();
       if (res?.success) {
         toast.success(res?.message, { id: toastId });
+        setActiveTab("login");
       } else {
         toast.error(res?.message, { id: toastId });
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Form submission error", error);
       toast.error(error.data.message, { id: toastId });
     }

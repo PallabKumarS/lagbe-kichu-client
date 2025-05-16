@@ -1,6 +1,6 @@
 "use client";
 
-import { TListing, TMongoose, TOrder } from "@/types";
+import { TMongoose, TOrder } from "@/types";
 import {
   CheckCircle,
   Eye,

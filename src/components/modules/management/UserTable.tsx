@@ -80,7 +80,7 @@ export function UserTable({
             >
               {content}
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="bg-background/80">
               <DropdownMenuItem
                 disabled={content === "admin"}
                 onClick={() => onRoleChange(user, "admin")}
@@ -131,7 +131,7 @@ export function UserTable({
             >
               {content ? "Active" : "Inactive"}
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="bg-background/80">
               <DropdownMenuItem
                 disabled={content === true}
                 onClick={() => onStatusChange(user)}
@@ -179,8 +179,21 @@ export function UserTable({
   });
 
   return (
-    <div className="rounded-md border p-2">
-      <Table>
+    <div
+      className="rounded-md border p-2"
+      style={{
+        overscrollBehavior: "contain",
+        maxWidth: "100%",
+        overflowX: "auto",
+      }}
+    >
+      <Table
+        className="w-full"
+        style={{
+          tableLayout: "auto",
+          width: "100%",
+        }}
+      >
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>

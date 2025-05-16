@@ -48,7 +48,7 @@ const LoginPage = () => {
 
   return (
     <motion.div
-      className="flex justify-center items-center min-h-screen overflow-hidden relative"
+      className="flex justify-center items-center min-h-screen overflow-hidden relative px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -124,7 +124,7 @@ const LoginPage = () => {
             <TabsTrigger value="register">Register</TabsTrigger>
           </TabsList>
 
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="sync">
             <TabsContent key="login-content" value="login" asChild>
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
@@ -161,7 +161,7 @@ const LoginPage = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <RegisterForm />
+                    <RegisterForm setActiveTab={setActiveTab} />
                   </CardContent>
                 </Card>
               </motion.div>

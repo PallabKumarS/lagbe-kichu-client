@@ -17,6 +17,7 @@ import { useAppDispatch } from "@/redux/hook";
 import { setUser } from "@/redux/features/authSlice";
 import { useGetMeQuery } from "@/redux/api/userApi";
 import LoadingData from "@/components/shared/LoadingData";
+import { useEffect } from "react";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -25,11 +26,13 @@ const Profile = () => {
     refetchOnReconnect: true,
   });
 
+  useEffect(() => {
+    dispatch(setUser(user?.data));
+  }, [user, dispatch]);
+
   if (isFetching) {
     return <LoadingData />;
   }
-
-  dispatch(setUser(user?.data));
 
   return (
     <div className="container mx-auto py-8 px-4">

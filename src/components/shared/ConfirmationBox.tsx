@@ -26,7 +26,9 @@ export default function ConfirmationBox({
 }: IPropConfirmationBox) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="w-full">{trigger}</AlertDialogTrigger>
+      <AlertDialogTrigger className="" asChild>
+        {trigger}
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
