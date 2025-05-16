@@ -70,6 +70,7 @@ const CheckoutModal: FC<CheckoutModalProps> = ({ isOpen, onClose, price }) => {
 
       dispatch(clearCart());
       onClose();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error);
       toast.error(error.data.message, { id: toastId });

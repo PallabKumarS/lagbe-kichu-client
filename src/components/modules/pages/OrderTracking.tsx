@@ -127,6 +127,7 @@ const OrderTracking = ({ orderId }: { orderId: string }) => {
           id: toastId,
         });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.data.message, { id: toastId });
       console.log(error);

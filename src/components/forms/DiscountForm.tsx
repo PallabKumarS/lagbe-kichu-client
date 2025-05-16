@@ -62,6 +62,7 @@ const DiscountForm = ({ listing }: DiscountFormProps) => {
       } else {
         toast.error(res.message, { id: toastId });
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.data.message, { id: toastId });
       console.error(error);
@@ -102,6 +103,7 @@ const DiscountForm = ({ listing }: DiscountFormProps) => {
             <FormItem className="flex flex-col">
               <FormLabel>Discount Start Date</FormLabel>
               <Controller
+                {...field}
                 control={form.control}
                 name="discountStartDate"
                 render={({ field: { onChange, value } }) => (
@@ -127,6 +129,7 @@ const DiscountForm = ({ listing }: DiscountFormProps) => {
             <FormItem className="flex flex-col">
               <FormLabel>Discount End Date</FormLabel>
               <Controller
+                {...field}
                 control={form.control}
                 name="discountEndDate"
                 render={({ field: { onChange, value } }) => (

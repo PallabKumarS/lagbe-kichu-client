@@ -58,6 +58,7 @@ export default function LoginForm() {
       } else {
         toast.error(res?.message, { id: toastId });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Form submission error", error);
       toast.error(error.data.message, { id: toastId });

@@ -1,6 +1,6 @@
 "use client";
 
-import { TReview, TMongoose, TUser, TListing, TOrder } from "@/types";
+import { TReview, TMongoose, TUser, TListing } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2, Star } from "lucide-react";
@@ -45,6 +45,7 @@ const ReviewCard = ({ review }: Props) => {
       } else {
         toast.error(res.message, { id: toastId });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.data.message, { id: toastId });
     }

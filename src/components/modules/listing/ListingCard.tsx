@@ -51,6 +51,7 @@ const ListingCard = ({ listing, edit = false }: ListingCardProps) => {
       } else {
         toast.error(res?.message, { id: toastId });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error:any) {
        toast.error(error.data.message, { id: toastId });
       console.log(error);

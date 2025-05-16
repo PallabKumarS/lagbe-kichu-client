@@ -13,6 +13,7 @@ export function initPusherListener() {
 
   const channel = pusher.subscribe("order-channel");
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   channel.bind("status-update", (data: { orderId: string; status: string }) => {
     // store.dispatch(addOrderStatusUpdate(data));
   });

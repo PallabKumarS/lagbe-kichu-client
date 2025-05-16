@@ -50,6 +50,7 @@ const Searchbar = () => {
       const res = await triggerSearch({ searchTerm, limit: 5 }).unwrap();
 
       setSearchResults(res?.data);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.data.message);
     }

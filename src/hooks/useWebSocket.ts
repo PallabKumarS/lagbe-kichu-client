@@ -15,6 +15,7 @@ export const useWebSocket = () => {
 
   useEffect(() => {
     let ws: WebSocket;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let reconnectTimeout: NodeJS.Timeout;
 
     audioRef.current = new Audio("/audio/notification.wav");

@@ -82,6 +82,7 @@ export default function ReviewForm({
       } else {
         toast.error(res.message, { id: toastId });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err:any) {
       toast.error(err.data.message, { id: toastId });
       console.error(err);

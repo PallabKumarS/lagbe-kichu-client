@@ -13,7 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { PasswordInput } from "../ui/password-input";
-import { LoaderCircleIcon } from "lucide-react";
 import { useChangePasswordMutation } from "@/redux/api/authApi";
 import ButtonLoader from "../shared/ButtonLoader";
 
@@ -46,6 +45,7 @@ export default function PasswordForm() {
       } else {
         toast.error(res?.message, { id: toastId });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Form submission error", error);
       toast.error(error.data.message, { id: toastId });

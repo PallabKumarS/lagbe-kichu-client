@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -18,7 +17,6 @@ type Props = {
 };
 
 export const ReviewModal = ({ isOpen, onOpenChange, order }: Props) => {
-  const router = useRouter();
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>

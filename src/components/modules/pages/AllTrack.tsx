@@ -48,6 +48,7 @@ const AllTrack = ({ query }: { query: Record<string, string> }) => {
           id: toastId,
         });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error deleting order:", error);
        toast.error(error.data.message, { id: toastId });
