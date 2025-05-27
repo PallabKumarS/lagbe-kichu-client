@@ -8,7 +8,7 @@ const HeroSection = () => {
     <div className="relative overflow-hidden bg-background rounded-3xl">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
 
-      <div className="container mx-auto px-4 py-24 relative">
+      <div className="mx-auto px-4 py-24 relative">
         <div className="max-w-3xl mx-auto text-center space-y-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

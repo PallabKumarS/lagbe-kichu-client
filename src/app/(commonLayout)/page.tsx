@@ -1,5 +1,8 @@
+import Categories from "@/components/modules/home/Categories";
 import HeroSection from "@/components/modules/home/HeroSection";
-import Testimonials from "@/components/modules/home/Testimonials";
+import NeswLetter from "@/components/modules/home/NeswLetter";
+import NewProducts from "@/components/modules/home/NewProducts";
+import OurStats from "@/components/modules/home/OurStats";
 import Tips from "@/components/modules/home/Tips";
 import Container from "@/components/shared/Container";
 import { Metadata } from "next";
@@ -14,8 +17,11 @@ const page = () => {
   return (
     <Container className="space-y-10">
       <HeroSection />
-      <Testimonials />
       <Tips />
+      <OurStats />
+      <NewProducts />
+      <Categories />
+      <NeswLetter />
     </Container>
   );
 };

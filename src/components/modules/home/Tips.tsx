@@ -69,7 +69,7 @@ const Tips = () => {
   return (
     <section className="py-16 bg-background/50">
       <motion.div
-        className="container mx-auto px-4"
+        className="mx-auto px-4"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"

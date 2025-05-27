@@ -11,3 +11,11 @@ export function extractYouTubeId(url: string): string {
   const match = url.match(videoIdRegex);
   return match ? match[1] : "";
 }
+
+export const isValidImageUrl = (url: string) => {
+  const pattern = new RegExp(
+    "^https?:\\/\\/.+\\.(jpg|jpeg|png|webp|gif|bmp)$",
+    "i"
+  );
+  return pattern.test(url);
+};

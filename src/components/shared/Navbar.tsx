@@ -12,6 +12,7 @@ import {
   PlusCircle,
   User,
   Settings,
+  FileQuestionIcon,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -34,6 +35,7 @@ import CartNotifyIcon from "./CartNotification";
 import { deleteCookie } from "@/lib/deleteCookie";
 import { NotificationDrawer } from "./NotificationDrawer";
 import Container from "./Container";
+import { BiCommentDetail } from "react-icons/bi";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,11 +47,13 @@ export default function Navbar() {
   const navItems = [
     { href: "/listings", label: "All Listings", icon: List },
     { href: "/about", label: "About", icon: Info },
+    { href: "/testimonial", label: "Testimonial", icon: BiCommentDetail },
+    { href: "/faq", label: "FAQ", icon: FileQuestionIcon },
   ];
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(logout());
-    deleteCookie();
+    await deleteCookie();
 
     if (privateRoutes.some((route) => pathname.match(route))) {
       router.push("/login");

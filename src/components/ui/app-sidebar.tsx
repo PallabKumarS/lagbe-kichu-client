@@ -117,9 +117,9 @@ export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(logout());
-    deleteCookie();
+    await deleteCookie();
 
     if (privateRoutes.some((route) => pathname.match(route))) {
       router.push("/login");
