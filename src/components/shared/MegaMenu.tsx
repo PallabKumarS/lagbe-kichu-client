@@ -197,8 +197,8 @@ const MegaMenu = ({ className = "" }: MegaMenuProps) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.2 }}
-      className="absolute top-full left-0 w-[96vw] bg-background/95 backdrop-blur-md border-t border-border shadow-2xl z-50"
-      style={{ marginLeft: "calc(-50vw + 50%)" }}
+      className="absolute top-[6vh] left-0 w-[96vw] bg-background/95 backdrop-blur-md border-t border-border shadow-2xl z-50"
+      style={{ marginLeft: "calc(-50vw + 60%)" }}
     >
       <Container>
         <div className="py-8 px-4">

@@ -119,6 +119,14 @@ const orderApi = baseApi.injectEndpoints({
       }),
       providesTags: ["payment"],
     }),
+
+    // Check coupon code
+    checkCouponCode: builder.query({
+      query: (code) => ({
+        url: `/coupons/${code}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -132,6 +140,7 @@ export const {
   useDeleteOrderMutation,
   useCreatePaymentMutation,
   useVerifyPaymentQuery,
+  useCheckCouponCodeQuery,
 } = orderApi;
 
 export default orderApi;
