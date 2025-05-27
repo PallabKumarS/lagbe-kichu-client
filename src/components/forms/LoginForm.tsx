@@ -50,7 +50,6 @@ export default function LoginForm() {
         // set cookies manually
         await setCookies(res?.data?.accessToken, res?.data?.refreshToken);
         toast.success(res?.message, { id: toastId });
-        console.log(redirectPath);
         if (redirectPath) {
           router.push(redirectPath);
         } else {
