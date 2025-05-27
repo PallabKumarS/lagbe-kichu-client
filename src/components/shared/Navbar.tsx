@@ -13,6 +13,9 @@ import {
   User,
   Settings,
   FileQuestionIcon,
+  Smartphone,
+  Shirt,
+  HomeIcon,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -36,6 +39,7 @@ import { deleteCookie } from "@/lib/deleteCookie";
 import { NotificationDrawer } from "./NotificationDrawer";
 import Container from "./Container";
 import { BiCommentDetail } from "react-icons/bi";
+import MegaMenu from "./MegaMenu";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -81,6 +85,7 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex flex-wrap items-center gap-4">
+            <MegaMenu />
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -244,6 +249,36 @@ export default function Navbar() {
                   {item.label}
                 </Link>
               ))}
+              <div className="border-t pt-4 mt-4">
+                <p className="text-sm font-medium text-muted-foreground mb-2 px-3">
+                  Popular Categories
+                </p>
+                <Link
+                  href="/listings?category=electronics"
+                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors py-2 px-3 rounded-full hover:bg-accent/20"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Smartphone className="w-5 h-5" />
+                  Electronics
+                </Link>
+                <Link
+                  href="/listings?category=fashion"
+                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors py-2 px-3 rounded-full hover:bg-accent/20"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Shirt className="w-5 h-5" />
+                  Fashion
+                </Link>
+                <Link
+                  href="/listings?category=home"
+                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors py-2 px-3 rounded-full hover:bg-accent/20"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <HomeIcon className="w-5 h-5" />
+                  Home & Living
+                </Link>
+              </div>
+
               {user && user.role === "seller" && (
                 <Link
                   href="/dashboard/seller/create-listing"
