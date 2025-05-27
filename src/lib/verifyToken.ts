@@ -62,7 +62,7 @@ export const getCurrentUser = async () => {
   }
 };
 
-type DecodedUser = {
+export type DecodedUser = {
   userId: string;
   role: "admin" | "buyer" | "seller";
   email: string;

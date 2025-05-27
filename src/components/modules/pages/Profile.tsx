@@ -13,22 +13,11 @@ import {
   IdCard,
 } from "lucide-react";
 import Link from "next/link";
-import { useAppDispatch } from "@/redux/hook";
-import { setUser } from "@/redux/features/authSlice";
-import { useGetMeQuery } from "@/redux/api/userApi";
 import LoadingData from "@/components/shared/LoadingData";
-import { useEffect } from "react";
+import { useUser } from "@/hooks/useUser";
 
 const Profile = () => {
-  const dispatch = useAppDispatch();
-  const { data: user, isFetching } = useGetMeQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
-  });
-
-  useEffect(() => {
-    dispatch(setUser(user?.data));
-  }, [user, dispatch]);
+  const { user, isFetching } = useUser();
 
   if (isFetching) {
     return <LoadingData />;
@@ -41,21 +30,18 @@ const Profile = () => {
         <div className="space-y-4 md:flex justify-between items-start mb-6">
           <div className="space-y-3 md:flex items-center gap-4">
             <Avatar className="h-24 w-24">
-              {user?.data?.profileImage ? (
-                <AvatarImage
-                  src={user?.data?.profileImage}
-                  alt={user?.data?.name}
-                />
+              {user?.profileImage ? (
+                <AvatarImage src={user?.profileImage} alt={user?.name} />
               ) : (
                 <AvatarImage src="https://github.com/shadcn.png" />
               )}
-              <AvatarFallback>{user?.data?.name?.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="text-2xl font-bold">{user?.data?.name}</h1>
-              <p className="text-gray-600">{user?.data?.email}</p>
+              <h1 className="text-2xl font-bold">{user?.name}</h1>
+              <p className="text-gray-600">{user?.email}</p>
               <Badge variant="outline" className="mt-2">
-                {user?.data?.role}
+                {user?.role}
               </Badge>
             </div>
           </div>
@@ -73,28 +59,26 @@ const Profile = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <PhoneIcon className="h-4 w-4 text-gray-500" />
-              <span>{user?.data?.phone || "No phone number added"}</span>
+              <span>{user?.phone || "No phone number added"}</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPinIcon className="h-4 w-4 text-gray-500" />
-              <span>{user?.data?.address || "No address added"}</span>
+              <span>{user?.address || "No address added"}</span>
             </div>
             <div className="flex items-center gap-2">
               <CalendarIcon className="h-4 w-4 text-gray-500" />
               <span>
                 Joined:{" "}
-                {new Date(
-                  user?.data?.createdAt || Date.now()
-                ).toLocaleDateString()}
+                {new Date(user?.createdAt || Date.now()).toLocaleDateString()}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="h-4 w-4 text-gray-500" />
-              <span>Contact: {user?.data?.email}</span>
+              <span>Contact: {user?.email}</span>
             </div>
             <div className="flex items-center gap-2">
               <IdCard className="h-4 w-4 text-gray-500" />
-              <span>User ID: {user?.data?.userId}</span>
+              <span>User ID: {user?.userId}</span>
             </div>
           </div>
 
@@ -102,34 +86,30 @@ const Profile = () => {
             <div className="flex flex-col gap-2">
               <span className="font-semibold">Account Status</span>
               <div className="flex gap-3">
-                <Badge
-                  variant={user?.data?.isActive ? "default" : "destructive"}
-                >
-                  {user?.data?.isActive ? "Active" : "Inactive"}
+                <Badge variant={user?.isActive ? "default" : "destructive"}>
+                  {user?.isActive ? "Active" : "Inactive"}
                 </Badge>
-                {user?.data?.isDeleted && (
+                {user?.isDeleted && (
                   <Badge variant="destructive">Account Deleted</Badge>
                 )}
               </div>
             </div>
-            {user?.data?.passwordChangedAt && (
+            {user?.passwordChangedAt && (
               <div className="flex flex-col gap-2">
                 <span className="font-semibold">Password Last Changed</span>
                 <span>
-                  {new Date(user?.data.passwordChangedAt).toLocaleDateString()}
+                  {new Date(user?.passwordChangedAt).toLocaleDateString()}
                 </span>
               </div>
             )}
             <div className="flex flex-col gap-2">
               <span className="font-semibold">Account Type</span>
-              <span className="capitalize">{user?.data?.role} Account</span>
+              <span className="capitalize">{user?.role} Account</span>
             </div>
             <div className="flex flex-col gap-2">
               <span className="font-semibold">Last Updated</span>
               <span>
-                {new Date(
-                  user?.data?.updatedAt || Date.now()
-                ).toLocaleDateString()}
+                {new Date(user?.updatedAt || Date.now()).toLocaleDateString()}
               </span>
             </div>
           </div>

@@ -63,7 +63,7 @@ export default function Navbar() {
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-30 py-2 shadow-sm">
       <Container>
-        <nav className=" mx-auto px-4 flex items-center justify-center lg:justify-between gap-4 flex-wrap lg:flex-nowrap">
+        <nav className="mx-auto px-4 flex items-center justify-center lg:justify-between gap-4 flex-wrap lg:flex-nowrap">
           {/* Logo with hover effect */}
           <div
             onClick={() => router.push("/")}
@@ -80,7 +80,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex flex-wrap items-center gap-4">
             {navItems.map((item) => (
               <Link
                 key={item.href}

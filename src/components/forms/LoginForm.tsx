@@ -50,6 +50,7 @@ export default function LoginForm() {
         // set cookies manually
         await setCookies(res?.data?.accessToken, res?.data?.refreshToken);
         toast.success(res?.message, { id: toastId });
+        console.log(redirectPath);
         if (redirectPath) {
           router.push(redirectPath);
         } else {
@@ -58,7 +59,7 @@ export default function LoginForm() {
       } else {
         toast.error(res?.message, { id: toastId });
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Form submission error", error);
       toast.error(error.data.message, { id: toastId });

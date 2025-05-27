@@ -20,11 +20,13 @@ interface IInitialState {
     email: string;
   } | null;
   token: string | null;
+  isAuthenticated: boolean;
 }
 
 const initialState: IInitialState = {
   user: null,
   token: null,
+  isAuthenticated: false,
 };
 
 const authSlice = createSlice({
@@ -33,13 +35,20 @@ const authSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
+      state.isAuthenticated = !!action.payload;
     },
     login: (state, action) => {
       state.token = action.payload;
+      state.isAuthenticated = !!action.payload;
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
+      state.isAuthenticated = false;
+    },
+    clearUser: (state) => {
+      state.user = null;
+      state.isAuthenticated = !!state.token;
     },
   },
 });
@@ -52,6 +61,10 @@ export const tokenSelector = (state: RootState) => {
   return state.auth.token;
 };
 
-export const { login, logout, setUser } = authSlice.actions;
+export const isAuthenticatedSelector = (state: RootState) => {
+  return state.auth.isAuthenticated;
+};
+
+export const { login, logout, setUser, clearUser } = authSlice.actions;
 
 export default authSlice;

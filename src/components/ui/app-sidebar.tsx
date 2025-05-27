@@ -33,12 +33,44 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { logout, userSelector } from "@/redux/features/authSlice";
+import { useAppDispatch } from "@/redux/hook";
+import { logout } from "@/redux/features/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname, useRouter } from "next/navigation";
 import { privateRoutes } from "@/constants";
 import { deleteCookie } from "@/lib/deleteCookie";
+import { useUser } from "@/hooks/useUser";
+
+// Skeleton Components
+const MenuItemSkeleton = () => (
+  <SidebarMenuItem className="group hover:bg-accent/10 transition-colors duration-200">
+    <SidebarMenuButton asChild>
+      <div className="flex items-center gap-3 w-full animate-pulse">
+        <div className="w-5 h-5 bg-muted rounded"></div>
+        <div className="h-4 bg-muted rounded flex-grow max-w-24"></div>
+        <div className="w-4 h-4 bg-muted rounded"></div>
+      </div>
+    </SidebarMenuButton>
+  </SidebarMenuItem>
+);
+
+const GroupLabelSkeleton = () => (
+  <div className="flex items-center gap-2 animate-pulse">
+    <div className="w-4 h-4 bg-muted rounded"></div>
+    <div className="h-4 bg-muted rounded w-20"></div>
+  </div>
+);
+
+const UserProfileSkeleton = () => (
+  <div className="flex w-full items-center gap-3 rounded-lg p-2 animate-pulse">
+    <div className="h-8 w-8 bg-muted rounded-full"></div>
+    <div className="flex-1">
+      <div className="h-4 bg-muted rounded w-24 mb-1"></div>
+      <div className="h-3 bg-muted rounded w-32"></div>
+    </div>
+    <div className="h-4 w-4 bg-muted rounded"></div>
+  </div>
+);
 
 // common routes for all users
 const items = [
@@ -112,10 +144,11 @@ const buyerRoutes = [
 ];
 
 export function AppSidebar() {
-  const user = useAppSelector(userSelector);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
   const router = useRouter();
+
+  const { user, isFetching } = useUser();
 
   const handleLogout = async () => {
     dispatch(logout());
@@ -170,6 +203,14 @@ export function AppSidebar() {
     </SidebarMenu>
   );
 
+  const renderSkeletonMenuItems = (count: number) => (
+    <SidebarMenu>
+      {Array.from({ length: count }).map((_, index) => (
+        <MenuItemSkeleton key={`skeleton-${index}`} />
+      ))}
+    </SidebarMenu>
+  );
+
   return (
     <Sidebar className="h-full" collapsible="icon">
       <SidebarContent>
@@ -197,98 +238,132 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* User Profile */}
+        {/* Common Routes */}
         <SidebarGroup>
-          <SidebarGroupContent>{renderMenuItems(items)}</SidebarGroupContent>
+          <SidebarGroupContent>
+            {isFetching ? renderSkeletonMenuItems(4) : renderMenuItems(items)}
+          </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Admin Panel */}
-        {user?.role === "admin" && (
-          <SidebarGroup>
-            <SidebarGroupLabel className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-muted-foreground" />
-              Admin Panel
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              {renderMenuItems(adminRoutes)}
-            </SidebarGroupContent>
-          </SidebarGroup>
+        {/* Role-based Routes */}
+        {isFetching ? (
+          <>
+            {/* Skeleton for role-based sections */}
+            <SidebarGroup>
+              <SidebarGroupLabel>
+                <GroupLabelSkeleton />
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                {renderSkeletonMenuItems(3)}
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>
+                <GroupLabelSkeleton />
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                {renderSkeletonMenuItems(2)}
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        ) : (
+          <>
+            {/* Admin Panel */}
+            {user?.role === "admin" && (
+              <SidebarGroup>
+                <SidebarGroupLabel className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-muted-foreground" />
+                  Admin Panel
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  {renderMenuItems(adminRoutes)}
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )}
+
+            {/* Seller Panel */}
+            {user?.role === "seller" && (
+              <SidebarGroup>
+                <SidebarGroupLabel className="flex items-center gap-2">
+                  <PackageOpen className="w-4 h-4 text-muted-foreground" />
+                  Seller
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  {renderMenuItems(sellerRoutes)}
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )}
+
+            {/* Buyer Panel */}
+            {user?.role === "buyer" && (
+              <SidebarGroup>
+                <SidebarGroupLabel className="flex items-center gap-2">
+                  <TrainTrack className="w-4 h-4 text-muted-foreground" />
+                  Buyer
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  {renderMenuItems(buyerRoutes)}
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )}
+          </>
         )}
 
-        {/* Seller Panel */}
-        {user?.role === "seller" && (
-          <SidebarGroup>
-            <SidebarGroupLabel className="flex items-center gap-2">
-              <PackageOpen className="w-4 h-4 text-muted-foreground" />
-              Seller
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              {renderMenuItems(sellerRoutes)}
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
-
-        {/* Buyer Panel */}
-        {user?.role === "buyer" && (
-          <SidebarGroup>
-            <SidebarGroupLabel className="flex items-center gap-2">
-              <TrainTrack className="w-4 h-4 text-muted-foreground" />
-              Buyer
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              {renderMenuItems(buyerRoutes)}
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
-
-        {/* Logout */}
+        {/* User Profile / Logout */}
         <div className="mt-auto border-t p-4 pl-0">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                className="
-                  flex w-full items-center gap-3 
-                  rounded-lg p-2 
-                  hover:bg-accent/10 
-                  transition-colors 
-                  group
-                "
-              >
-                <Avatar className="h-8 w-8 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all">
-                  {user?.profileImage ? (
-                    <AvatarImage src={user?.profileImage} alt={user?.name} />
-                  ) : (
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                  )}
-                  <AvatarFallback>LK</AvatarFallback>
-                </Avatar>
-                <div className="flex-1 text-left">
-                  <p className="text-sm font-medium">{user?.name}</p>
-                  <p className="text-xs text-muted-foreground capitalize">
-                    {user?.email}
-                  </p>
-                </div>
-                <ChevronDown className="h-4 w-4 text-muted-foreground group-hover:rotate-180 transition-transform" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="start" side="top">
-              {user ? (
-                <DropdownMenuItem
-                  className="text-destructive focus:text-destructive-foreground cursor-pointer flex items-center gap-3"
-                  onClick={handleLogout}
+          {isFetching ? (
+            <UserProfileSkeleton />
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="
+                    flex w-full items-center gap-3 
+                    rounded-lg p-2 
+                    hover:bg-accent/10 
+                    transition-colors 
+                    group
+                  "
                 >
-                  <LogOut className="w-4 h-4" /> Logout
-                </DropdownMenuItem>
-              ) : (
-                <DropdownMenuItem
-                  className="text-primary focus:text-primary-foreground cursor-pointer flex items-center gap-3"
-                  onClick={() => router.push("/login")}
-                >
-                  <LogIn className="w-4 h-4" /> Login
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <Avatar className="h-8 w-8 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all">
+                    {user?.profileImage ? (
+                      <AvatarImage src={user?.profileImage} alt={user?.name} />
+                    ) : (
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                    )}
+                    <AvatarFallback>LK</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 text-left">
+                    <p className="text-sm font-medium">
+                      {user?.name || "Guest"}
+                    </p>
+                    <p className="text-xs text-muted-foreground capitalize">
+                      {user?.email || "Not logged in"}
+                    </p>
+                  </div>
+                  <ChevronDown className="h-4 w-4 text-muted-foreground group-hover:rotate-180 transition-transform" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="start" side="top">
+                {user ? (
+                  <DropdownMenuItem
+                    className="text-destructive focus:text-destructive-foreground cursor-pointer flex items-center gap-3"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="w-4 h-4" /> Logout
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem
+                    className="text-primary focus:text-primary-foreground cursor-pointer flex items-center gap-3"
+                    onClick={() => router.push("/login")}
+                  >
+                    <LogIn className="w-4 h-4" /> Login
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </SidebarContent>
     </Sidebar>
