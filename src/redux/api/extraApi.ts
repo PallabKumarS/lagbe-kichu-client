@@ -2,8 +2,14 @@ import baseApi from "./baseApi";
 
 const extraApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // get all categories
     getStatistics: builder.query({
+      query: () => ({
+        url: "/statistics/detailed",
+        method: "GET",
+      }),
+    }),
+
+    getDetailedStatistics: builder.query({
       query: () => ({
         url: "/statistics",
         method: "GET",
@@ -12,4 +18,5 @@ const extraApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetStatisticsQuery } = extraApi;
+export const { useGetStatisticsQuery, useGetDetailedStatisticsQuery } =
+  extraApi;

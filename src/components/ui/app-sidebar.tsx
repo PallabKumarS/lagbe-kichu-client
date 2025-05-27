@@ -15,6 +15,7 @@ import {
   ChevronRight,
   ChevronDown,
   FilePenLineIcon,
+  Eye,
 } from "lucide-react";
 
 import {
@@ -112,6 +113,11 @@ const adminRoutes = [
     title: "Category",
     icon: FileSearch,
     href: "/dashboard/admin/category-management",
+  },
+  {
+    title: "Overview",
+    icon: Eye,
+    href: "/dashboard/admin/overview",
   },
 ];
 

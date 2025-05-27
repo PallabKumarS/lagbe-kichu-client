@@ -14,6 +14,7 @@ import {
 const OurStats = () => {
   const { data, isFetching } = useGetStatisticsQuery(undefined);
 
+
   const formatNumber = (num: number) => {
     if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + "M";
